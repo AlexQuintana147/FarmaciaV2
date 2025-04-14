@@ -111,16 +111,6 @@
             position: relative;
             overflow: hidden;
         }
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.1;
-        }
         .footer h5 {
             color: #ffffff;
             font-weight: 600;
@@ -304,21 +294,19 @@
                     <h5><i class="fas fa-mortar-pestle me-2"></i>DrodiPharma</h5>
                     <p class="mb-4">Comprometidos con tu salud y bienestar desde 2023. Ofrecemos productos farmacéuticos de la más alta calidad con atención personalizada.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/drodipharm/" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/drodipharma/" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                        <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.facebook.com/drodipharm/" class="me-3" target="_blank" rel="noopener noreferrer" style="color: inherit;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/drodipharma/" class="me-3" target="_blank" rel="noopener noreferrer" style="color: inherit;"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5>Enlaces Rápidos</h5>
                     <ul class="list-unstyled footer-links">
-                        <li><a href="{{ url('/') }}"><i class="fas fa-chevron-right me-2"></i>Inicio</a></li>
-                        <li><a href="{{ url('/productos') }}"><i class="fas fa-chevron-right me-2"></i>Productos</a></li>
-                        <li><a href="{{ url('/blog') }}"><i class="fas fa-chevron-right me-2"></i>Blog de Salud</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Nosotros</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Contacto</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Servicios</a></li>
+                        <li><a href="{{ url('/') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Inicio</a></li>
+                        <li><a href="{{ url('/productos') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Productos</a></li>
+                        <li><a href="{{ url('/blog') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Blog de Salud</a></li>
+                        <li><a href="{{ url('/nosotros') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Nosotros</a></li>
+                        <li><a href="{{ url('/contacto') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Contacto</a></li>
+                        <li><a href="{{ url('/servicios') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Servicios</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6">
