@@ -38,5 +38,13 @@ Route::post('/logout', [TrabajadorAuthController::class, 'logout'])->name('logou
 Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/blogs', [DashboardController::class, 'blogs'])->name('dashboard.blogs');
-    Route::get('/dashboard/productos', [DashboardController::class, 'productos'])->name('dashboard.productos');
+    
+    // Rutas para productos
+    Route::get('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('dashboard.productos');
+    Route::get('/dashboard/productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
+    Route::get('/dashboard/productos/{producto}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');
+    Route::put('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
 });

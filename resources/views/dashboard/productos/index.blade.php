@@ -2,16 +2,23 @@
 
 @section('content')
 <div class="container py-4">
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Gestión de Productos</h1>
-        <a href="#" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Producto</a>
+        <a href="{{ route('productos.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Producto</a>
     </div>
     
     <div class="card">
         <div class="card-header bg-white">
             <div class="row">
                 <div class="col-md-6">
-                    <form action="" method="GET" class="d-flex">
+                    <form action="{{ route('dashboard.productos') }}" method="GET" class="d-flex">
                         <input type="text" name="search" class="form-control" placeholder="Buscar productos..." value="{{ request('search') }}">
                         <button type="submit" class="btn btn-outline-primary ms-2">Buscar</button>
                     </form>
@@ -23,13 +30,13 @@
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Medicamentos</a></li>
-                            <li><a class="dropdown-item" href="#">Vitaminas</a></li>
-                            <li><a class="dropdown-item" href="#">Cuidado Personal</a></li>
-                            <li><a class="dropdown-item" href="#">Primeros Auxilios</a></li>
-                            <li><a class="dropdown-item" href="#">Suplementos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.productos', ['categoria' => 'Medicamentos']) }}">Medicamentos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.productos', ['categoria' => 'Vitaminas']) }}">Vitaminas</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.productos', ['categoria' => 'Cuidado Personal']) }}">Cuidado Personal</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.productos', ['categoria' => 'Primeros Auxilios']) }}">Primeros Auxilios</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.productos', ['categoria' => 'Suplementos']) }}">Suplementos</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Todos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.productos') }}">Todos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -72,9 +79,32 @@
                                 <td>{{ $producto->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                        <a href="{{ route('productos.show', $producto) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ route('productos.edit', $producto) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $producto->id }}"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                    
+                                    <!-- Modal de confirmación para eliminar -->
+                                    <div class="modal fade" id="deleteModal{{ $producto->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $producto->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $producto->id }}">Confirmar eliminación</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Estás seguro de que deseas eliminar el producto <strong>{{ $producto->titulo }}</strong>? Esta acción no se puede deshacer.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    <form action="{{ route('productos.destroy', $producto) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
