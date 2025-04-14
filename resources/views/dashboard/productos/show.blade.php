@@ -5,9 +5,6 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Detalles del Producto</h1>
         <div>
-            <a href="{{ route('productos.edit', $producto) }}" class="btn btn-success me-2">
-                <i class="fas fa-edit"></i> Editar
-            </a>
             <a href="{{ route('dashboard.productos') }}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Volver a la lista
             </a>
