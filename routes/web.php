@@ -19,6 +19,14 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/nosotros', function () {
+    return view('nosotros');
+});
+
+Route::get('/farmacovigilancia', function () {
+    return view('farmacovigilancia');
+});
+
 Route::get('/productos', function () {
     $productos = App\Models\Producto::all();
     return view('productos', compact('productos'));

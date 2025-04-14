@@ -254,6 +254,16 @@
                                 <i class="fas fa-book-medical me-1"></i> Blog
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('nosotros*')? 'active' : '' }}" href="{{ url('/nosotros') }}">
+                                <i class="fas fa-users me-1"></i> Sobre Nosotros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('farmacovigilancia*')? 'active' : '' }}" href="{{ url('/farmacovigilancia') }}">
+                                <i class="fas fa-pills me-1"></i> Farmacovigilancia
+                            </a>
+                        </li>
                     </ul>
                     <div class="d-flex">
                         @if (Auth::guard('trabajador')->check())
@@ -305,8 +315,7 @@
                         <li><a href="{{ url('/productos') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Productos</a></li>
                         <li><a href="{{ url('/blog') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Blog de Salud</a></li>
                         <li><a href="{{ url('/nosotros') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Nosotros</a></li>
-                        <li><a href="{{ url('/contacto') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Contacto</a></li>
-                        <li><a href="{{ url('/servicios') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Servicios</a></li>
+                        <li><a href="{{ url('/farmacovigilancia') }}" style="color: inherit;"><i class="fas fa-chevron-right me-2"></i>Farmacovigilancia</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6">
