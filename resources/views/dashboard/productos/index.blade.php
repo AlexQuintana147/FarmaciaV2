@@ -2,6 +2,22 @@
 
 @section('content')
 <div class="container py-4">
+    <style>
+        /* Estilos personalizados para mejorar la vista de productos */
+        .table td {
+            vertical-align: middle;
+        }
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+        }
+        .dropdown-menu {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    </style>
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -44,8 +60,8 @@
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-nowrap">
                         <tr>
                             <th>ID</th>
                             <th>Producto</th>
@@ -61,9 +77,9 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @if($producto->imagen)
-                                            <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->titulo }}" class="me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                            <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->titulo }}" class="me-2 rounded" style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #eee;">
                                         @else
-                                            <div class="bg-light me-2" style="width: 40px; height: 40px;"></div>
+                                            <div class="bg-light me-2 rounded" style="width: 40px; height: 40px; border: 1px solid #eee;"></div>
                                         @endif
                                         <div>
                                             <h6 class="mb-0">{{ $producto->titulo }}</h6>
@@ -78,10 +94,16 @@
                                 </td>
                                 <td>{{ $producto->created_at->format('d/m/Y') }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('productos.show', $producto) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
-                                        <a href="{{ route('productos.edit', $producto) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $producto->id }}"><i class="fas fa-trash"></i></button>
+                                    <div class="btn-group shadow-sm">
+                                        <a href="{{ route('productos.show', $producto) }}" class="btn btn-sm btn-outline-primary" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('productos.edit', $producto) }}" class="btn btn-sm btn-outline-success" title="Editar producto">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $producto->id }}" title="Eliminar producto">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </div>
                                     
                                     <!-- Modal de confirmación para eliminar -->
@@ -123,11 +145,8 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>Mostrando {{ $productos->firstItem() ?? 0 }} a {{ $productos->lastItem() ?? 0 }} de {{ $productos->total() ?? 0 }} registros</div>
-                <div>{{ $productos->links() }}</div>
-            </div>
+        <div class="card-footer bg-white py-3">
+            <div class="text-muted small">Total de registros: {{ count($productos) }}</div>
         </div>
     </div>
 </div>

@@ -13,6 +13,8 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <!-- Custom Styles -->
     <style>
@@ -31,6 +33,34 @@
             background-color: #212529;
             color: white;
             padding: 2rem 0;
+        }
+        /* Estilos de paginación */
+        .pagination {
+            margin: 0;
+            gap: 5px;
+        }
+        .page-link {
+            border-radius: 4px;
+            padding: 0.375rem 0.75rem;
+            color: #0d6efd;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+        .page-link:hover {
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+            color: #0a58ca;
+        }
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+        }
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
         }
     </style>
 

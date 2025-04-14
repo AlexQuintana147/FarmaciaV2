@@ -116,11 +116,8 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>Mostrando {{ $blogs->firstItem() ?? 0 }} a {{ $blogs->lastItem() ?? 0 }} de {{ $blogs->total() ?? 0 }} registros</div>
-                <div>{{ $blogs->links() }}</div>
-            </div>
+        <div class="card-footer bg-white py-3">
+            <div class="text-muted small">Total de registros: {{ count($blogs) }}</div>
         </div>
     </div>
 </div>

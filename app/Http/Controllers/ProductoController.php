@@ -28,7 +28,7 @@ class ProductoController extends Controller
             $query->where('categoria', $request->categoria);
         }
         
-        $productos = $query->paginate(10);
+        $productos = $query->get();
         return view('dashboard.productos.index', compact('productos'));
     }
 
