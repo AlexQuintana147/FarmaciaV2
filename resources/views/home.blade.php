@@ -27,7 +27,7 @@
         <div class="row justify-content-center text-center">
             <div class="col-md-8 mb-4">
                 <h2 class="fw-bold mb-4">CONSULTE SOBRE NUESTROS PRODUCTOS Y PRECIOS</h2>
-                <a href="https://api.whatsapp.com/send/?phone=51967692437&text=💊 ¡Hola! Me interesa conocer más sobre sus productos farmacéuticos.%0A%0A📱 Me gustaría recibir información sobre:%0A✨ Precios%0A✨ Disponibilidad%0A✨ Ofertas especiales%0A%0A¡Gracias por su atención! 🙂" target="_blank" class="btn btn-whatsapp btn-lg">
+                <a href="https://api.whatsapp.com/send/?phone=51967692437&text=¡Hola! Me interesa conocer más sobre sus productos farmacéuticos.%0A%0AMe gustaría recibir información sobre:%0APrecios,%0ADisponibilidad%0AY Ofertas especiales%0A%0A¡Gracias por su atención!" target="_blank" class="btn btn-whatsapp btn-lg">
                     <i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp
                 </a>
             </div>
