@@ -3,8 +3,22 @@
 @section('content')
 <div class="container py-4">
     <style>
+        /* Estilos personalizados para mejorar la vista de blogs */
+        .table td {
+            vertical-align: middle;
+        }
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+        }
+        .dropdown-menu {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
         .blogs-header {
-            background: linear-gradient(135deg, #37bc9b, #4a89dc);
+            background: linear-gradient(135deg, #4a89dc, #37bc9b);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 25px;
@@ -67,8 +81,21 @@
             border-radius: 20px;
             font-size: 0.8rem;
         }
+        .category-badge {
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
     </style>
     
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <!-- Header de Blogs con estilo médico -->
     <div class="blogs-header text-white mb-4">
         <!-- Iconos flotantes decorativos -->
@@ -81,7 +108,7 @@
                 <p class="mb-0 opacity-75">Administra los artículos y consejos de salud de DrodiPharma.</p>
             </div>
             <div class="col-md-4 text-md-end">
-                <a href="{{ route('blogs.create') }}" class="btn btn-light text-primary fw-bold">
+                <a href="{{ route('blogs.create') }}" class="btn btn-light text-primary fw-bold rounded-pill">
                     <i class="fas fa-plus-circle me-2"></i>Nuevo Blog
                 </a>
             </div>
@@ -95,86 +122,153 @@
     </div>
     @endif
     
-    <div class="card">
-        <div class="card-header bg-white">
-            <div class="row">
-                <div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
                     <form action="" method="GET" class="d-flex">
-                        <input type="text" name="search" class="form-control" placeholder="Buscar blogs..." value="{{ request('search') }}">
-                        <button type="submit" class="btn btn-outline-primary ms-2">Buscar</button>
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control search-box" placeholder="Buscar blogs..." value="{{ request('search') }}">
+                            <button type="submit" class="btn btn-primary search-btn">
+                                <i class="fas fa-search me-1"></i> Buscar
+                            </button>
+                        </div>
                     </form>
                 </div>
-                <div class="col-md-6 text-end">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary">Filtrar</button>
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Más recientes</a></li>
-                            <li><a class="dropdown-item" href="#">Más antiguos</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Todos</a></li>
-                        </ul>
+                <div class="col-md-6 d-flex justify-content-md-end">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2 text-muted"><i class="fas fa-filter me-1"></i>Filtrar por:</span>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle rounded-pill" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-tag me-1"></i> Categoría
+                            </button>
+                            <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="categoryDropdown">
+                                <li><a class="dropdown-item" href="#">
+                                    <i class="fas fa-book-medical text-primary me-2"></i>Salud
+                                </a></li>
+                                <li><a class="dropdown-item" href="#">
+                                    <i class="fas fa-pills text-success me-2"></i>Medicamentos
+                                </a></li>
+                                <li><a class="dropdown-item" href="#">
+                                    <i class="fas fa-heartbeat text-danger me-2"></i>Bienestar
+                                </a></li>
+                                <li><a class="dropdown-item" href="#">
+                                    <i class="fas fa-notes-medical text-info me-2"></i>Consejos
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">
+                                    <i class="fas fa-list-ul text-secondary me-2"></i>Todos los blogs
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-nowrap">
                         <tr>
-                            <th>ID</th>
-                            <th>Título</th>
+                            <th class="ps-4">ID</th>
+                            <th>Blog</th>
+                            <th>Categoría</th>
                             <th>Autor</th>
                             <th>Fecha</th>
-                            <th>Acciones</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($blogs as $blog)
                             <tr>
-                                <td>{{ $blog->id }}</td>
+                                <td class="ps-4">{{ $blog->id }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @if($blog->imagen)
-                                            <img src="{{ asset($blog->imagen) }}" alt="{{ $blog->titulo }}" class="me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                            <div class="rounded-circle overflow-hidden me-3 shadow-sm" style="width: 50px; height: 50px;">
+                                                <img src="{{ asset($blog->imagen) }}" alt="{{ $blog->titulo }}" class="w-100 h-100" style="object-fit: cover;">
+                                            </div>
                                         @else
-                                            <div class="bg-light me-2" style="width: 40px; height: 40px;"></div>
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                                                <i class="fas fa-book-medical text-primary"></i>
+                                            </div>
                                         @endif
                                         <div>
-                                            <h6 class="mb-0">{{ $blog->titulo }}</h6>
+                                            <h6 class="mb-0 fw-bold text-primary">{{ $blog->titulo }}</h6>
                                             <small class="text-muted">{{ Str::limit($blog->subtitulo, 50) }}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ $blog->trabajador->nombre_completo }}</td>
-                                <td>{{ $blog->created_at->format('d/m/Y') }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('blogs.show', $blog) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
-                                        <a href="{{ route('blogs.edit', $blog) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $blog->id }}"><i class="fas fa-trash"></i></button>
+                                    @php
+                                        // Asignar una categoría basada en el título o subtítulo para demostración
+                                        $categorias = ['Salud', 'Medicamentos', 'Bienestar', 'Consejos'];
+                                        $categoria = $categorias[array_rand($categorias)];
+                                        
+                                        $bgColor = 'primary';
+                                        $icon = 'book-medical';
+                                        
+                                        if($categoria == 'Medicamentos') {
+                                            $bgColor = 'success';
+                                            $icon = 'pills';
+                                        } elseif($categoria == 'Bienestar') {
+                                            $bgColor = 'danger';
+                                            $icon = 'heartbeat';
+                                        } elseif($categoria == 'Consejos') {
+                                            $bgColor = 'info';
+                                            $icon = 'notes-medical';
+                                        }
+                                    @endphp
+                                    <span class="category-badge bg-{{ $bgColor }}">
+                                        <i class="fas fa-{{ $icon }} me-1"></i>
+                                        {{ $categoria }}
+                                    </span>
+                                </td>
+                                <td>{{ $blog->trabajador->nombre_completo }}</td>
+                                <td><i class="far fa-calendar-alt me-1 text-muted"></i>{{ $blog->created_at->format('d/m/Y') }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ route('blogs.show', $blog) }}" class="btn btn-outline-primary action-btn" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('blogs.edit', $blog) }}" class="btn btn-outline-success action-btn" title="Editar blog">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger action-btn" title="Eliminar blog" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $blog->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                     
                                     <!-- Modal de confirmación para eliminar -->
                                     <div class="modal fade" id="deleteModal{{ $blog->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $blog->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $blog->id }}">Confirmar eliminación</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <div class="modal-content border-0 shadow">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $blog->id }}"><i class="fas fa-exclamation-triangle me-2"></i>Confirmar eliminación</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    ¿Estás seguro de que deseas eliminar el blog <strong>{{ $blog->titulo }}</strong>? Esta acción no se puede deshacer.
+                                                <div class="modal-body p-4">
+                                                    <div class="text-center mb-4">
+                                                        <div class="avatar-lg mx-auto mb-3">
+                                                            <div class="avatar-title bg-light text-danger rounded-circle">
+                                                                <i class="fas fa-trash-alt fa-2x"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5 class="mb-3">¿Eliminar este blog?</h5>
+                                                        <p class="text-muted mb-0">¿Estás seguro de que deseas eliminar el blog <strong>{{ $blog->titulo }}</strong>?</p>
+                                                        <p class="text-danger small">Esta acción no se puede deshacer.</p>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <div class="modal-footer border-top-0">
+                                                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">
+                                                        <i class="fas fa-times me-2"></i>Cancelar
+                                                    </button>
                                                     <form action="{{ route('blogs.destroy', $blog) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                        <button type="submit" class="btn btn-danger rounded-pill px-4">
+                                                            <i class="fas fa-trash-alt me-2"></i>Eliminar
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -184,11 +278,18 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-4">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <i class="fas fa-blog fa-3x text-muted mb-3"></i>
-                                        <h5>No hay blogs disponibles</h5>
-                                        <p class="text-muted">Crea un nuevo blog para comenzar</p>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="d-flex flex-column align-items-center bg-light rounded-3 py-5 px-4">
+                                        <div class="avatar-lg mb-3">
+                                            <div class="avatar-title bg-white text-primary rounded-circle shadow-sm" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-book-medical fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h4 class="text-primary mb-2">No hay blogs disponibles</h4>
+                                        <p class="text-muted mb-4">Aún no se han creado blogs en el sistema</p>
+                                        <a href="{{ route('blogs.create') }}" class="btn btn-primary rounded-pill px-4">
+                                            <i class="fas fa-plus-circle me-2"></i>Crear nuevo blog
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -197,7 +298,7 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer bg-white py-3">
+        <div class="card-footer bg-white py-3 d-flex justify-content-between align-items-center">
             <div class="text-muted small">Total de registros: {{ count($blogs) }}</div>
         </div>
     </div>
