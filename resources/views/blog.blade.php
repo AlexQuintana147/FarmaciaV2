@@ -3,80 +3,297 @@
 @section('title', 'Blog')
 
 @section('content')
-<div class="container py-5">
+<!-- Hero Section con fondo médico -->
+<div class="hero-section mb-5">
+    <!-- Elementos decorativos médicos flotantes -->
+    <div class="floating-icon" style="top: 15%; left: 10%;"><i class="fas fa-book-medical"></i></div>
+    <div class="floating-icon" style="top: 25%; right: 15%;"><i class="fas fa-heartbeat"></i></div>
+    <div class="floating-icon" style="bottom: 20%; left: 20%;"><i class="fas fa-notes-medical"></i></div>
+    <div class="floating-icon" style="bottom: 30%; right: 10%;"><i class="fas fa-stethoscope"></i></div>
+    
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <h1 class="display-5 fw-bold text-primary mb-3">Blog de Salud</h1>
+                    <div class="divider mb-4" style="width: 70px; height: 3px; background-color: var(--medical-green);"></div>
+                    <p class="lead">Artículos y consejos de salud escritos por nuestros profesionales farmacéuticos para ayudarte a cuidar tu bienestar.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="https://placehold.co/600x400/e8f4fd/4a89dc?text=Blog+DrodiPharma" class="img-fluid rounded shadow" alt="Blog DrodiPharma">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-3">
     <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="fw-bold">Blog DrodiPharma</h1>
-            <p class="lead">Artículos y consejos de salud escritos por nuestros profesionales</p>
+        <div class="col-12">
+            <div class="bg-white p-3 rounded-lg shadow-sm mb-4">
+                <h5 class="text-center mb-3"><i class="fas fa-newspaper me-2 text-primary"></i>Artículos Recientes</h5>
+            </div>
         </div>
     </div>
 
     <div class="row">
         @forelse($blogs as $blog)
             <div class="col-md-6 mb-4">
-                <div class="card h-100 shadow-sm">
+                <div class="card h-100 shadow-sm border-0 blog-card">
+                    <style>
+                        .blog-card {
+                            transition: all 0.3s ease;
+                            border-radius: 0.5rem;
+                            overflow: hidden;
+                        }
+                        .blog-card:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+                        }
+                        .blog-img-container {
+                            position: relative;
+                            overflow: hidden;
+                            height: 100%;
+                        }
+                        .blog-img-container img {
+                            transition: transform 0.5s ease;
+                        }
+                        .blog-img-container:hover img {
+                            transform: scale(1.05);
+                        }
+                        .blog-date {
+                            position: absolute;
+                            top: 10px;
+                            left: 10px;
+                            background-color: rgba(74, 137, 220, 0.9);
+                            color: white;
+                            padding: 5px 10px;
+                            border-radius: 20px;
+                            font-size: 0.8rem;
+                            z-index: 10;
+                        }
+                        .blog-author {
+                            display: flex;
+                            align-items: center;
+                        }
+                        .blog-author-avatar {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 50%;
+                            background-color: var(--medical-light-blue);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 10px;
+                            color: var(--medical-blue);
+                        }
+                    </style>
                     <div class="row g-0">
                         <div class="col-md-4">
-                            @if($blog->imagen)
-                                <img src="{{ asset($blog->imagen) }}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
-                            @else
-                                <img src="https://placehold.co/300x400/6c757d/white?text=Blog" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
-                            @endif
+                            <div class="blog-img-container">
+                                @if($blog->created_at)
+                                <div class="blog-date">
+                                    <i class="far fa-calendar-alt me-1"></i> {{ $blog->created_at->format('d/m/Y') }}
+                                </div>
+                                @endif
+                                @if($blog->imagen)
+                                    <img src="{{ asset($blog->imagen) }}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
+                                @else
+                                    <img src="https://placehold.co/300x400/e8f4fd/4a89dc?text=Blog" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
+                                @endif
+                            </div>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $blog->titulo }}</h5>
+                                <h5 class="card-title fw-bold text-primary">{{ $blog->titulo }}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">{{ $blog->subtitulo }}</h6>
-                                <p class="card-text">{{ Str::limit($blog->contenido, 150) }}</p>
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        Por: {{ $blog->trabajador->nombre }} {{ $blog->trabajador->apellido }}
-                                    </small>
-                                </p>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#blogModal{{ $blog->id }}">
-                                    Leer más
-                                </button>
+                                <div class="divider my-2" style="width: 40px; height: 3px; background-color: var(--medical-green);"></div>
+                                <p class="card-text">{{ Str::limit($blog->contenido, 120) }}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="blog-author">
+                                        <div class="blog-author-avatar">
+                                            <i class="fas fa-user-md"></i>
+                                        </div>
+                                        <small class="text-muted">
+                                            {{ $blog->trabajador->nombre }} {{ $blog->trabajador->apellido }}
+                                        </small>
+                                    </div>
+                                    <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#blogModal{{ $blog->id }}">
+                                        <i class="fas fa-book-open me-1"></i> Leer más
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Modal para el contenido completo del blog -->
+            <!-- Modal para el contenido completo del blog con estilo médico -->
             <div class="modal fade" id="blogModal{{ $blog->id }}" tabindex="-1" aria-labelledby="blogModalLabel{{ $blog->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="blogModalLabel{{ $blog->id }}">{{ $blog->titulo }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content border-0 shadow">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="blogModalLabel{{ $blog->id }}"><i class="fas fa-book-medical me-2"></i>{{ $blog->titulo }}</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <h6 class="text-muted">{{ $blog->subtitulo }}</h6>
-                                <p class="small text-muted">
-                                    Por: {{ $blog->trabajador->nombre }} {{ $blog->trabajador->apellido }} | 
-                                    Publicado: {{ $blog->created_at->format('d/m/Y') }}
-                                </p>
+                        <div class="modal-body p-4">
+                            <div class="mb-4">
+                                <h6 class="text-primary fw-bold">{{ $blog->subtitulo }}</h6>
+                                <div class="divider my-3" style="width: 50px; height: 3px; background-color: var(--medical-green);"></div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="blog-author-avatar me-2">
+                                        <i class="fas fa-user-md"></i>
+                                    </div>
+                                    <p class="small text-muted mb-0">
+                                        Por: <span class="fw-bold">{{ $blog->trabajador->nombre }} {{ $blog->trabajador->apellido }}</span> | 
+                                        <i class="far fa-calendar-alt ms-2 me-1"></i> {{ $blog->created_at->format('d/m/Y') }}
+                                    </p>
+                                </div>
                             </div>
                             @if($blog->imagen)
-                                <img src="{{ asset($blog->imagen) }}" class="img-fluid rounded mb-3" alt="{{ $blog->titulo }}">
+                                <div class="text-center bg-light p-3 rounded mb-4">
+                                    <img src="{{ asset($blog->imagen) }}" class="img-fluid rounded" alt="{{ $blog->titulo }}" style="max-height: 400px;">
+                                </div>
                             @endif
-                            <div>
-                                {!! nl2br(e($blog->contenido)) !!}
+                            <div class="bg-white p-4 rounded">
+                                <div class="blog-content">
+                                    {!! nl2br(e($blog->contenido)) !!}
+                                </div>
+                                
+                                <div class="mt-4 p-3 bg-light rounded">
+                                    <h6 class="fw-bold"><i class="fas fa-lightbulb text-warning me-2"></i>Consejo de salud</h6>
+                                    <p class="small mb-0">Recuerde siempre consultar con un profesional de la salud antes de iniciar cualquier tratamiento o cambio en su régimen médico.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Cerrar
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                <i class="fas fa-share-alt me-2"></i>Compartir
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         @empty
             <div class="col-12 text-center py-5">
-                <h3>No hay artículos disponibles</h3>
-                <p>Vuelve pronto para leer nuestros nuevos artículos de salud.</p>
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <i class="fas fa-newspaper text-muted mb-3" style="font-size: 4rem;"></i>
+                    <h3 class="text-primary">No hay artículos disponibles</h3>
+                    <p class="lead">Estamos trabajando en nuevos contenidos para mantenerte informado.</p>
+                    <p>Vuelve pronto para leer nuestros artículos de salud.</p>
+                </div>
             </div>
         @endforelse
     </div>
+    
+    <!-- Sección de suscripción al boletín -->
+    <div class="row mt-5 mb-4">
+        <div class="col-12">
+            <div class="bg-primary text-white p-4 rounded-lg shadow-sm">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 mb-3 mb-lg-0">
+                        <h4 class="fw-bold"><i class="fas fa-envelope-open-text me-2"></i>Suscríbete a nuestro boletín</h4>
+                        <p class="mb-0">Recibe los últimos artículos y consejos de salud directamente en tu correo.</p>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Tu correo electrónico" aria-label="Tu correo electrónico">
+                            <button class="btn btn-light text-primary fw-bold" type="button">Suscribirse</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección de categorías de salud -->
+    <div class="row mt-5">
+        <div class="col-12 mb-4">
+            <div class="bg-white p-3 rounded-lg shadow-sm">
+                <h5 class="text-center"><i class="fas fa-th-list me-2 text-primary"></i>Categorías de Salud</h5>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-0 shadow-sm category-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-heart text-danger"></i>
+                    </div>
+                    <h5 class="card-title">Salud Cardiovascular</h5>
+                    <p class="card-text small text-muted">Consejos para mantener un corazón saludable.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-0 shadow-sm category-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-brain text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Salud Mental</h5>
+                    <p class="card-text small text-muted">Bienestar emocional y psicológico.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-0 shadow-sm category-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-apple-alt text-success"></i>
+                    </div>
+                    <h5 class="card-title">Nutrición</h5>
+                    <p class="card-text small text-muted">Alimentación saludable y equilibrada.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-0 shadow-sm category-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-running text-warning"></i>
+                    </div>
+                    <h5 class="card-title">Ejercicio</h5>
+                    <p class="card-text small text-muted">Actividad física para una vida saludable.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section('extra_css')
+<style>
+    /* Estilos adicionales para la página de blog */
+    .category-card {
+        transition: all 0.3s ease;
+        border-radius: 0.5rem;
+    }
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .category-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: var(--medical-light-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 1.5rem;
+    }
+    .blog-content {
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+</style>
+@endsection
+
 @endsection

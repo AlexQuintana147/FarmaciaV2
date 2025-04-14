@@ -10,6 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,56 +19,132 @@
 
     <!-- Custom Styles -->
     <style>
-        body {
-            font-family: 'instrument-sans', sans-serif;
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #5cb85c;
+            --accent-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --medical-blue: #4a89dc;
+            --medical-green: #37bc9b;
+            --medical-light-blue: #e8f4fd;
         }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafc;
+        }
+        /* Header Styles */
         .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            box-shadow: 0 2px 15px rgba(0,0,0,.08);
             transition: all 0.3s ease;
+            background-color: white !important;
+            padding: 0.8rem 1rem;
         }
         .navbar-brand {
-            font-weight: 600;
-            color: #0d6efd;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
+            font-weight: 700;
+            color: var(--medical-blue);
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand i {
+            color: var(--medical-green);
+            margin-right: 8px;
+            font-size: 1.8rem;
         }
         .navbar-brand:hover {
-            color: #0a58ca;
+            color: var(--primary-color);
+            transform: translateY(-2px);
         }
         .nav-link {
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: color 0.3s ease;
+            padding: 0.7rem 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            color: var(--dark-color);
         }
         .nav-link:hover {
-            color: #0d6efd;
+            color: var(--medical-blue);
         }
         .nav-link.active {
-            color: #0d6efd;
+            color: var(--medical-blue);
             font-weight: 600;
         }
-        .hero-section {
-            background-color: #f8f9fa;
-            padding: 5rem 0;
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--medical-blue);
+            border-radius: 5px;
         }
+        .hero-section {
+            background-color: var(--medical-light-blue);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Floating medical elements */
+        .floating-icon {
+            position: absolute;
+            opacity: 0.15;
+            font-size: 2.5rem;
+            color: var(--medical-blue);
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        /* Footer Styles */
         .footer {
-            background-color: #1a1e21;
+            background: linear-gradient(135deg, #2b3c5a 0%, #374f77 100%);
             color: #f8f9fa;
-            padding: 3rem 0;
+            padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
         }
         .footer h5 {
             color: #ffffff;
             font-weight: 600;
             margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--medical-green);
+            border-radius: 3px;
         }
         .footer a {
             color: #f8f9fa;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
         .footer a:hover {
-            color: #0d6efd;
-            text-decoration: none;
+            color: var(--medical-green);
+            transform: translateX(5px);
         }
         .footer address p {
             margin-bottom: 0.5rem;
@@ -77,32 +154,44 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             background-color: rgba(255,255,255,0.1);
             border-radius: 50%;
+            margin-right: 10px;
             transition: all 0.3s ease;
         }
         .social-links a:hover {
-            background-color: #0d6efd;
+            background-color: var(--medical-green);
             color: #ffffff;
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .footer-links li {
             margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .footer-links li:hover {
+            transform: translateX(5px);
         }
         .footer-links a i {
             font-size: 0.75rem;
+            color: var(--medical-green);
         }
         .footer-contact li {
             display: flex;
             align-items: start;
+            margin-bottom: 1rem;
         }
         .footer-contact li i {
             margin-top: 0.25rem;
+            margin-right: 10px;
+            color: var(--medical-green);
+            font-size: 1.1rem;
         }
         .footer hr {
             opacity: 0.1;
+            margin: 2rem 0;
         }
         /* Estilos de paginación */
         .pagination {
@@ -148,33 +237,47 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">DrodiPharma</a>
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    <i class="fas fa-mortar-pestle"></i> DrodiPharma
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Inicio</a>
+                            <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+                                <i class="fas fa-home me-1"></i> Inicio
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('productos*') ? 'active' : '' }}" href="{{ url('/productos') }}">Productos</a>
+                            <a class="nav-link {{ request()->is('productos*') ? 'active' : '' }}" href="{{ url('/productos') }}">
+                                <i class="fas fa-pills me-1"></i> Productos
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('blog*') ? 'active' : '' }}" href="{{ url('/blog') }}">Blog</a>
+                            <a class="nav-link {{ request()->is('blog*') ? 'active' : '' }}" href="{{ url('/blog') }}">
+                                <i class="fas fa-book-medical me-1"></i> Blog
+                            </a>
                         </li>
                     </ul>
                     <div class="d-flex">
                         @if (Auth::guard('trabajador')->check())
-                            <a href="{{ route('dashboard') }}" class="btn btn-outline-primary me-2">Dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="btn btn-primary me-2">
+                                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                            </a>
                             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                 @csrf
-                                <button type="submit" class="btn btn-outline-danger">Cerrar Sesión</button>
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                                </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-outline-primary">Iniciar Sesión</a>
+                            <a href="{{ route('login') }}" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -187,14 +290,22 @@
     </main>
 
     <footer class="footer mt-5">
+        <!-- Elementos decorativos médicos flotantes -->
+        <div class="floating-icon" style="top: 15%; left: 10%;"><i class="fas fa-capsules"></i></div>
+        <div class="floating-icon" style="top: 25%; right: 15%;"><i class="fas fa-prescription-bottle-alt"></i></div>
+        <div class="floating-icon" style="bottom: 20%; left: 20%;"><i class="fas fa-heartbeat"></i></div>
+        <div class="floating-icon" style="bottom: 30%; right: 10%;"><i class="fas fa-first-aid"></i></div>
+        
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6">
-                    <h5>DrodiPharma</h5>
-                    <p class="mb-4">Comprometidos con tu salud y bienestar desde 2023. Ofrecemos productos farmacéuticos de la más alta calidad.</p>
+                    <h5><i class="fas fa-mortar-pestle me-2"></i>DrodiPharma</h5>
+                    <p class="mb-4">Comprometidos con tu salud y bienestar desde 2023. Ofrecemos productos farmacéuticos de la más alta calidad con atención personalizada.</p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/drodipharm/" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://www.instagram.com/drodipharma/" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -202,9 +313,10 @@
                     <ul class="list-unstyled footer-links">
                         <li><a href="{{ url('/') }}"><i class="fas fa-chevron-right me-2"></i>Inicio</a></li>
                         <li><a href="{{ url('/productos') }}"><i class="fas fa-chevron-right me-2"></i>Productos</a></li>
-                        <li><a href="{{ url('/blog') }}"><i class="fas fa-chevron-right me-2"></i>Blog</a></li>
+                        <li><a href="{{ url('/blog') }}"><i class="fas fa-chevron-right me-2"></i>Blog de Salud</a></li>
                         <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Nosotros</a></li>
                         <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Contacto</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Servicios</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -212,37 +324,45 @@
                     <ul class="list-unstyled footer-contact">
                         <li class="mb-3">
                             <i class="fas fa-map-marker-alt me-2"></i>
-                            <a href="https://maps.google.com/?q=Cal.+San+Pablo+Nro.+339,+San+Andres+Et.+3,+Trujillo,+Peru" target="_blank" class="text-white text-decoration-none" style="border-bottom: 1px dotted rgba(255,255,255,0.5);">
-                                Cal. San Pablo Nro. 339, San Andres Et. 3
-                            </a>
+                            <div>
+                                <a href="https://maps.google.com/?q=Cal.+San+Pablo+Nro.+339,+San+Andres+Et.+3,+Trujillo,+Peru" target="_blank" class="text-white text-decoration-none" style="border-bottom: 1px dotted rgba(255,255,255,0.5);">
+                                    Cal. San Pablo Nro. 339, San Andres Et. 3, Trujillo
+                                </a>
+                            </div>
                         </li>
                         <li class="mb-3">
                             <i class="fas fa-envelope me-2"></i>
-                            contacto@drodipharma.com.pe
+                            <div>
+                                <a href="mailto:contacto@drodipharma.com.pe" class="text-white">contacto@drodipharma.com.pe</a>
+                            </div>
                         </li>
                         <li class="mb-3">
                             <i class="fas fa-phone me-2"></i>
-                            +51 967 692 437
+                            <div>
+                                <a href="tel:+51967692437" class="text-white">+51 967 692 437</a>
+                            </div>
                         </li>
                         <li class="mb-3">
                             <i class="fas fa-clock me-2"></i>
-                            Lun - Sáb: 8:00 AM - 8:00 PM
+                            <div>Lun - Sáb: 8:00 AM - 8:00 PM</div>
                         </li>
                         <li class="mb-3"> 
                             <i class="fas fa-clock me-2"></i>
-                            Dom: 8:00 AM - 12:00 PM
+                            <div>Dom: 8:00 AM - 12:00 PM</div>
                         </li>
                     </ul>
                 </div>
             </div>
+            
             <hr class="mt-4 mb-3 border-light">
+            
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start">
                     <p class="mb-md-0">&copy; {{ date('Y') }} DrodiPharma. Todos los derechos reservados.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-muted me-3">Términos y Condiciones</a>
-                    <a href="#" class="text-muted">Política de Privacidad</a>
+                    <a href="#" class="text-white-50 me-3">Términos y Condiciones</a>
+                    <a href="#" class="text-white-50">Política de Privacidad</a>
                 </div>
             </div>
         </div>
