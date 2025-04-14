@@ -21,18 +21,88 @@
         body {
             font-family: 'instrument-sans', sans-serif;
         }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            transition: all 0.3s ease;
+        }
         .navbar-brand {
             font-weight: 600;
             color: #0d6efd;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .navbar-brand:hover {
+            color: #0a58ca;
+        }
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #0d6efd;
+        }
+        .nav-link.active {
+            color: #0d6efd;
+            font-weight: 600;
         }
         .hero-section {
             background-color: #f8f9fa;
             padding: 5rem 0;
         }
         .footer {
-            background-color: #212529;
-            color: white;
-            padding: 2rem 0;
+            background-color: #1a1e21;
+            color: #f8f9fa;
+            padding: 3rem 0;
+        }
+        .footer h5 {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .footer a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+        .footer address p {
+            margin-bottom: 0.5rem;
+            font-style: normal;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            background-color: #0d6efd;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        .footer-links a i {
+            font-size: 0.75rem;
+        }
+        .footer-contact li {
+            display: flex;
+            align-items: start;
+        }
+        .footer-contact li i {
+            margin-top: 0.25rem;
+        }
+        .footer hr {
+            opacity: 0.1;
         }
         /* Estilos de paginación */
         .pagination {
@@ -45,10 +115,11 @@
             color: #0d6efd;
             background-color: #fff;
             border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
         }
         .page-link:hover {
             background-color: #e9ecef;
-            border-color: #dee2e6;
+            border-color: #0d6efd;
             color: #0a58ca;
         }
         .page-item.active .page-link {
@@ -111,30 +182,59 @@
 
     <footer class="footer mt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6">
                     <h5>DrodiPharma</h5>
-                    <p>Comprometidos con tu salud y bienestar desde 1995.</p>
+                    <p class="mb-4">Comprometidos con tu salud y bienestar desde 2023. Ofrecemos productos farmacéuticos de la más alta calidad.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/drodipharm/" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/drodipharma/" class="me-3" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-6">
                     <h5>Enlaces Rápidos</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url('/') }}" class="text-white">Inicio</a></li>
-                        <li><a href="{{ url('/productos') }}" class="text-white">Productos</a></li>
-                        <li><a href="{{ url('/blog') }}" class="text-white">Blog</a></li>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="{{ url('/') }}"><i class="fas fa-chevron-right me-2"></i>Inicio</a></li>
+                        <li><a href="{{ url('/productos') }}"><i class="fas fa-chevron-right me-2"></i>Productos</a></li>
+                        <li><a href="{{ url('/blog') }}"><i class="fas fa-chevron-right me-2"></i>Blog</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Nosotros</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Contacto</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4">
-                    <h5>Contacto</h5>
-                    <address>
-                        <p>Av. Principal 123<br>Lima, Perú</p>
-                        <p>Email: info@drodipharma.com<br>Teléfono: (01) 123-4567</p>
-                    </address>
+                <div class="col-lg-4 col-md-6">
+                    <h5>Información de Contacto</h5>
+                    <ul class="list-unstyled footer-contact">
+                        <li class="mb-3">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Cal. San Pablo Nro. 339, San Andres Et. 3
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-envelope me-2"></i>
+                            contacto@drodipharma.com.pe
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone me-2"></i>
+                            +51 967 692 437
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-clock me-2"></i>
+                            Lun - Sáb: 8:00 AM - 8:00 PM
+                        </li>
+                        <li class="mb-3"> 
+                            <i class="fas fa-clock me-2"></i>
+                            Dom: 8:00 AM - 12:00 PM
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <p class="mb-0">&copy; {{ date('Y') }} DrodiPharma. Todos los derechos reservados.</p>
+            <hr class="mt-4 mb-3 border-light">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-md-0">&copy; {{ date('Y') }} DrodiPharma. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-muted me-3">Términos y Condiciones</a>
+                    <a href="#" class="text-muted">Política de Privacidad</a>
                 </div>
             </div>
         </div>
