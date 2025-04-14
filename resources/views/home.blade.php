@@ -3,6 +3,277 @@
 @section('title', 'Inicio')
 
 @section('content')
+
+<style>
+
+    /* Estilos generales mejorados */
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+    }
+    
+    .offers-container {
+        background: linear-gradient(135deg, #f0f8ff, #ffffff);
+        border-radius: 15px;
+        padding: 40px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .offer-card {
+        border: none;
+        transition: all 0.3s ease;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .offer-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .offer-card .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+
+    .offer-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(13, 110, 253, 0.7);
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .carousel:hover .carousel-control-prev,
+    .carousel:hover .carousel-control-next {
+        opacity: 1;
+    }
+
+    .carousel-indicators {
+        bottom: -50px;
+    }
+
+    .carousel-indicators button {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #0d6efd;
+        opacity: 0.5;
+    }
+
+    .carousel-indicators button.active {
+        opacity: 1;
+    }
+
+    .floating-elements .floating-icon {
+        position: absolute;
+        font-size: 3rem;
+        color: rgba(13, 110, 253, 0.1);
+        animation: float 6s ease-in-out infinite;
+    }
+    /* Estilos para la sección hero */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .hero-content {
+        border-left: 5px solid #0d6efd;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .hero-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    /* Iconos flotantes animados */
+    .medical-icons-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    
+    .floating-icon {
+        position: absolute;
+        font-size: 2rem;
+        color: rgba(255,255,255,0.5);
+        animation: float 6s ease-in-out infinite;
+        z-index: 1;
+    }
+    
+    .floating-icon:nth-child(2) {
+        animation-delay: 1s;
+    }
+    
+    .floating-icon:nth-child(3) {
+        animation-delay: 2s;
+    }
+    
+    .floating-icon:nth-child(4) {
+        animation-delay: 3s;
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+        100% { transform: translateY(0) rotate(0deg); }
+    }
+    
+    /* Estilos para la sección de consulta */
+    .consultation-section {
+        position: relative;
+        box-shadow: inset 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .icon-animate {
+        animation: pulse 4s ease-in-out infinite;
+    }
+    
+    .icon-animate:nth-child(2) {
+        animation-delay: 1s;
+    }
+    
+    .icon-animate:nth-child(3) {
+        animation-delay: 2s;
+    }
+    
+    .icon-animate:nth-child(4) {
+        animation-delay: 3s;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.2; }
+        50% { transform: scale(1.1); opacity: 0.3; }
+        100% { transform: scale(1); opacity: 0.2; }
+    }
+    
+    /* Estilos para botón de WhatsApp */
+    .btn-whatsapp {
+        background-color: #25D366;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-whatsapp:hover {
+        background-color: #128C7E;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+    }
+    
+    /* Estilos para las tarjetas */
+    .hover-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        border-top: 5px solid transparent;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-15px);
+        border-top: 5px solid #0d6efd;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1)!important;
+    }
+    
+    .icon-wrapper {
+        width: 90px;
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.2) 100%);
+    }
+    
+    .hover-card:hover .icon-wrapper {
+        transform: rotateY(180deg);
+    }
+    
+    /* Estilos para el patrón de onda */
+    .wave-pattern {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        line-height: 0;
+        pointer-events: none;
+    }
+    
+    .wave-svg {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 200px;
+    }
+    
+    /* Estilos para la sección de blog */
+    .blog-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .blog-section::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(13, 110, 253, 0.05);
+        z-index: 0;
+    }
+    
+    .blog-section::after {
+        content: '';
+        position: absolute;
+        bottom: -70px;
+        left: -70px;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: rgba(13, 110, 253, 0.05);
+        z-index: 0;
+    }
+    
+    .blog-img {
+        transition: all 0.5s ease;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .blog-img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    </style>
+
+
 <div class="hero-section position-relative" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('{{ asset('images/bannerInicio.jpg') }}') no-repeat center center; background-size: cover; min-height: 600px;">
     <!-- Animated Medical Icons Overlay -->
     <div class="medical-icons-overlay">
@@ -55,208 +326,13 @@
                 <a href="https://api.whatsapp.com/send/?phone=51967692437&text=¡Hola! Me interesa conocer más sobre sus productos farmacéuticos.%0A%0AMe gustaría recibir información sobre:%0APrecios,%0ADisponibilidad%0AY Ofertas especiales%0A%0A¡Gracias por su atención!" target="_blank" class="btn btn-whatsapp btn-lg shadow-lg">
                     <i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp
                 </a>
+                <a href="https://heyzine.com/flip-book/fd9fcc5d58.html" target="_blank" class="btn btn-whatsapp btn-lg shadow-lg" style="background-color: #FFD700; color: #000;">
+                    <i class="fas fa-book me-2"></i>¡REVISA NUESTRO CATÁLOGO ONLINE!
+                </a>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-/* Estilos generales mejorados */
-body {
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-}
-
-/* Estilos para la sección hero */
-.hero-section {
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.hero-content {
-    border-left: 5px solid #0d6efd;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.hero-content:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-}
-
-/* Iconos flotantes animados */
-.medical-icons-overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.floating-icon {
-    position: absolute;
-    font-size: 2rem;
-    color: rgba(255,255,255,0.5);
-    animation: float 6s ease-in-out infinite;
-    z-index: 1;
-}
-
-.floating-icon:nth-child(2) {
-    animation-delay: 1s;
-}
-
-.floating-icon:nth-child(3) {
-    animation-delay: 2s;
-}
-
-.floating-icon:nth-child(4) {
-    animation-delay: 3s;
-}
-
-@keyframes float {
-    0% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(5deg); }
-    100% { transform: translateY(0) rotate(0deg); }
-}
-
-/* Estilos para la sección de consulta */
-.consultation-section {
-    position: relative;
-    box-shadow: inset 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.icon-animate {
-    animation: pulse 4s ease-in-out infinite;
-}
-
-.icon-animate:nth-child(2) {
-    animation-delay: 1s;
-}
-
-.icon-animate:nth-child(3) {
-    animation-delay: 2s;
-}
-
-.icon-animate:nth-child(4) {
-    animation-delay: 3s;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 0.2; }
-    50% { transform: scale(1.1); opacity: 0.3; }
-    100% { transform: scale(1); opacity: 0.2; }
-}
-
-/* Estilos para botón de WhatsApp */
-.btn-whatsapp {
-    background-color: #25D366;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-}
-
-.btn-whatsapp:hover {
-    background-color: #128C7E;
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-}
-
-/* Estilos para las tarjetas */
-.hover-card {
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    border-top: 5px solid transparent;
-}
-
-.hover-card:hover {
-    transform: translateY(-15px);
-    border-top: 5px solid #0d6efd;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1)!important;
-}
-
-.icon-wrapper {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    transition: all 0.3s ease;
-    background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.2) 100%);
-}
-
-.hover-card:hover .icon-wrapper {
-    transform: rotateY(180deg);
-}
-
-/* Estilos para el patrón de onda */
-.wave-pattern {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    line-height: 0;
-    pointer-events: none;
-}
-
-.wave-svg {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 200px;
-}
-
-/* Estilos para la sección de blog */
-.blog-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.blog-section::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: rgba(13, 110, 253, 0.05);
-    z-index: 0;
-}
-
-.blog-section::after {
-    content: '';
-    position: absolute;
-    bottom: -70px;
-    left: -70px;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: rgba(13, 110, 253, 0.05);
-    z-index: 0;
-}
-
-.blog-img {
-    transition: all 0.5s ease;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.blog-img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-</style>
 
 <div class="features-section py-5 my-5">
     <div class="container">
@@ -306,6 +382,290 @@ body {
             </div>
         </div>
     </div>
+</div>
+</div>
+
+<div class="offers-container position-relative overflow-hidden">
+    <!-- Elementos decorativos flotantes -->
+    <div class="floating-elements">
+        <i class="fas fa-capsules floating-icon" style="top: 10%; left: 5%;"></i>
+        <i class="fas fa-pills floating-icon" style="top: 30%; right: 8%;"></i>
+        <i class="fas fa-prescription-bottle-alt floating-icon" style="bottom: 15%; left: 10%;"></i>
+    </div>
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Ofertas Especiales</span>
+            <h2 class="fw-bold text-primary mb-3">Últimas Ofertas del Mes</h2>
+            <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
+            <p class="lead mb-4 text-muted">¡Descubre nuestras increíbles ofertas y promociones especiales!</p>
+        </div>
+
+        <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="1"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 offer-card">
+                                <div class="position-relative">
+                                    <img src="{{ asset('images/NoImage.png') }}" class="card-img-top" alt="Oferta 1">
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-3">-25%</span>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Producto en Oferta 1</h5>
+                                    <p class="text-muted mb-2"><s>S/. 100.00</s></p>
+                                    <p class="text-primary fw-bold fs-4 mb-3">S/. 75.00</p>
+                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 offer-card">
+                                <div class="position-relative">
+                                    <img src="{{ asset('images/NoImage.png') }}" class="card-img-top" alt="Oferta 2">
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-3">-30%</span>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Producto en Oferta 2</h5>
+                                    <p class="text-muted mb-2"><s>S/. 80.00</s></p>
+                                    <p class="text-primary fw-bold fs-4 mb-3">S/. 56.00</p>
+                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 offer-card">
+                                <div class="position-relative">
+                                    <img src="{{ asset('images/NoImage.png') }}" class="card-img-top" alt="Oferta 3">
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-3">-20%</span>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Producto en Oferta 3</h5>
+                                    <p class="text-muted mb-2"><s>S/. 120.00</s></p>
+                                    <p class="text-primary fw-bold fs-4 mb-3">S/. 96.00</p>
+                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 offer-card">
+                                <div class="position-relative">
+                                    <img src="{{ asset('images/NoImage.png') }}" class="card-img-top" alt="Oferta 4">
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-3">-15%</span>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Producto en Oferta 4</h5>
+                                    <p class="text-muted mb-2"><s>S/. 90.00</s></p>
+                                    <p class="text-primary fw-bold fs-4 mb-3">S/. 76.50</p>
+                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 offer-card">
+                                <div class="position-relative">
+                                    <img src="{{ asset('images/NoImage.png') }}" class="card-img-top" alt="Oferta 5">
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-3">-40%</span>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Producto en Oferta 5</h5>
+                                    <p class="text-muted mb-2"><s>S/. 150.00</s></p>
+                                    <p class="text-primary fw-bold fs-4 mb-3">S/. 90.00</p>
+                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 offer-card">
+                                <div class="position-relative">
+                                    <img src="{{ asset('images/NoImage.png') }}" class="card-img-top" alt="Oferta 6">
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-3">-35%</span>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Producto en Oferta 6</h5>
+                                    <p class="text-muted mb-2"><s>S/. 200.00</s></p>
+                                    <p class="text-primary fw-bold fs-4 mb-3">S/. 130.00</p>
+                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="partners-section py-5 position-relative overflow-hidden">
+    <div class="container py-4">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-lg-8 mb-5">
+                <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Marcas</span>
+                <h2 class="fw-bold text-primary mb-3">Nuestros Colaboradores</h2>
+                <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
+                <p class="lead mb-4">Trabajamos con las mejores marcas del mercado para ofrecerte productos de alta calidad. Nuestros colaboradores son seleccionados cuidadosamente para asegurar que cumplan con nuestros estándares de excelencia y confianza.</p>
+            </div>
+        </div>
+
+        <div class="partners-carousel">
+            <div class="row g-4">
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/1.png') }}" alt="Colaborador 1" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/2.png') }}" alt="Colaborador 2" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/3.png') }}" alt="Colaborador 3" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/4.png') }}" alt="Colaborador 4" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/5.png') }}" alt="Colaborador 5" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/6.png') }}" alt="Colaborador 6" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/7.png') }}" alt="Colaborador 7" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/8.png') }}" alt="Colaborador 8" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/9.png') }}" alt="Colaborador 9" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/10.png') }}" alt="Colaborador 10" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/11.png') }}" alt="Colaborador 11" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/12.png') }}" alt="Colaborador 12" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/13.png') }}" alt="Colaborador 13" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/14.png') }}" alt="Colaborador 14" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/15.png') }}" alt="Colaborador 15" class="img-fluid partner-logo">
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="partner-card">
+                        <img src="{{ asset('imagesColaboradores/16.png') }}" alt="Colaborador 16" class="img-fluid partner-logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .partners-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+        }
+
+        .partners-section::before,
+        .partners-section::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(13, 110, 253, 0.05);
+            z-index: 0;
+        }
+
+        .partners-section::before {
+            top: -50px;
+            right: -50px;
+        }
+
+        .partners-section::after {
+            bottom: -70px;
+            left: -70px;
+        }
+
+        .partner-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .partner-logo {
+            max-height: 100px;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+
+        .partner-card:hover .partner-logo {
+            transform: scale(1.1);
+        }
+    </style>
 </div>
 </div>
 
