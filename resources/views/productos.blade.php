@@ -27,11 +27,34 @@
         @forelse($productos as $producto)
             <div class="col-md-4 mb-4 producto-item" data-categoria="{{ $producto->categoria }}">
                 <div class="card h-100 shadow-sm">
-                    @if($producto->imagen)
-                        <img src="{{ asset('imagesProductos/' . $producto->imagen) }}" class="card-img-top" alt="{{ $producto->titulo }}">
-                    @else
-                        <img src="https://placehold.co/400x300/0d6efd/white?text=Producto" class="card-img-top" alt="{{ $producto->titulo }}">
-                    @endif
+                    <style>
+                        .card-img-container {
+                            position: relative;
+                            padding-top: 75%; /* Relación de aspecto 4:3 */
+                            overflow: hidden;
+                        }
+                        .card-img-container img {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain;
+                            background-color: #f8f9fa;
+                        }
+                        .modal-img-container {
+                            background-color: #f8f9fa;
+                            border-radius: 0.25rem;
+                            padding: 1rem;
+                        }
+                    </style>
+                    @php
+                        $imagePath = $producto->imagen ? asset($producto->imagen) : asset('images/NoImage.png');
+                    @endphp
+                    <div class="card-img-container">
+                        <img src="{{ $imagePath }}" class="card-img-top" alt="{{ $producto->titulo }}">
+                    </div>
+
                     <div class="card-body">
                         <h5 class="card-title">{{ $producto->titulo }}</h5>
                         <p class="badge bg-primary">{{ $producto->categoria }}</p>
@@ -56,11 +79,10 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    @if($producto->imagen)
-                                        <img src="{{ asset('imagesProductos/' . $producto->imagen) }}" class="img-fluid rounded" alt="{{ $producto->titulo }}">
-                                    @else
-                                        <img src="https://placehold.co/600x400/0d6efd/white?text=Producto" class="img-fluid rounded" alt="{{ $producto->titulo }}">
-                                    @endif
+                                    @php
+                                        $modalImagePath = $producto->imagen ? asset($producto->imagen) : asset('images/NoImage.png');
+                                    @endphp
+                                    <img src="{{ $modalImagePath }}" class="img-fluid rounded" alt="{{ $producto->titulo }}" style="width: 100%; height: auto; max-height: 500px; object-fit: contain;">
                                 </div>
                                 <div class="col-md-6">
                                     <h4>{{ $producto->titulo }}</h4>

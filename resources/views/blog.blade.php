@@ -18,7 +18,7 @@
                     <div class="row g-0">
                         <div class="col-md-4">
                             @if($blog->imagen)
-                                <img src="{{ asset('imagesBlog/' . $blog->imagen) }}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
+                                <img src="{{ asset($blog->imagen) }}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
                             @else
                                 <img src="https://placehold.co/300x400/6c757d/white?text=Blog" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ $blog->titulo }}">
                             @endif
@@ -59,7 +59,7 @@
                                 </p>
                             </div>
                             @if($blog->imagen)
-                                <img src="{{ asset('imagesBlog/' . $blog->imagen) }}" class="img-fluid rounded mb-3" alt="{{ $blog->titulo }}">
+                                <img src="{{ asset($blog->imagen) }}" class="img-fluid rounded mb-3" alt="{{ $blog->titulo }}">
                             @endif
                             <div>
                                 {!! nl2br(e($blog->contenido)) !!}

@@ -60,7 +60,7 @@ class ProductoController extends Controller
             $imagen = $request->file('imagen');
             $nombreImagen = time() . '_' . Str::slug($request->titulo) . '.' . $imagen->getClientOriginalExtension();
             $imagen->move(public_path('imagesProductos'), $nombreImagen);
-            $data['imagen'] = 'imagesProductos/' . $nombreImagen;
+            $data['imagen'] = $nombreImagen;
         }
 
         Producto::create($data);
@@ -110,7 +110,7 @@ class ProductoController extends Controller
             $imagen = $request->file('imagen');
             $nombreImagen = time() . '_' . Str::slug($request->titulo) . '.' . $imagen->getClientOriginalExtension();
             $imagen->move(public_path('imagesProductos'), $nombreImagen);
-            $data['imagen'] = 'imagesProductos/' . $nombreImagen;
+            $data['imagen'] = $nombreImagen;
         }
 
         $producto->update($data);
