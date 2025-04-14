@@ -135,34 +135,6 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end">
-                    <div class="d-flex align-items-center">
-                        <span class="me-2 text-muted"><i class="fas fa-filter me-1"></i>Filtrar por:</span>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-primary dropdown-toggle rounded-pill" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-tag me-1"></i> Categoría
-                            </button>
-                            <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="categoryDropdown">
-                                <li><a class="dropdown-item" href="#">
-                                    <i class="fas fa-book-medical text-primary me-2"></i>Salud
-                                </a></li>
-                                <li><a class="dropdown-item" href="#">
-                                    <i class="fas fa-pills text-success me-2"></i>Medicamentos
-                                </a></li>
-                                <li><a class="dropdown-item" href="#">
-                                    <i class="fas fa-heartbeat text-danger me-2"></i>Bienestar
-                                </a></li>
-                                <li><a class="dropdown-item" href="#">
-                                    <i class="fas fa-notes-medical text-info me-2"></i>Consejos
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">
-                                    <i class="fas fa-list-ul text-secondary me-2"></i>Todos los blogs
-                                </a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="card-body p-0">
@@ -172,7 +144,6 @@
                         <tr>
                             <th class="ps-4">ID</th>
                             <th>Blog</th>
-                            <th>Categoría</th>
                             <th>Autor</th>
                             <th>Fecha</th>
                             <th class="text-center">Acciones</th>
@@ -198,31 +169,6 @@
                                             <small class="text-muted">{{ Str::limit($blog->subtitulo, 50) }}</small>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    @php
-                                        // Asignar una categoría basada en el título o subtítulo para demostración
-                                        $categorias = ['Salud', 'Medicamentos', 'Bienestar', 'Consejos'];
-                                        $categoria = $categorias[array_rand($categorias)];
-                                        
-                                        $bgColor = 'primary';
-                                        $icon = 'book-medical';
-                                        
-                                        if($categoria == 'Medicamentos') {
-                                            $bgColor = 'success';
-                                            $icon = 'pills';
-                                        } elseif($categoria == 'Bienestar') {
-                                            $bgColor = 'danger';
-                                            $icon = 'heartbeat';
-                                        } elseif($categoria == 'Consejos') {
-                                            $bgColor = 'info';
-                                            $icon = 'notes-medical';
-                                        }
-                                    @endphp
-                                    <span class="category-badge bg-{{ $bgColor }}">
-                                        <i class="fas fa-{{ $icon }} me-1"></i>
-                                        {{ $categoria }}
-                                    </span>
                                 </td>
                                 <td>{{ $blog->trabajador->nombre_completo }}</td>
                                 <td><i class="far fa-calendar-alt me-1 text-muted"></i>{{ $blog->created_at->format('d/m/Y') }}</td>
