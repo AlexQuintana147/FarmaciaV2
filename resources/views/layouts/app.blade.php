@@ -206,7 +206,9 @@
                     <ul class="list-unstyled footer-contact">
                         <li class="mb-3">
                             <i class="fas fa-map-marker-alt me-2"></i>
-                            Cal. San Pablo Nro. 339, San Andres Et. 3
+                            <a href="https://maps.google.com/?q=Cal.+San+Pablo+Nro.+339,+San+Andres+Et.+3,+Trujillo,+Peru" target="_blank" class="text-white text-decoration-none" style="border-bottom: 1px dotted rgba(255,255,255,0.5);">
+                                Cal. San Pablo Nro. 339, San Andres Et. 3
+                            </a>
                         </li>
                         <li class="mb-3">
                             <i class="fas fa-envelope me-2"></i>

@@ -3,16 +3,15 @@
 @section('title', 'Inicio')
 
 @section('content')
-<div class="hero-section">
-    <div class="container">
-        <div class="row align-items-center">
+<div class="hero-section position-relative" style="background: url('{{ asset('images/bannerInicio.jpg') }}') no-repeat center center; background-size: cover; min-height: 500px;">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center min-vh-75">
             <div class="col-md-6">
-                <h1 class="display-4 fw-bold">Bienvenido a DrodiPharma</h1>
-                <p class="lead">Tu farmacia de confianza con los mejores productos para tu salud y bienestar.</p>
-                <a href="{{ url('/productos') }}" class="btn btn-primary btn-lg">Ver Productos</a>
-            </div>
-            <div class="col-md-6">
-                <img src="https://placehold.co/600x400/0d6efd/white?text=DrodiPharma" class="img-fluid rounded" alt="DrodiPharma">
+                <div class="text-white bg-dark bg-opacity-50 p-4 rounded">
+                    <h1 class="display-4 fw-bold">Bienvenido a DrodiPharma</h1>
+                    <p class="lead">Tu farmacia de confianza con los mejores productos para tu salud y bienestar.</p>
+                    <a href="{{ url('/productos') }}" class="btn btn-primary btn-lg">Ver Productos</a>
+                </div>
             </div>
         </div>
     </div>
