@@ -83,9 +83,9 @@
                 </div>
                 
                 <div class="d-flex justify-content-end gap-2 mt-4">
-                    <button type="reset" class="btn btn-outline-secondary px-4">
+                    <a href="{{ route('dashboard.productos') }}" class="btn btn-outline-secondary px-4">
                         <i class="fas fa-times me-2"></i>Cancelar
-                    </button>
+                    </a>
                     <button type="submit" class="btn btn-primary px-4">
                         <i class="fas fa-save me-2"></i>Guardar Producto
                     </button>
