@@ -542,46 +542,46 @@
 </div>
 
 <style>
-.colaboradores-section {
-    overflow: hidden;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-.colaboradores-carousel {
-    position: relative;
-    overflow: hidden;
-    padding: 20px 0;
-}
-
-.colaboradores-track {
-    display: flex;
-    animation: scroll 40s linear infinite;
-    width: calc(200px * 32); /* 16 imágenes * 2 para el loop */
-}
-
-.colaborador-item {
-    flex: 0 0 200px;
-    padding: 0 15px;
-    perspective: 1000px;
-}
-
-.colaborador-img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    animation: rotate 5s linear infinite;
-}
-
-@keyframes scroll {
-    0% {
-        transform: translateX(0);
+    .colaboradores-section {
+        overflow: hidden;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
-    100% {
-        transform: translateX(calc(-200px * 16)); /* Ancho de una serie completa */
+
+    .colaboradores-carousel {
+        position: relative;
+        overflow: hidden;
+        padding: 20px 0;
     }
-}
+
+    .colaboradores-track {
+        display: flex;
+        animation: scroll 40s linear infinite;
+        width: calc(200px * 32); /* 16 imágenes * 2 para el loop */
+    }
+
+    .colaborador-item {
+        flex: 0 0 200px;
+        padding: 0 15px;
+        perspective: 1000px;
+    }
+
+    .colaborador-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        animation: rotate 5s linear infinite;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-200px * 16)); /* Ancho de una serie completa */
+        }
+    }   
 
 </style>
 
@@ -601,6 +601,74 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="indecopi-section py-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <!-- SVG de fondo decorativo -->
+    <svg class="position-absolute" style="top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.1;" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path fill="#0d6efd" d="M0,0 L100,0 L100,100 L0,100 Z" />
+        <circle cx="20" cy="20" r="5" fill="#0d6efd" class="animate-float" />
+        <path d="M50,30 L60,40 L40,40 Z" fill="#0d6efd" class="animate-float" />
+        <rect x="70" y="60" width="10" height="10" fill="#0d6efd" class="animate-float" />
+        <path d="M80,20 C85,15 90,20 85,25 C80,30 75,25 80,20 Z" fill="#0d6efd" class="animate-float" />
+    </svg>
+    
+    <div class="container py-4 position-relative" style="z-index: 1;">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-7 mb-4 mb-md-0">
+                <div class="indecopi-content p-4 rounded-lg bg-white shadow-lg hover-lift">
+                    <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3 animate-badge">INDECOPI</span>
+                    <h2 class="fw-bold text-primary mb-3">INDECOPI VIRTUAL</h2>
+                    <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background: linear-gradient(90deg, #0d6efd, #0099ff);"></div>
+                    <p class="lead mb-4 text-dark">Protege tus derechos y fomenta Justicia</p>
+                    <p class="lead mb-4 fw-bold text-primary">Indecopi apoya a las Empresas</p>
+                    <a href="https://reclamovirtual.pe/ingresar" target="_blank" class="btn btn-primary btn-lg px-4 py-2 shadow-sm hover-scale">
+                        <i class="fas fa-shield-alt me-2"></i>Acceder a INDECOPI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .indecopi-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .indecopi-content {
+            transition: all 0.3s ease;
+            border-left: 5px solid #0d6efd;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .animate-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+    </style>
 </div>
 
 <!-- Agregar enlace a Font Awesome en la sección head -->
