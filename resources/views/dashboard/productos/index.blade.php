@@ -99,7 +99,7 @@
                 <p class="mb-0 opacity-75">Administra el catálogo de productos farmacéuticos de DrodiPharma.</p>
             </div>
             <div class="col-md-4 text-md-end">
-                <a href="{{ route('productos.create') }}" class="btn btn-light text-primary fw-bold">
+                <a href="{{ route('productos.create') }}" class="btn btn-light text-primary fw-bold rounded-pill">
                     <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
                 </a>
             </div>
@@ -197,31 +197,44 @@
                                         <a href="{{ route('productos.show', $producto) }}" class="btn btn-outline-primary action-btn" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('productos.edit', $producto) }}" class="btn btn-sm btn-outline-success" title="Editar producto">
+                                        <a href="{{ route('productos.edit', $producto) }}" class="btn btn-outline-success action-btn" title="Editar producto">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $producto->id }}" title="Eliminar producto">
-                                            <i class="fas fa-trash-alt"></i>
+                                        <button type="button" class="btn btn-outline-danger action-btn" title="Eliminar producto" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $producto->id }}">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
                                     
                                     <!-- Modal de confirmación para eliminar -->
                                     <div class="modal fade" id="deleteModal{{ $producto->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $producto->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $producto->id }}">Confirmar eliminación</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <div class="modal-content border-0 shadow">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $producto->id }}"><i class="fas fa-exclamation-triangle me-2"></i>Confirmar eliminación</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    ¿Estás seguro de que deseas eliminar el producto <strong>{{ $producto->titulo }}</strong>? Esta acción no se puede deshacer.
+                                                <div class="modal-body p-4">
+                                                    <div class="text-center mb-4">
+                                                        <div class="avatar-lg mx-auto mb-3">
+                                                            <div class="avatar-title bg-light text-danger rounded-circle">
+                                                                <i class="fas fa-trash-alt fa-2x"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5 class="mb-3">¿Eliminar este producto?</h5>
+                                                        <p class="text-muted mb-0">¿Estás seguro de que deseas eliminar el producto <strong>{{ $producto->titulo }}</strong>?</p>
+                                                        <p class="text-danger small">Esta acción no se puede deshacer.</p>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <div class="modal-footer border-top-0">
+                                                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">
+                                                        <i class="fas fa-times me-2"></i>Cancelar
+                                                    </button>
                                                     <form action="{{ route('productos.destroy', $producto) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                        <button type="submit" class="btn btn-danger rounded-pill px-4">
+                                                            <i class="fas fa-trash-alt me-2"></i>Eliminar
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -231,11 +244,18 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-4">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <i class="fas fa-box fa-3x text-muted mb-3"></i>
-                                        <h5>No hay productos disponibles</h5>
-                                        <p class="text-muted">Crea un nuevo producto para comenzar</p>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="d-flex flex-column align-items-center bg-light rounded-3 py-5 px-4">
+                                        <div class="avatar-lg mb-3">
+                                            <div class="avatar-title bg-white text-primary rounded-circle shadow-sm" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-pills fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h4 class="text-primary mb-2">No hay productos disponibles</h4>
+                                        <p class="text-muted mb-4">Aún no se han creado productos en el sistema</p>
+                                        <a href="{{ route('productos.create') }}" class="btn btn-primary rounded-pill px-4">
+                                            <i class="fas fa-plus-circle me-2"></i>Crear nuevo producto
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -244,7 +264,7 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer bg-white py-3">
+        <div class="card-footer bg-white py-3 d-flex justify-content-between align-items-center">
             <div class="text-muted small">Total de registros: {{ count($productos) }}</div>
         </div>
     </div>
