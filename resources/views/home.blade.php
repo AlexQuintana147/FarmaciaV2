@@ -385,6 +385,7 @@
 </div>
 </div>
 
+
 <div class="offers-container position-relative overflow-hidden">
     <!-- Elementos decorativos flotantes -->
     <div class="floating-elements">
@@ -514,160 +515,76 @@
     </div>
 </div>
 
-<div class="partners-section py-5 position-relative overflow-hidden">
-    <div class="container py-4">
-        <div class="row align-items-center justify-content-center text-center">
-            <div class="col-lg-8 mb-5">
-                <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Marcas</span>
-                <h2 class="fw-bold text-primary mb-3">Nuestros Colaboradores</h2>
-                <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
-                <p class="lead mb-4">Trabajamos con las mejores marcas del mercado para ofrecerte productos de alta calidad. Nuestros colaboradores son seleccionados cuidadosamente para asegurar que cumplan con nuestros estándares de excelencia y confianza.</p>
-            </div>
+<!-- Sección de Colaboradores -->
+<div class="colaboradores-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Nuestro Equipo</span>
+            <h2 class="fw-bold text-primary mb-3">Colaboradores</h2>
+            <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
         </div>
-
-        <div class="partners-carousel">
-            <div class="row g-4">
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/1.png') }}" alt="Colaborador 1" class="img-fluid partner-logo">
+        
+        <div class="colaboradores-carousel">
+            <div class="colaboradores-track">
+                @for($i = 1; $i <= 16; $i++)
+                    <div class="colaborador-item">
+                        <img src="{{ asset('imagesColaboradores/' . $i . '.png') }}" alt="Colaborador {{ $i }}" class="colaborador-img">
                     </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/2.png') }}" alt="Colaborador 2" class="img-fluid partner-logo">
+                @endfor
+                @for($i = 1; $i <= 16; $i++)
+                    <div class="colaborador-item">
+                        <img src="{{ asset('imagesColaboradores/' . $i . '.png') }}" alt="Colaborador {{ $i }}" class="colaborador-img">
                     </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/3.png') }}" alt="Colaborador 3" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/4.png') }}" alt="Colaborador 4" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/5.png') }}" alt="Colaborador 5" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/6.png') }}" alt="Colaborador 6" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/7.png') }}" alt="Colaborador 7" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/8.png') }}" alt="Colaborador 8" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/9.png') }}" alt="Colaborador 9" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/10.png') }}" alt="Colaborador 10" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/11.png') }}" alt="Colaborador 11" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/12.png') }}" alt="Colaborador 12" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/13.png') }}" alt="Colaborador 13" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/14.png') }}" alt="Colaborador 14" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/15.png') }}" alt="Colaborador 15" class="img-fluid partner-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="partner-card">
-                        <img src="{{ asset('imagesColaboradores/16.png') }}" alt="Colaborador 16" class="img-fluid partner-logo">
-                    </div>
-                </div>
+                @endfor
             </div>
         </div>
     </div>
-
-    <style>
-        .partners-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            position: relative;
-        }
-
-        .partners-section::before,
-        .partners-section::after {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(13, 110, 253, 0.05);
-            z-index: 0;
-        }
-
-        .partners-section::before {
-            top: -50px;
-            right: -50px;
-        }
-
-        .partners-section::after {
-            bottom: -70px;
-            left: -70px;
-        }
-
-        .partner-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .partner-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .partner-logo {
-            max-height: 100px;
-            object-fit: contain;
-            transition: all 0.3s ease;
-        }
-
-        .partner-card:hover .partner-logo {
-            transform: scale(1.1);
-        }
-    </style>
 </div>
-</div>
+
+<style>
+.colaboradores-section {
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.colaboradores-carousel {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+.colaboradores-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+    width: calc(200px * 32); /* 16 imágenes * 2 para el loop */
+}
+
+.colaborador-item {
+    flex: 0 0 200px;
+    padding: 0 15px;
+    perspective: 1000px;
+}
+
+.colaborador-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    animation: rotate 5s linear infinite;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-200px * 16)); /* Ancho de una serie completa */
+    }
+}
+
+</style>
+
 
 <div class="blog-section py-5">
     <div class="container py-4">
