@@ -2,9 +2,90 @@
 
 @section('content')
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestión de Blogs</h1>
-        <a href="{{ route('blogs.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Blog</a>
+    <style>
+        .blogs-header {
+            background: linear-gradient(135deg, #37bc9b, #4a89dc);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 3rem;
+            color: #fff;
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .search-box {
+            border-radius: 30px;
+            padding-left: 20px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .search-btn {
+            border-radius: 0 30px 30px 0;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .blog-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        .blog-author {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(74, 137, 220, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+    </style>
+    
+    <!-- Header de Blogs con estilo médico -->
+    <div class="blogs-header text-white mb-4">
+        <!-- Iconos flotantes decorativos -->
+        <div class="floating-icon" style="top: 10%; right: 10%;"><i class="fas fa-book-medical"></i></div>
+        <div class="floating-icon" style="bottom: 10%; left: 15%;"><i class="fas fa-notes-medical"></i></div>
+        
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bold mb-2">Gestión de Blogs</h1>
+                <p class="mb-0 opacity-75">Administra los artículos y consejos de salud de DrodiPharma.</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ route('blogs.create') }}" class="btn btn-light text-primary fw-bold">
+                    <i class="fas fa-plus-circle me-2"></i>Nuevo Blog
+                </a>
+            </div>
+        </div>
     </div>
     
     @if(session('success'))
