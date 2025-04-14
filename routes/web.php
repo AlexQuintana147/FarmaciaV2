@@ -37,7 +37,15 @@ Route::post('/logout', [TrabajadorAuthController::class, 'logout'])->name('logou
 // Rutas del dashboard protegidas por autenticación
 Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/blogs', [DashboardController::class, 'blogs'])->name('dashboard.blogs');
+    
+    // Rutas para blogs
+    Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');
+    Route::get('/dashboard/blogs/create', [App\Http\Controllers\BlogController::class, 'create'])->name('blogs.create');
+    Route::post('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'store'])->name('blogs.store');
+    Route::get('/dashboard/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'show'])->name('blogs.show');
+    Route::get('/dashboard/blogs/{blog}/edit', [App\Http\Controllers\BlogController::class, 'edit'])->name('blogs.edit');
+    Route::put('/dashboard/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'update'])->name('blogs.update');
+    Route::delete('/dashboard/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'destroy'])->name('blogs.destroy');
     
     // Rutas para productos
     Route::get('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('dashboard.productos');
