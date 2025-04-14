@@ -98,7 +98,7 @@
     <h4 class="dashboard-section-title">Resumen General</h4>
     <div class="row mb-4">
         <div class="col-md-4 mb-3">
-            <div class="card stats-card bg-gradient h-100" style="background: linear-gradient(135deg, #4a89dc, #5d9cec);">
+            <div class="card stats-card h-100" style="background: linear-gradient(135deg, #4a89dc, #37bc9b);">
                 <div class="card-body text-white">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -188,7 +188,7 @@
                                     <div class="ms-3 flex-grow-1">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1 fw-bold text-primary">{{ $blog->titulo }}</h6>
-                                            <small class="text-muted"><i class="far fa-clock me-1"></i>{{ $blog->created_at->diffForHumans() }}</small>
+                                            <small class="text-muted"><i class="far fa-clock me-1"></i>{{ $blog->created_at->diffForHumans(['parts' => 2, 'join' => ' y ', 'locale' => 'es']) }}</small>
                                         </div>
                                         <p class="mb-1 small text-muted">{{ Str::limit($blog->subtitulo, 80) }}</p>
                                         <small class="text-primary"><i class="fas fa-user-md me-1"></i>{{ $blog->trabajador->nombre_completo }}</small>
@@ -230,7 +230,7 @@
                                     <div class="ms-3 flex-grow-1">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1 fw-bold text-success">{{ $producto->titulo }}</h6>
-                                            <small class="text-muted"><i class="far fa-clock me-1"></i>{{ $producto->created_at->diffForHumans() }}</small>
+                                            <small class="text-muted"><i class="far fa-clock me-1"></i>{{ $producto->created_at->diffForHumans(['parts' => 2, 'join' => ' y ', 'locale' => 'es']) }}</small>
                                         </div>
                                         <p class="mb-1 small text-muted">{{ Str::limit($producto->descripcion, 80) }}</p>
                                         <small>
