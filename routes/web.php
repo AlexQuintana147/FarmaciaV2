@@ -58,6 +58,16 @@ Route::middleware(['auth:trabajador'])->group(function () {
     // Rutas para productos
     Route::get('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('dashboard.productos');
     Route::get('/dashboard/productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
+    
+    // Rutas para trabajadores
+    Route::get('/dashboard/trabajadores', [App\Http\Controllers\TrabajadorController::class, 'index'])->name('dashboard.trabajadores');
+    Route::get('/dashboard/trabajadores/create', [App\Http\Controllers\TrabajadorController::class, 'create'])->name('trabajadores.create');
+    Route::post('/dashboard/trabajadores', [App\Http\Controllers\TrabajadorController::class, 'store'])->name('trabajadores.store');
+    Route::get('/dashboard/trabajadores/{trabajador}', [App\Http\Controllers\TrabajadorController::class, 'show'])->name('trabajadores.show');
+    Route::get('/dashboard/trabajadores/{trabajador}/edit', [App\Http\Controllers\TrabajadorController::class, 'edit'])->name('trabajadores.edit');
+    Route::put('/dashboard/trabajadores/{trabajador}', [App\Http\Controllers\TrabajadorController::class, 'update'])->name('trabajadores.update');
+    Route::delete('/dashboard/trabajadores/{trabajador}', [App\Http\Controllers\TrabajadorController::class, 'destroy'])->name('trabajadores.destroy');
+    // Rutas para productos
     Route::post('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
     Route::get('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
     Route::get('/dashboard/productos/{producto}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');

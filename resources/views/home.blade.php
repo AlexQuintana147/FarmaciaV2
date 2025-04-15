@@ -616,7 +616,7 @@
     <div class="container py-4 position-relative" style="z-index: 1;">
         <div class="row align-items-center justify-content-center text-center">
             <div class="col-md-7 mb-4 mb-md-0">
-                <div class="indecopi-content p-4 rounded-lg bg-white shadow-lg hover-lift">
+                <div class="indecopi-content p-4 rounded-lg shadow-lg hover-lift" style="background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('{{ asset('images/indecopi.jpg') }}') no-repeat center center; background-size: cover; position: relative;">
                     <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3 animate-badge">INDECOPI</span>
                     <h2 class="fw-bold text-primary mb-3">INDECOPI VIRTUAL</h2>
                     <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background: linear-gradient(90deg, #0d6efd, #0099ff);"></div>
