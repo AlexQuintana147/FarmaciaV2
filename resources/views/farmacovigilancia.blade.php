@@ -8,7 +8,21 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <h1 class="display-4 fw-bold mb-4">Farmacovigilancia</h1>
-                <p class="lead mb-4">Trabajamos juntos para garantizar la seguridad de los medicamentos. Tu participación es fundamental para mejorar la calidad y seguridad de los productos farmacéuticos.</p>
+                <p class="lead mb-4">La farmacovigilancia es la ciencia y las actividades relacionadas con la detección, evaluación, comprensión y prevención de los efectos adversos de los medicamentos o cualquier otro problema relacionado con ellos.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Monitoreo continuo de la seguridad de los medicamentos
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Identificación temprana de reacciones adversas
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Evaluación de la relación beneficio-riesgo de los medicamentos
+                    </li>
+                </ul>
             </div>
             <div class="col-lg-6 text-center">
                 <img src="https://placehold.co/600x400/e8f4fd/4a89dc?text=Farmacovigilancia" alt="Farmacovigilancia" class="img-fluid rounded-3 shadow-lg">
@@ -25,22 +39,9 @@
                 <img src="https://placehold.co/600x400/4a89dc/white?text=Monitoreo" alt="Monitoreo de Medicamentos" class="img-fluid rounded-3 shadow">
             </div>
             <div class="col-lg-6">
-                <h2 class="mb-4">¿Qué es la Farmacovigilancia?</h2>
-                <p class="text-muted mb-4">La farmacovigilancia es la ciencia y las actividades relacionadas con la detección, evaluación, comprensión y prevención de los efectos adversos de los medicamentos o cualquier otro problema relacionado con ellos.</p>
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <i class="fas fa-check-circle text-primary me-2"></i>
-                        Monitoreo continuo de la seguridad de los medicamentos
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-check-circle text-primary me-2"></i>
-                        Identificación temprana de reacciones adversas
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-check-circle text-primary me-2"></i>
-                        Evaluación de la relación beneficio-riesgo de los medicamentos
-                    </li>
-                </ul>
+                <h2 class="mb-4">¿Qué es un evento adverso (EA)?</h2>
+                <p class="text-muted mb-4">Es cualquier suceso que puede presentarse durante el uso de un producto farmacéutico. También puede referirse a una condición médica indeseada (enfermedad, síntoma, signo o resultado anormal de laboratorio), pero no tiene necesariamente una relación causal con dicho uso. </p>
+                
             </div>
         </div>
     </div>
@@ -99,67 +100,5 @@
     </div>
 </section>
 
-<!-- Formulario de Reporte Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-body p-5">
-                        <h3 class="text-center mb-4">Formulario de Reporte de Reacciones Adversas</h3>
-                        <form>
-                            <div class="mb-4">
-                                <label class="form-label">Información del Paciente</label>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Nombre completo">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="number" class="form-control" placeholder="Edad">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label">Información del Medicamento</label>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Nombre del medicamento">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Laboratorio fabricante">
-                                    </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" placeholder="Dosis y frecuencia">
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="mb-4">
-                                <label class="form-label">Descripción de la Reacción Adversa</label>
-                                <textarea class="form-control" rows="4" placeholder="Describe los síntomas y cuando comenzaron"></textarea>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label">Información de Contacto</label>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <input type="email" class="form-control" placeholder="Correo electrónico">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="tel" class="form-control" placeholder="Teléfono">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary btn-lg px-5">Enviar Reporte</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 @endsection

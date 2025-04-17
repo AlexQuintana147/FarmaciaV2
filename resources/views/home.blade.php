@@ -3,388 +3,202 @@
 @section('title', 'Inicio')
 
 @section('content')
-
-<style>
-
-    /* Estilos generales mejorados */
-    body {
-        font-family: 'Poppins', sans-serif;
-        color: #333;
-    }
-    
-    .offers-container {
-        background: linear-gradient(135deg, #f0f8ff, #ffffff);
-        border-radius: 15px;
-        padding: 40px 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .offer-card {
-        border: none;
-        transition: all 0.3s ease;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .offer-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .offer-card .card-img-top {
-        height: 200px;
-        object-fit: cover;
-        transition: all 0.3s ease;
-    }
-
-    .offer-card:hover .card-img-top {
-        transform: scale(1.05);
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-        width: 40px;
-        height: 40px;
-        background-color: rgba(13, 110, 253, 0.7);
-        border-radius: 50%;
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: 0;
-        transition: all 0.3s ease;
-    }
-
-    .carousel:hover .carousel-control-prev,
-    .carousel:hover .carousel-control-next {
-        opacity: 1;
-    }
-
-    .carousel-indicators {
-        bottom: -50px;
-    }
-
-    .carousel-indicators button {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: #0d6efd;
-        opacity: 0.5;
-    }
-
-    .carousel-indicators button.active {
-        opacity: 1;
-    }
-
-    .floating-elements .floating-icon {
-        position: absolute;
-        font-size: 3rem;
-        color: rgba(13, 110, 253, 0.1);
-        animation: float 6s ease-in-out infinite;
-    }
-    /* Estilos para la sección hero */
-    .hero-section {
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    
-    .hero-content {
-        border-left: 5px solid #0d6efd;
-        transition: all 0.3s ease;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    
-    .hero-content:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-    }
-    
-    /* Iconos flotantes animados */
-    .medical-icons-overlay {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-    
-    .floating-icon {
-        position: absolute;
-        font-size: 2rem;
-        color: rgba(255,255,255,0.5);
-        animation: float 6s ease-in-out infinite;
-        z-index: 1;
-    }
-    
-    .floating-icon:nth-child(2) {
-        animation-delay: 1s;
-    }
-    
-    .floating-icon:nth-child(3) {
-        animation-delay: 2s;
-    }
-    
-    .floating-icon:nth-child(4) {
-        animation-delay: 3s;
-    }
-    
-    @keyframes float {
-        0% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-15px) rotate(5deg); }
-        100% { transform: translateY(0) rotate(0deg); }
-    }
-    
-    /* Estilos para la sección de consulta */
-    .consultation-section {
-        position: relative;
-        box-shadow: inset 0 5px 15px rgba(0,0,0,0.05);
-    }
-    
-    .icon-animate {
-        animation: pulse 4s ease-in-out infinite;
-    }
-    
-    .icon-animate:nth-child(2) {
-        animation-delay: 1s;
-    }
-    
-    .icon-animate:nth-child(3) {
-        animation-delay: 2s;
-    }
-    
-    .icon-animate:nth-child(4) {
-        animation-delay: 3s;
-    }
-    
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 0.2; }
-        50% { transform: scale(1.1); opacity: 0.3; }
-        100% { transform: scale(1); opacity: 0.2; }
-    }
-    
-    /* Estilos para botón de WhatsApp */
-    .btn-whatsapp {
-        background-color: #25D366;
-        color: white;
-        border: none;
-        padding: 15px 30px;
-        font-size: 1.2rem;
-        border-radius: 50px;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-whatsapp:hover {
-        background-color: #128C7E;
-        color: white;
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-    }
-    
-    /* Estilos para las tarjetas */
-    .hover-card {
-        border-radius: 15px;
-        overflow: hidden;
-        transition: all 0.4s ease;
-        border-top: 5px solid transparent;
-    }
-    
-    .hover-card:hover {
-        transform: translateY(-15px);
-        border-top: 5px solid #0d6efd;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1)!important;
-    }
-    
-    .icon-wrapper {
-        width: 90px;
-        height: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.2) 100%);
-    }
-    
-    .hover-card:hover .icon-wrapper {
-        transform: rotateY(180deg);
-    }
-    
-    /* Estilos para el patrón de onda */
-    .wave-pattern {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        line-height: 0;
-        pointer-events: none;
-    }
-    
-    .wave-svg {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 200px;
-    }
-    
-    /* Estilos para la sección de blog */
-    .blog-section {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .blog-section::before {
-        content: '';
-        position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: rgba(13, 110, 253, 0.05);
-        z-index: 0;
-    }
-    
-    .blog-section::after {
-        content: '';
-        position: absolute;
-        bottom: -70px;
-        left: -70px;
-        width: 250px;
-        height: 250px;
-        border-radius: 50%;
-        background: rgba(13, 110, 253, 0.05);
-        z-index: 0;
-    }
-    
-    .blog-img {
-        transition: all 0.5s ease;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .blog-img:hover {
-        transform: scale(1.03);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
-    </style>
-
-
-<div class="hero-section position-relative" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('{{ asset('images/bannerInicio.jpg') }}') no-repeat center center; background-size: cover; min-height: 600px;">
-    <!-- Animated Medical Icons Overlay -->
+<!-- Hero Section con fondo moderno y elementos flotantes -->
+<div class="hero-section position-relative py-5 mb-5 overflow-hidden" style="background: linear-gradient(135deg, #e3f0ff 0%, #f8fbff 100%); min-height: 420px;">
     <div class="medical-icons-overlay">
-        <div class="floating-icon" style="top: 15%; left: 10%;"><i class="fas fa-heartbeat"></i></div>
-        <div class="floating-icon" style="top: 25%; right: 15%;"><i class="fas fa-pills"></i></div>
-        <div class="floating-icon" style="bottom: 20%; left: 20%;"><i class="fas fa-stethoscope"></i></div>
-        <div class="floating-icon" style="bottom: 30%; right: 10%;"><i class="fas fa-capsules"></i></div>
+        <div class="floating-icon" style="top: 10%; left: 8%; font-size: 3rem;"><i class="fas fa-capsules"></i></div>
+        <div class="floating-icon" style="top: 20%; right: 12%; font-size: 2.5rem;"><i class="fas fa-heartbeat"></i></div>
+        <div class="floating-icon" style="bottom: 15%; left: 15%; font-size: 2.8rem;"><i class="fas fa-stethoscope"></i></div>
+        <div class="floating-icon" style="bottom: 18%; right: 10%; font-size: 2.7rem;"><i class="fas fa-notes-medical"></i></div>
     </div>
-    
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center" style="min-height: 600px;">
-            <div class="col-md-7">
-                <div class="hero-content p-5 rounded-lg" style="background: rgba(255, 255, 255, 0.9);">
-                    <h1 class="display-4 fw-bold text-primary mb-3">Bienvenido a DrodiPharma</h1>
-                    <p class="lead text-dark mb-4">Tu farmacia de confianza con los mejores productos para tu salud y bienestar. Ofrecemos atención personalizada y productos de calidad.</p>
-                    <div class="d-flex gap-3">
-                        <a href="{{ url('/productos') }}" class="btn btn-primary btn-lg shadow-sm"><i class="fas fa-shopping-basket me-2"></i>Ver Productos</a>
-                        <a href="#servicios" class="btn btn-outline-primary btn-lg"><i class="fas fa-info-circle me-2"></i>Nuestros Servicios</a>
-                    </div>
+    <div class="container position-relative" style="z-index:2;">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <div class="hero-content bg-white p-4 rounded-4 shadow-sm">
+                    <h1 class="display-4 fw-bold text-primary mb-3">Bienvenido a <span class="text-gradient">DrodiPharma</span></h1>
+                    <div class="divider mb-3" style="width: 70px; height: 3px; background: linear-gradient(90deg, #4a89dc, #5ca9fb);"></div>
+                    <p class="lead mb-4">Tu aliado confiable en distribución farmacéutica. Encuentra productos de calidad, atención personalizada y soluciones innovadoras para tu farmacia o botica.</p>
+                    
                 </div>
+            </div>
+            <div class="col-lg-6 text-center" data-aos="fade-left">
+                <img src="{{ asset('images/bannerInicio.jpg') }}" alt="DrodiPharma" class="img-fluid rounded-4 shadow-lg" style="max-width: 85%;">
             </div>
         </div>
     </div>
-</div>
-
-<div class="consultation-section position-relative overflow-hidden py-5" style="background: linear-gradient(135deg, #e8f5fe 0%, #f0f9ff 100%);">
     <div class="wave-pattern">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" class="wave-svg">
-            <path fill="rgba(13, 110, 253, 0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
-        
-        <!-- Animated Medical Icons -->
-        <div class="animated-icons">
-            <i class="fas fa-pills icon-animate" style="position: absolute; font-size: 2.5rem; left: 10%; top: 20%; color: rgba(13, 110, 253, 0.2);"></i>
-            <i class="fas fa-prescription-bottle-alt icon-animate" style="position: absolute; font-size: 2rem; right: 15%; top: 30%; color: rgba(13, 110, 253, 0.2);"></i>
-            <i class="fas fa-capsules icon-animate" style="position: absolute; font-size: 2.2rem; left: 25%; bottom: 25%; color: rgba(13, 110, 253, 0.2);"></i>
-            <i class="fas fa-first-aid icon-animate" style="position: absolute; font-size: 2.3rem; right: 25%; bottom: 40%; color: rgba(13, 110, 253, 0.2);"></i>
-        </div>
-    </div>
-    
-    <div class="container my-4 py-4" id="servicios">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8 mb-5">
-                <div class="section-heading mb-4">
-                    <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Atención Personalizada</span>
-                    <h2 class="fw-bold text-primary">CONSULTE SOBRE NUESTROS PRODUCTOS Y PRECIOS</h2>
-                    <div class="divider mx-auto my-3" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
-                    <p class="text-muted">Estamos disponibles para resolver todas sus dudas y brindarle la mejor asesoría farmacéutica</p>
-                </div>
-                <a href="https://api.whatsapp.com/send/?phone=51967692437&text=¡Hola! Me interesa conocer más sobre sus productos farmacéuticos.%0A%0AMe gustaría recibir información sobre:%0APrecios,%0ADisponibilidad%0AY Ofertas especiales%0A%0A¡Gracias por su atención!" target="_blank" class="btn btn-whatsapp btn-lg shadow-lg">
-                    <i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp
-                </a>
-                <a href="https://heyzine.com/flip-book/fd9fcc5d58.html" target="_blank" class="btn btn-whatsapp btn-lg shadow-lg" style="background-color: #FFD700; color: #000;">
-                    <i class="fas fa-book me-2"></i>¡REVISA NUESTRO CATÁLOGO ONLINE!
-                </a>
-            </div>
-        </div>
+        <svg class="wave-svg" viewBox="0 0 1440 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#e3f0ff" fill-opacity="1" d="M0,160L60,154.7C120,149,240,139,360,144C480,149,600,171,720,181.3C840,192,960,192,1080,186.7C1200,181,1320,171,1380,165.3L1440,160L1440,200L1380,200C1320,200,1200,200,1080,200C960,200,840,200,720,200C600,200,480,200,360,200C240,200,120,200,60,200L0,200Z"></path></svg>
     </div>
 </div>
 
-<div class="features-section py-5 my-5">
+<!-- Sección de Ofertas Destacadas -->
+<section class="offers-container py-5">
     <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Nuestras Ventajas</span>
-                <h2 class="display-4 fw-bold text-primary mb-3">¿Por qué elegirnos?</h2>
-                <div class="divider mx-auto my-3" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
-                <p class="lead fs-4 text-muted">Ofrecemos productos de calidad y un servicio excepcional</p>
-            </div>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-lg hover-card">
-                    <div class="card-body text-center p-5">
-                        <div class="icon-wrapper mb-4 rounded-circle p-3 d-inline-block">
-                            <i class="fas fa-clock text-primary" style="font-size: 2.5rem;"></i>
-                        </div>
-                        <h4 class="card-title h3 mb-3 text-primary">Horario de Atención</h4>
-                        <p class="card-text fs-5 mb-2">Lunes a Sábado: 8am - 8 pm</p>
-                        <p class="fs-5">Domingo: 8am - 12 pm</p>
+        <h2 class="text-center mb-5 text-primary" data-aos="fade-up">Ofertas Destacadas</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-lg-3" data-aos="fade-up">
+                <div class="offer-card card h-100">
+                    <img src="https://placehold.co/400x200/4a89dc/fff?text=Descuento+20%25" class="card-img-top" alt="Oferta 1">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Descuento en Analgésicos</h5>
+                        <p class="card-text">Aprovecha un 20% de descuento en analgésicos seleccionados durante este mes.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-lg hover-card">
-                    <div class="card-body text-center p-5">
-                        <div class="icon-wrapper mb-4 rounded-circle p-3 d-inline-block">
-                            <i class="fas fa-user-md text-primary" style="font-size: 2.5rem;"></i>
-                        </div>
-                        <h4 class="card-title h3 mb-3 text-primary">Consultoría para evitar sanciones</h4>
-                        <p class="card-text fs-5">Te actualizamos, asesoramos y enviamos material Online y escrito sobre todas las Normas y reglamentaciones de la DIGEMID.</p>
+            <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="offer-card card h-100">
+                    <img src="https://placehold.co/400x200/5ca9fb/fff?text=Envío+Gratis" class="card-img-top" alt="Oferta 2">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Envío Gratis</h5>
+                        <p class="card-text">Envío gratuito en compras superiores a S/ 200 para Lima y provincias seleccionadas.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-lg hover-card">
-                    <div class="card-body text-center p-5">
-                        <div class="icon-wrapper mb-4 rounded-circle p-3 d-inline-block">
-                            <i class="fas fa-chart-line text-primary" style="font-size: 2.5rem;"></i>
-                        </div>
-                        <h4 class="card-title h3 mb-3 text-primary">Te ayudamos a Vender</h4>
-                        <p class="card-text fs-5">Te proveemos de Cursos Virtuales, Ebooks, Guías, sobre Marketing, Ventas, Estudios de Mercado.</p>
+            <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="offer-card card h-100">
+                    <img src="https://placehold.co/400x200/4a89dc/fff?text=Nuevo+Ingreso" class="card-img-top" alt="Oferta 3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Nuevos Productos</h5>
+                        <p class="card-text">Descubre los últimos lanzamientos en medicamentos y productos de cuidado personal.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
+</section>
 
+<!-- Sección de Servicios -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 text-primary" data-aos="fade-up">Nuestros Servicios</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-lg-3" data-aos="fade-up">
+                <div class="hover-card bg-white shadow-sm p-4 text-center h-100">
+                    <div class="icon-wrapper mb-3"><i class="fas fa-truck fa-2x text-primary"></i></div>
+                    <h5 class="mb-2 text-primary">Distribución Rápida</h5>
+                    <p class="text-muted mb-0">Entrega eficiente y segura a nivel nacional.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="hover-card bg-white shadow-sm p-4 text-center h-100">
+                    <div class="icon-wrapper mb-3"><i class="fas fa-user-md fa-2x text-primary"></i></div>
+                    <h5 class="mb-2 text-primary">Asesoría Profesional</h5>
+                    <p class="text-muted mb-0">Soporte y orientación para farmacias y boticas.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="hover-card bg-white shadow-sm p-4 text-center h-100">
+                    <div class="icon-wrapper mb-3"><i class="fas fa-capsules fa-2x text-primary"></i></div>
+                    <h5 class="mb-2 text-primary">Variedad de Productos</h5>
+                    <p class="text-muted mb-0">Amplio catálogo de medicamentos y productos de salud.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de Consulta Rápida -->
+<section class="consultation-section py-5 position-relative">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 mb-4 mb-lg-0" data-aos="fade-right">
+                <h2 class="fw-bold text-primary mb-3">¿Tienes dudas o necesitas asesoría?</h2>
+                <p class="lead mb-4">Nuestro equipo está listo para ayudarte. Realiza tu consulta rápida y recibe atención personalizada.</p>
+                <a href="https://wa.me/51999999999" target="_blank" class="btn btn-whatsapp btn-lg"><i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp</a>
+            </div>
+            <div class="col-lg-5 text-center" data-aos="fade-left">
+                <img src="https://placehold.co/350x250/25D366/fff?text=Consulta+Rápida" alt="Consulta Rápida" class="img-fluid rounded-4 shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de Blog Destacado -->
+<section class="blog-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 text-primary" data-aos="fade-up">Últimos Artículos del Blog</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://placehold.co/400x200/e8f4fd/4a89dc?text=Blog+1" class="card-img-top" alt="Blog 1">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Consejos para el Cuidado de la Salud</h5>
+                        <p class="card-text">Descubre recomendaciones de nuestros expertos para mantener tu bienestar y el de tu familia.</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://placehold.co/400x200/4a89dc/fff?text=Blog+2" class="card-img-top" alt="Blog 2">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Novedades en Medicamentos</h5>
+                        <p class="card-text">Mantente informado sobre los últimos lanzamientos y avances en el sector farmacéutico.</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://placehold.co/400x200/5ca9fb/fff?text=Blog+3" class="card-img-top" alt="Blog 3">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Farmacovigilancia y Seguridad</h5>
+                        <p class="card-text">Conoce la importancia de la farmacovigilancia y cómo reportar eventos adversos.</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de Colaboradores -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 text-primary" data-aos="fade-up">Nuestro Equipo</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-3 col-6" data-aos="fade-up">
+                <div class="text-center">
+                    <img src="{{ asset('imagesColaboradores/1.png') }}" alt="Colaborador 1" class="img-fluid rounded-circle shadow mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    <h6 class="mb-0 text-primary">Dra. Ana Torres</h6>
+                    <small class="text-muted">Gerente General</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-center">
+                    <img src="{{ asset('imagesColaboradores/2.png') }}" alt="Colaborador 2" class="img-fluid rounded-circle shadow mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    <h6 class="mb-0 text-primary">Dr. Luis Pérez</h6>
+                    <small class="text-muted">Director Técnico</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-center">
+                    <img src="{{ asset('imagesColaboradores/3.png') }}" alt="Colaborador 3" class="img-fluid rounded-circle shadow mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    <h6 class="mb-0 text-primary">Lic. Carla Ruiz</h6>
+                    <small class="text-muted">Jefa de Ventas</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-center">
+                    <img src="{{ asset('imagesColaboradores/4.png') }}" alt="Colaborador 4" class="img-fluid rounded-circle shadow mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    <h6 class="mb-0 text-primary">Tec. Mario Díaz</h6>
+                    <small class="text-muted">Logística</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estilos personalizados para la nueva interfaz -->
+<style>
+.text-gradient {
+    background: linear-gradient(90deg, #4a89dc, #5ca9fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+</style>
 
 <div class="offers-container position-relative overflow-hidden">
     <!-- Elementos decorativos flotantes -->
