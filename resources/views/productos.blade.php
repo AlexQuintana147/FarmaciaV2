@@ -34,20 +34,20 @@
         <div class="col-12">
             <div class="bg-white p-3 rounded-lg shadow-sm">
                 <h5 class="text-center mb-3"><i class="fas fa-filter me-2 text-primary"></i>Filtrar por categoría</h5>
-                <div class="d-flex justify-content-center flex-wrap">
-                    <button class="btn btn-primary m-1 filter-btn active" data-filter="all">
+                <div class="d-flex justify-content-center flex-wrap gap-2">
+                    <button class="btn filter-btn active" data-filter="all">
                         <i class="fas fa-th-large me-1"></i> Todos
                     </button>
-                    <button class="btn btn-outline-primary m-1 filter-btn" data-filter="Medicamentos">
+                    <button class="btn filter-btn" data-filter="Medicamentos">
                         <i class="fas fa-pills me-1"></i> Medicamentos
                     </button>
-                    <button class="btn btn-outline-primary m-1 filter-btn" data-filter="Cuidado Personal">
+                    <button class="btn filter-btn" data-filter="Cuidado Personal">
                         <i class="fas fa-pump-soap me-1"></i> Cuidado Personal
                     </button>
-                    <button class="btn btn-outline-primary m-1 filter-btn" data-filter="Vitaminas">
+                    <button class="btn filter-btn" data-filter="Vitaminas">
                         <i class="fas fa-apple-alt me-1"></i> Vitaminas
                     </button>
-                    <button class="btn btn-outline-primary m-1 filter-btn" data-filter="Bebés">
+                    <button class="btn filter-btn" data-filter="Bebés">
                         <i class="fas fa-baby me-1"></i> Bebés
                     </button>
                 </div>
@@ -57,79 +57,39 @@
 
     <div class="row" id="productos-container">
         @forelse($productos as $producto)
+            @php
+                $categoryIcon = 'fas fa-pills';
+                if($producto->categoria == 'Cuidado Personal') {
+                    $categoryIcon = 'fas fa-pump-soap';
+                } elseif($producto->categoria == 'Vitaminas') {
+                    $categoryIcon = 'fas fa-apple-alt';
+                } elseif($producto->categoria == 'Bebés') {
+                    $categoryIcon = 'fas fa-baby';
+                }
+                $imagePath = $producto->imagen ? asset($producto->imagen) : asset('images/NoImage.png');
+                $modalImagePath = $producto->imagen ? asset($producto->imagen) : asset('images/NoImage.png');
+            @endphp
             <div class="col-md-4 mb-4 producto-item" data-categoria="{{ $producto->categoria }}">
-                <div class="card h-100 shadow-sm border-0 product-card">
-                    <style>
-                        .card-img-container {
-                            position: relative;
-                            padding-top: 75%; /* Relación de aspecto 4:3 */
-                            overflow: hidden;
-                        }
-                        .card-img-container img {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            object-fit: contain;
-                            background-color: var(--medical-light-blue);
-                            transition: transform 0.5s ease;
-                        }
-                        .card-img-container:hover img {
-                            transform: scale(1.05);
-                        }
-                        .modal-img-container {
-                            background-color: var(--medical-light-blue);
-                            border-radius: 0.5rem;
-                            padding: 1.5rem;
-                        }
-                        .product-card {
-                            transition: all 0.3s ease;
-                            border-radius: 0.5rem;
-                            overflow: hidden;
-                        }
-                        .product-card:hover {
-                            transform: translateY(-5px);
-                            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-                        }
-                        .category-badge {
-                            position: absolute;
-                            top: 10px;
-                            right: 10px;
-                            z-index: 10;
-                        }
-                    </style>
-                    @php
-                        $imagePath = $producto->imagen ? asset($producto->imagen) : asset('images/NoImage.png');
-                        $categoryIcon = 'fas fa-pills';
-                        
-                        if($producto->categoria == 'Cuidado Personal') {
-                            $categoryIcon = 'fas fa-pump-soap';
-                        } elseif($producto->categoria == 'Vitaminas') {
-                            $categoryIcon = 'fas fa-apple-alt';
-                        } elseif($producto->categoria == 'Bebés') {
-                            $categoryIcon = 'fas fa-baby';
-                        }
-                    @endphp
-                    
+                <div class="card h-100 shadow-sm border-0 product-card position-relative">
                     <div class="category-badge">
                         <span class="badge bg-primary px-3 py-2 rounded-pill">
                             <i class="{{ $categoryIcon }} me-1"></i> {{ $producto->categoria }}
                         </span>
                     </div>
-                    
                     <div class="card-img-container">
                         <img src="{{ $imagePath }}" class="card-img-top" alt="{{ $producto->titulo }}">
                     </div>
-
                     <div class="card-body">
                         <h5 class="card-title fw-bold">{{ $producto->titulo }}</h5>
                         <p class="card-text text-muted">{{ Str::limit($producto->descripcion, 100) }}</p>
                     </div>
-                    <div class="card-footer bg-white border-top-0 pb-3">
+                    <div class="card-footer bg-white border-top-0 pb-3 d-flex flex-column gap-2">
                         <button type="button" class="btn btn-primary w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#productoModal{{ $producto->id }}">
                             <i class="fas fa-eye me-2"></i>Ver Detalles
                         </button>
+                        <a href="https://wa.me/51967692437?text=Hola,%20quiero%20consultar%20por%20el%20producto:%20{{ urlencode($producto->titulo) }}" target="_blank" class="btn btn-outline-success w-100 rounded-pill">
+                            <i class="fab fa-whatsapp me-2"></i>Consultar por Whatsapp
+                        </a>
                     </div>
                 </div>
             </div>
@@ -139,17 +99,16 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content border-0 shadow">
                         <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title" id="productoModalLabel{{ $producto->id }}"><i class="{{ $categoryIcon }} me-2"></i>{{ $producto->titulo }}</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title d-flex align-items-center gap-2" id="productoModalLabel{{ $producto->id }}">
+                                <i class="{{ $categoryIcon }} me-2"></i>{{ $producto->titulo }}
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white fs-3" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body p-4">
                             <div class="row">
                                 <div class="col-md-6 mb-4 mb-md-0">
-                                    @php
-                                        $modalImagePath = $producto->imagen ? asset($producto->imagen) : asset('images/NoImage.png');
-                                    @endphp
                                     <div class="modal-img-container text-center p-4 rounded">
-                                        <img src="{{ $modalImagePath }}" class="img-fluid rounded" alt="{{ $producto->titulo }}" style="width: 100%; height: auto; max-height: 500px; object-fit: contain;">
+                                        <img src="{{ $modalImagePath }}" class="img-fluid rounded" alt="{{ $producto->titulo }}" style="width: 100%; height: auto; max-height: 400px; object-fit: contain;">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -162,7 +121,6 @@
                                     <div class="divider mb-3" style="width: 50px; height: 3px; background-color: var(--medical-green);"></div>
                                     <h6 class="fw-bold mb-2">Descripción:</h6>
                                     <p class="mb-4">{{ $producto->descripcion }}</p>
-                                    
                                     <div class="bg-light p-3 rounded mb-3">
                                         <h6 class="fw-bold mb-2"><i class="fas fa-info-circle me-2 text-primary"></i>Información adicional</h6>
                                         <p class="small mb-0">Consulte a su médico o farmacéutico antes de usar este producto. Mantenga todos los medicamentos fuera del alcance de los niños.</p>
@@ -170,13 +128,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
                                 <i class="fas fa-times me-2"></i>Cerrar
                             </button>
-                            <button type="button" class="btn btn-primary" disabled>
-                                <i class="fas fa-shopping-cart me-2"></i>Añadir al carrito
-                            </button>
+                            <a href="https://wa.me/51967692437?text=Hola,%20quiero%20consultar%20por%20el%20producto:%20{{ urlencode($producto->titulo) }}" target="_blank" class="btn btn-success rounded-pill px-4">
+                                <i class="fab fa-whatsapp me-2"></i>Consultar por Whatsapp
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -227,48 +185,16 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const productoItems = document.querySelectorAll('.producto-item');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const filterValue = this.getAttribute('data-filter');
-                
-                // Actualizar botones activos
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Filtrar productos
-                productoItems.forEach(item => {
-                    if (filterValue === 'all' || item.getAttribute('data-categoria') === filterValue) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-    });
-</script>
-<!-- Agregar scripts para el filtrado de productos -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
         const filterBtns = document.querySelectorAll('.filter-btn');
         const productoItems = document.querySelectorAll('.producto-item');
-        
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function() {
-                // Remover clase active de todos los botones
                 filterBtns.forEach(b => b.classList.remove('active'));
-                // Agregar clase active al botón clickeado
                 this.classList.add('active');
-                
                 const filter = this.getAttribute('data-filter');
-                
                 productoItems.forEach(item => {
                     if (filter === 'all' || item.getAttribute('data-categoria') === filter) {
                         item.style.display = 'block';
-                        // Añadir animación
                         item.style.opacity = '0';
                         setTimeout(() => {
                             item.style.opacity = '1';
@@ -285,19 +211,90 @@
 
 @section('extra_css')
 <style>
-    /* Estilos adicionales para la página de productos */
+    /* Filtros UX Mejorados */
     .filter-btn {
         transition: all 0.3s ease;
         border-radius: 20px;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 1.2rem;
+        font-weight: 500;
+        border: 2px solid var(--medical-blue);
+        background: white;
+        color: var(--medical-blue);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .filter-btn.active, .filter-btn:focus {
+        background: var(--medical-blue);
+        color: #fff;
+        border-color: var(--medical-blue);
+        box-shadow: 0 4px 12px rgba(32,201,151,0.12);
     }
     .filter-btn:hover {
-        transform: translateY(-2px);
+        transform: translateY(-2px) scale(1.04);
+        background: var(--medical-blue);
+        color: #fff;
     }
-    .filter-btn.active {
-        background-color: var(--medical-blue);
-        border-color: var(--medical-blue);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* Tarjetas de producto */
+    .product-card {
+        transition: box-shadow 0.3s, transform 0.3s;
+        border-radius: 0.7rem;
+        overflow: hidden;
+        background: #fff;
+    }
+    .product-card:hover {
+        box-shadow: 0 10px 24px rgba(32,201,151,0.13), 0 2px 8px rgba(0,0,0,0.07);
+        transform: translateY(-8px) scale(1.03);
+    }
+    .category-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 10;
+        font-size: 0.95rem;
+        pointer-events: none;
+    }
+    .card-img-container {
+        position: relative;
+        padding-top: 75%;
+        overflow: hidden;
+        background: #e8f4fd;
+    }
+    .card-img-container img {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+    .card-img-container:hover img {
+        transform: scale(1.07);
+    }
+    /* Modal UX */
+    .modal-header {
+        border-top-left-radius: 0.7rem;
+        border-top-right-radius: 0.7rem;
+    }
+    .modal-content {
+        border-radius: 0.7rem;
+    }
+    .modal-footer {
+        border-bottom-left-radius: 0.7rem;
+        border-bottom-right-radius: 0.7rem;
+    }
+    .btn-close {
+        font-size: 1.3rem;
+        opacity: 0.9;
+    }
+    /* Accesibilidad */
+    .btn:focus, .filter-btn:focus {
+        outline: 2px solid var(--medical-green);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 3px rgba(32,201,151,0.18);
+    }
+    /* Loader animado para productos vacíos */
+    .empty-loader {
+        width: 3rem; height: 3rem; border: 5px solid #e8f4fd; border-top: 5px solid var(--medical-blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem auto;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 </style>
 @endsection
