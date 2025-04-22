@@ -41,44 +41,53 @@
             <div class="col-md-6 mb-4">
                 <div class="card h-100 shadow-sm border-0 blog-card">
                     <style>
+                        /* Mejora visual de cards de blog */
                         .blog-card {
-                            transition: all 0.3s ease;
-                            border-radius: 0.5rem;
+                            transition: all 0.3s cubic-bezier(.4,2,.3,1.1);
+                            border-radius: 0.8rem;
                             overflow: hidden;
+                            box-shadow: 0 4px 16px rgba(74,137,220,0.10);
+                            border: 1px solid #e8f4fd;
                         }
                         .blog-card:hover {
-                            transform: translateY(-5px);
-                            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+                            transform: translateY(-8px) scale(1.025);
+                            box-shadow: 0 12px 28px rgba(32,201,151,0.13) !important;
+                            border-color: var(--medical-blue);
                         }
                         .blog-img-container {
                             position: relative;
                             overflow: hidden;
-                            height: 100%;
+                            height: 220px;
+                            background: #e8f4fd;
                         }
                         .blog-img-container img {
-                            transition: transform 0.5s ease;
+                            transition: transform 0.5s cubic-bezier(.4,2,.3,1.1);
+                            object-fit: cover;
+                            height: 100%;
+                            width: 100%;
                         }
                         .blog-img-container:hover img {
-                            transform: scale(1.05);
+                            transform: scale(1.08);
+                            filter: brightness(0.96) saturate(1.1);
                         }
                         .blog-date {
                             position: absolute;
-                            top: 10px;
-                            left: 10px;
-                            background-color: rgba(74, 137, 220, 0.9);
-                            color: white;
-                            padding: 5px 10px;
+                            top: 12px;
+                            left: 12px;
+                            background-color: var(--medical-blue);
+                            color: #fff;
+                            padding: 4px 12px;
                             border-radius: 20px;
-                            font-size: 0.8rem;
-                            z-index: 10;
+                            font-size: 0.85rem;
+                            box-shadow: 0 2px 8px rgba(32,201,151,0.07);
                         }
                         .blog-author {
                             display: flex;
                             align-items: center;
                         }
                         .blog-author-avatar {
-                            width: 30px;
-                            height: 30px;
+                            width: 32px;
+                            height: 32px;
                             border-radius: 50%;
                             background-color: var(--medical-light-blue);
                             display: flex;
@@ -86,6 +95,78 @@
                             justify-content: center;
                             margin-right: 10px;
                             color: var(--medical-blue);
+                            font-size: 1.2rem;
+                            box-shadow: 0 2px 6px rgba(74,137,220,0.08);
+                        }
+                        .card-title {
+                            font-size: 1.18rem;
+                            color: var(--medical-blue);
+                            font-weight: 700;
+                        }
+                        .card-subtitle {
+                            font-size: 1rem;
+                            color: #6c757d;
+                        }
+                        .divider {
+                            width: 40px;
+                            height: 3px;
+                            background-color: var(--medical-green);
+                            border-radius: 2px;
+                            margin: 0.5rem 0 1rem 0;
+                        }
+                        .btn-primary, .btn-outline-primary {
+                            font-weight: 600;
+                            letter-spacing: 0.5px;
+                            border-radius: 2rem;
+                        }
+                        .btn-outline-primary:hover, .btn-primary:hover {
+                            transform: translateY(-2px) scale(1.04);
+                            box-shadow: 0 4px 12px rgba(74,137,220,0.13);
+                        }
+                        /* Mejor modal */
+                        .modal-content {
+                            border-radius: 1.1rem;
+                        }
+                        .modal-header {
+                            border-top-left-radius: 1.1rem;
+                            border-top-right-radius: 1.1rem;
+                        }
+                        .modal-body img {
+                            max-height: 320px;
+                            object-fit: cover;
+                            margin-bottom: 1.2rem;
+                        }
+                        .blog-content {
+                            line-height: 1.8;
+                            font-size: 1.07rem;
+                            color: #444;
+                        }
+                        /* Mejora suscripción y categorías */
+                        .category-card {
+                            transition: all 0.3s ease;
+                            border-radius: 0.5rem;
+                        }
+                        .category-card:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 10px 20px rgba(0,0,0,0.11) !important;
+                        }
+                        .category-icon {
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%;
+                            background-color: var(--medical-light-blue);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto 1rem auto;
+                            font-size: 1.5rem;
+                        }
+                        .bg-primary, .btn-primary {
+                            background-color: var(--medical-blue) !important;
+                            border-color: var(--medical-blue) !important;
+                        }
+                        .text-primary {
+                            color: var(--medical-blue) !important;
                         }
                     </style>
                     <div class="row g-0">
@@ -266,34 +347,5 @@
         </div>
     </div>
 </div>
-
-@section('extra_css')
-<style>
-    /* Estilos adicionales para la página de blog */
-    .category-card {
-        transition: all 0.3s ease;
-        border-radius: 0.5rem;
-    }
-    .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    }
-    .category-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: var(--medical-light-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        font-size: 1.5rem;
-    }
-    .blog-content {
-        line-height: 1.8;
-        font-size: 1.05rem;
-    }
-</style>
-@endsection
 
 @endsection
