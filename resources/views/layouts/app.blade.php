@@ -231,8 +231,9 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <i class="fas fa-mortar-pestle"></i> DrodiPharma
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="DrodiPharma Logo" style="height: 42px; width: auto;">
+                    <span class="ms-2 fw-bold" style="font-size: 1.5rem; color: var(--medical-blue);">DrodiPharma</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -301,7 +302,10 @@
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6">
-                    <h5><i class="fas fa-mortar-pestle me-2"></i>DrodiPharma</h5>
+                    <h5 class="d-flex align-items-center gap-2">
+                        <img src="{{ asset('images/logo.png') }}" alt="DrodiPharma Logo" style="height: 36px; width: auto;">
+                        DrodiPharma
+                    </h5>
                     <p class="mb-4">Comprometidos con tu salud y bienestar desde 2023. Ofrecemos productos farmacéuticos de la más alta calidad con atención personalizada.</p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/drodipharm/" class="me-3" target="_blank" rel="noopener noreferrer" style="color: inherit;"><i class="fab fa-facebook-f"></i></a>
