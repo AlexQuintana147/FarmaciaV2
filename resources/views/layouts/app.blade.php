@@ -263,6 +263,7 @@
                 right: 1vw !important;
                 bottom: 70px !important;
                 max-height: 80vh !important;
+                min-height: 220px !important;
             }
         }
         /* Chatbot Chatbox Styles */
@@ -271,7 +272,7 @@
             position: fixed;
             bottom: 90px;
             right: 40px;
-            width: 350px;
+            width: 380px;
             max-width: 98vw;
             background: #fff;
             border-radius: 18px;
@@ -279,12 +280,24 @@
             z-index: 10000;
             flex-direction: column;
             overflow: hidden;
-            max-height: 480px;
-            animation: chatbot-fade-in 0.25s;
+            max-height: 650px;
+            min-height: 380px;
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+            transition: opacity 0.28s cubic-bezier(.4,0,.2,1), transform 0.28s cubic-bezier(.4,0,.2,1);
         }
-        @keyframes chatbot-fade-in {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        #chatbot-chatbox.open {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #chatbot-chatbox.closing {
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+            transition: opacity 0.22s cubic-bezier(.4,0,.2,1), transform 0.22s cubic-bezier(.4,0,.2,1);
         }
         #chatbot-chatbox-header {
             background: linear-gradient(135deg, #4f8cff 0%, #38e7b8 100%);
@@ -497,7 +510,7 @@
                                 <a href="tel:+51967692437" class="text-white">+51 967 692 437</a>
                             </div>
                         </li>
-                        <li class="mb-3">
+                        <li class="mb-3"> 
                             <i class="fas fa-clock me-2"></i>
                             <div>Lun - Sáb: 8:00 AM - 8:00 PM</div>
                         </li>
@@ -563,13 +576,25 @@
         const input = document.getElementById('chatbot-input');
         const chatBody = document.getElementById('chatbot-chatbox-body');
 
-        bubble.addEventListener('click', () => {
+        function openChatbox() {
+            chatbox.classList.remove('closing');
             chatbox.style.display = 'flex';
-            input.focus();
-        });
-        closeBtn.addEventListener('click', () => {
-            chatbox.style.display = 'none';
-        });
+            // For next tick, add open class (for transition)
+            setTimeout(() => {
+                chatbox.classList.add('open');
+                input.focus();
+            }, 10);
+        }
+        function closeChatbox() {
+            chatbox.classList.remove('open');
+            chatbox.classList.add('closing');
+            setTimeout(() => {
+                chatbox.classList.remove('closing');
+                chatbox.style.display = 'none';
+            }, 220); // Match transition duration
+        }
+        bubble.addEventListener('click', openChatbox);
+        closeBtn.addEventListener('click', closeChatbox);
         function appendMessage(text, sender) {
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chatbot-message ' + sender;
