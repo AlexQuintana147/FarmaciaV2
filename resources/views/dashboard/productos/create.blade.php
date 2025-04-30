@@ -47,7 +47,7 @@
                             <label for="descripcion" class="form-label fw-bold text-primary"><i class="fas fa-align-left me-1"></i> Descripción <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" rows="7" placeholder="Describa las características y beneficios del producto" required>{{ old('descripcion') }}</textarea>
-                                <button type="button" class="btn btn-outline-primary" id="autogenerar-descripcion" tabindex="-1">
+                                <button type="button" class="btn btn-outline-primary" id="autogenerar-descripcion" tabindex="-1" disabled>
                                     <i class="fas fa-magic me-1"></i>Autogenerar
                                 </button>
                             </div>
@@ -102,25 +102,54 @@
 
 @push('scripts')
 <script>
-    // Vista previa de imagen
-    document.getElementById('imagen').addEventListener('change', function(e) {
-        const previewImage = document.getElementById('preview-image');
-        const previewPlaceholder = document.getElementById('preview-placeholder');
-        
-        if (e.target.files.length > 0) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                previewImage.src = e.target.result;
-                previewImage.style.display = 'block';
-                previewPlaceholder.style.display = 'none';
+    // Scripts robustos para vista de productos
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vista previa de imagen
+        const imagenInput = document.getElementById('imagen');
+        if (imagenInput) {
+            imagenInput.addEventListener('change', function(e) {
+                const previewImage = document.getElementById('preview-image');
+                const previewPlaceholder = document.getElementById('preview-placeholder');
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (previewImage) previewImage.src = e.target.result;
+                        if (previewImage) previewImage.style.display = 'block';
+                        if (previewPlaceholder) previewPlaceholder.style.display = 'none';
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    if (previewImage) previewImage.style.display = 'none';
+                    if (previewPlaceholder) previewPlaceholder.style.display = 'block';
+                }
+            });
+        }
+
+        // Habilitar autogenerar solo si el título tiene al menos 3 caracteres
+        const tituloInput = document.getElementById('titulo');
+        const autogenerarBtn = document.getElementById('autogenerar-descripcion');
+        function verificarTitulo() {
+            if (!tituloInput) {
+                console.error('[ERROR] No se encontró el input con id="titulo"');
+                return;
             }
-            
-            reader.readAsDataURL(file);
-        } else {
-            previewImage.style.display = 'none';
-            previewPlaceholder.style.display = 'block';
+            if (!autogenerarBtn) {
+                console.error('[ERROR] No se encontró el botón con id="autogenerar-descripcion"');
+                return;
+            }
+            const val = tituloInput.value.trim();
+            if (val.length >= 3) {
+                autogenerarBtn.removeAttribute('disabled');
+            } else {
+                autogenerarBtn.setAttribute('disabled', 'disabled');
+            }
+        }
+        if (tituloInput && autogenerarBtn) {
+            verificarTitulo();
+            tituloInput.addEventListener('input', verificarTitulo);
+            tituloInput.addEventListener('change', verificarTitulo);
         }
     });
 </script>
