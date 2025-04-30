@@ -28,8 +28,13 @@ def humata_query(query, url):
     answers = driver.find_elements(By.CSS_SELECTOR, 'div.react-markdown_reactMarkdown__us9vs')
     if answers:
         print('Respuesta:')
-        print(answers[-1].text)
-        result = answers[-1].text
+        # Cortar la respuesta en el primer corchete abierto
+        respuesta = answers[-1].text
+        idx = respuesta.find('[')
+        if idx != -1:
+            respuesta = respuesta[:idx].strip()
+        print(respuesta)
+        result = respuesta
     else:
         print('No se encontró respuesta.')
         result = None
