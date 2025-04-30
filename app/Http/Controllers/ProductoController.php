@@ -134,4 +134,5 @@ class ProductoController extends Controller
         return redirect()->route('dashboard.productos')
                          ->with('success', 'Producto eliminado exitosamente');
     }
+
 }

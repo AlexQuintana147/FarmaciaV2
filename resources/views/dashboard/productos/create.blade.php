@@ -102,56 +102,81 @@
 
 @push('scripts')
 <script>
-    // Scripts robustos para vista de productos
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // Vista previa de imagen
-        const imagenInput = document.getElementById('imagen');
-        if (imagenInput) {
-            imagenInput.addEventListener('change', function(e) {
-                const previewImage = document.getElementById('preview-image');
-                const previewPlaceholder = document.getElementById('preview-placeholder');
-                if (e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        if (previewImage) previewImage.src = e.target.result;
-                        if (previewImage) previewImage.style.display = 'block';
-                        if (previewPlaceholder) previewPlaceholder.style.display = 'none';
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    if (previewImage) previewImage.style.display = 'none';
-                    if (previewPlaceholder) previewPlaceholder.style.display = 'block';
+document.addEventListener('DOMContentLoaded', function() {
+    // Vista previa de imagen
+    const imagenInput = document.getElementById('imagen');
+    if (imagenInput) {
+        imagenInput.addEventListener('change', function(e) {
+            const previewImage = document.getElementById('preview-image');
+            const previewPlaceholder = document.getElementById('preview-placeholder');
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (previewImage) previewImage.src = e.target.result;
+                    if (previewImage) previewImage.style.display = 'block';
+                    if (previewPlaceholder) previewPlaceholder.style.display = 'none';
                 }
-            });
-        }
-
-        // Habilitar autogenerar solo si el título tiene al menos 3 caracteres
-        const tituloInput = document.getElementById('titulo');
-        const autogenerarBtn = document.getElementById('autogenerar-descripcion');
-        function verificarTitulo() {
-            if (!tituloInput) {
-                console.error('[ERROR] No se encontró el input con id="titulo"');
-                return;
-            }
-            if (!autogenerarBtn) {
-                console.error('[ERROR] No se encontró el botón con id="autogenerar-descripcion"');
-                return;
-            }
-            const val = tituloInput.value.trim();
-            if (val.length >= 3) {
-                autogenerarBtn.removeAttribute('disabled');
+                reader.readAsDataURL(file);
             } else {
-                autogenerarBtn.setAttribute('disabled', 'disabled');
+                if (previewImage) previewImage.style.display = 'none';
+                if (previewPlaceholder) previewPlaceholder.style.display = 'block';
             }
+        });
+    }
+
+    // --- AUTOGENERAR DESCRIPCIÓN ---
+    const tituloInput = document.getElementById('titulo');
+    const autogenerarBtn = document.getElementById('autogenerar-descripcion');
+    const descripcionTextarea = document.getElementById('descripcion');
+
+    function verificarTitulo() {
+        if (!tituloInput || !autogenerarBtn) return;
+        const val = tituloInput.value.trim();
+        if (val.length >= 3) {
+            autogenerarBtn.removeAttribute('disabled');
+        } else {
+            autogenerarBtn.setAttribute('disabled', 'disabled');
         }
-        if (tituloInput && autogenerarBtn) {
-            verificarTitulo();
-            tituloInput.addEventListener('input', verificarTitulo);
-            tituloInput.addEventListener('change', verificarTitulo);
-        }
-    });
+    }
+
+    if (tituloInput && autogenerarBtn) {
+        verificarTitulo();
+        tituloInput.addEventListener('input', verificarTitulo);
+        tituloInput.addEventListener('change', verificarTitulo);
+
+        autogenerarBtn.addEventListener('click', function() {
+            if (!tituloInput || !descripcionTextarea) return;
+            const titulo = tituloInput.value.trim();
+            if (titulo.length < 3) return;
+            autogenerarBtn.setAttribute('disabled', 'disabled');
+            autogenerarBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generando...';
+            fetch('/productos/autogenerar-descripcion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ titulo })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.descripcion) {
+                    descripcionTextarea.value = data.descripcion;
+                } else {
+                    alert(data.error || 'No se pudo generar la descripción.');
+                }
+            })
+            .catch(() => {
+                alert('Error al generar la descripción.');
+            })
+            .finally(() => {
+                autogenerarBtn.removeAttribute('disabled');
+                autogenerarBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Autogenerar';
+            });
+        });
+    }
+});
 </script>
 @endpush
 @endsection

@@ -50,6 +50,13 @@ Route::middleware(['auth:trabajador'])->group(function () {
     //Productos
     Route::get('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('dashboard.productos');
     Route::get('/dashboard/productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
+    Route::get('/dashboard/productos/{producto}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');
+    Route::put('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
+    // Endpoint scraping dedicado
+    Route::post('/productos/autogenerar-descripcion', [App\Http\Controllers\ScrapingController::class, 'autogenerarDescripcion'])->name('productos.autogenerarDescripcion');
     
     //Trabajadores-Dash
     Route::get('/dashboard/trabajadores', [App\Http\Controllers\TrabajadorController::class, 'index'])->name('dashboard.trabajadores');
@@ -59,10 +66,4 @@ Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard/trabajadores/{trabajador}/edit', [App\Http\Controllers\TrabajadorController::class, 'edit'])->name('trabajadores.edit');
     Route::put('/dashboard/trabajadores/{trabajador}', [App\Http\Controllers\TrabajadorController::class, 'update'])->name('trabajadores.update');
     Route::delete('/dashboard/trabajadores/{trabajador}', [App\Http\Controllers\TrabajadorController::class, 'destroy'])->name('trabajadores.destroy');
-    //Productos-Dash
-    Route::post('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
-    Route::get('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
-    Route::get('/dashboard/productos/{producto}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');
-    Route::put('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
-    Route::delete('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
 });

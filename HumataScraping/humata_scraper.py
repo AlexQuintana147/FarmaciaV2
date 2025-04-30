@@ -3,6 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def get_driver():
     chrome_options = Options()
@@ -43,6 +47,9 @@ def humata_query(query, url):
 
 if __name__ == "__main__":
     url = "https://app.humata.ai/ask/file/4253b633-c35b-4949-a5cb-990cec0e5e26?share_link=fa4fb366-3858-495c-9eb7-5d7542e9a0b7&selected-approach=Balanced"
-    producto = input("Producto: ")
+    if len(sys.argv) > 1:
+        producto = sys.argv[1]
+    else:
+        producto = input("Producto: ")
     query = f"dimelo a tu modo de entender la descripción del producto: {producto} y cuanto viene en una caja, en caso no encuentres nada, solo di, 'no encontrado'"
     respuesta = humata_query(query, url)
