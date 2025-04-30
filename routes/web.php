@@ -28,8 +28,10 @@ Route::get('/blog', function () {
 });
 
 //Trabajadores
-Route::get('/login', [TrabajadorAuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [TrabajadorAuthController::class, 'login']);
+Route::middleware('guest:trabajador')->group(function () {
+    Route::get('/login', [TrabajadorAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [TrabajadorAuthController::class, 'login']);
+});
 Route::post('/logout', [TrabajadorAuthController::class, 'logout'])->name('logout');
 
 //Auth
