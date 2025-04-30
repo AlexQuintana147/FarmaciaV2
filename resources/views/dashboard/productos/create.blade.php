@@ -150,7 +150,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const titulo = tituloInput.value.trim();
             if (titulo.length < 3) return;
             autogenerarBtn.setAttribute('disabled', 'disabled');
-            autogenerarBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generando...';
+            let segundos = 50;
+            const originalHTML = autogenerarBtn.innerHTML;
+            autogenerarBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Generando... <span id='contador-autogenerar'>${segundos}s</span>`;
+            const contadorSpan = document.getElementById('contador-autogenerar');
+            let intervalo = setInterval(() => {
+                segundos--;
+                if (contadorSpan) contadorSpan.textContent = `${segundos}s`;
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                }
+            }, 1000);
             fetch('/productos/autogenerar-descripcion', {
                 method: 'POST',
                 headers: {
@@ -171,8 +181,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error al generar la descripción.');
             })
             .finally(() => {
+                clearInterval(intervalo);
                 autogenerarBtn.removeAttribute('disabled');
-                autogenerarBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Autogenerar';
+                autogenerarBtn.innerHTML = originalHTML;
             });
         });
     }
