@@ -45,7 +45,12 @@
                         
                         <div class="mb-4">
                             <label for="descripcion" class="form-label fw-bold text-primary"><i class="fas fa-align-left me-1"></i> Descripción <span class="text-danger">*</span></label>
-                            <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" rows="7" placeholder="Describa las características y beneficios del producto" required>{{ old('descripcion') }}</textarea>
+                            <div class="input-group">
+                                <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" rows="7" placeholder="Describa las características y beneficios del producto" required>{{ old('descripcion') }}</textarea>
+                                <button type="button" class="btn btn-outline-primary" id="autogenerar-descripcion" tabindex="-1">
+                                    <i class="fas fa-magic me-1"></i>Autogenerar
+                                </button>
+                            </div>
                             @error('descripcion')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

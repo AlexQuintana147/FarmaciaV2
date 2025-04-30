@@ -1,0 +1,42 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+
+def get_driver():
+    chrome_options = Options()
+    chrome_options.add_argument('--start-maximized')
+    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+    # chrome_options.add_argument('--headless')  # Descomenta para modo invisible
+    return webdriver.Chrome(options=chrome_options)
+
+def humata_query(query, url):
+    driver = get_driver()
+    driver.get(url)
+    
+    # Espera a que cargue el textarea
+    time.sleep(5)
+    textarea = driver.find_element(By.CSS_SELECTOR, 'textarea.chat-box_textAreaInput__0LBJL')
+    textarea.clear()
+    textarea.send_keys(query)
+    time.sleep(4)  # Espera antes de enviar Enter para asegurar que el input esté listo
+    textarea.send_keys(Keys.ENTER)
+    
+    # Espera a que aparezca la respuesta
+    time.sleep(10)
+    answers = driver.find_elements(By.CSS_SELECTOR, 'div.react-markdown_reactMarkdown__us9vs')
+    if answers:
+        print('Respuesta:')
+        print(answers[-1].text)
+        result = answers[-1].text
+    else:
+        print('No se encontró respuesta.')
+        result = None
+    driver.quit()
+    return result
+
+if __name__ == "__main__":
+    url = "https://app.humata.ai/ask/file/4253b633-c35b-4949-a5cb-990cec0e5e26?share_link=fa4fb366-3858-495c-9eb7-5d7542e9a0b7&selected-approach=Balanced"
+    query = input("Escribe tu consulta para Humata: ")
+    humata_query(query, url)
