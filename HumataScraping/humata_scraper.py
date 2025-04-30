@@ -20,7 +20,7 @@ def humata_query(query, url):
     textarea = driver.find_element(By.CSS_SELECTOR, 'textarea.chat-box_textAreaInput__0LBJL')
     textarea.clear()
     textarea.send_keys(query)
-    time.sleep(4)  # Espera antes de enviar Enter para asegurar que el input esté listo
+    time.sleep(6)  # Espera antes de enviar Enter para asegurar que el input esté listo
     textarea.send_keys(Keys.ENTER)
     
     # Espera a que aparezca la respuesta
@@ -46,4 +46,3 @@ if __name__ == "__main__":
     producto = input("Producto: ")
     query = f"dimelo a tu modo de entender la descripción del producto: {producto} y cuanto viene en una caja, en caso no encuentres nada, solo di, 'no encontrado'"
     respuesta = humata_query(query, url)
-    print(respuesta)
