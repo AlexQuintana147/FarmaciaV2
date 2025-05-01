@@ -17,14 +17,6 @@ class DatabaseSeeder extends Seeder
         // Crear 5 trabajadores
         $trabajadores = Trabajador::factory(5)->create();
 
-        // Crear 10 blogs asociados a trabajadores aleatorios
-        Blog::factory(10)
-            ->recycle($trabajadores)
-            ->create();
-
-        // Crear 20 productos
-        Producto::factory(20)->create();
-
         // Crear un trabajador administrador con credenciales conocidas
         Trabajador::factory()->create([
             'usuario' => 'admin',

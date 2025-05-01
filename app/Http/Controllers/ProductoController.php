@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\Trabajador;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -14,7 +15,7 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Producto::latest();
+        $query = Producto::with('trabajador')->latest();
         
         // Filtrar por búsqueda
         if ($request->has('search')) {
@@ -54,7 +55,8 @@ class ProductoController extends Controller
         ]);
 
         $data = $request->all();
-        
+        // Asignar el trabajador autenticado
+        $data['trabajador_id'] = auth()->guard('trabajador')->user()->id;
         // Manejar la carga de imagen
         if ($request->hasFile('imagen')) {
             $imagen = $request->file('imagen');
@@ -74,6 +76,7 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
+        $producto->load('trabajador');
         return view('dashboard.productos.show', compact('producto'));
     }
 

@@ -29,6 +29,11 @@
                         <h5 class="fw-bold"><i class="fas fa-align-left text-secondary me-2"></i>Descripción</h5>
                         <p class="mb-0 p-3 bg-light rounded">{{ $producto->descripcion }}</p>
                     </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Trabajador que creó el producto:</label>
+                        <div>{{ $producto->trabajador ? $producto->trabajador->nombre_completo : 'Desconocido' }}</div>
+                    </div>
                 </div>
             </div>
             

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('trabajador_id');
             $table->string('titulo');
             $table->string('categoria');
             $table->text('descripcion');
             $table->string('imagen')->nullable();
             $table->timestamps();
+            $table->foreign('trabajador_id')->references('id')->on('trabajadores')->onDelete('cascade');
         });
     }
 

@@ -160,6 +160,7 @@
                             <th class="ps-4">ID</th>
                             <th>Producto</th>
                             <th>Categoría</th>
+                            <th>Trabajador</th>
                             <th>Fecha</th>
                             <th class="text-center">Acciones</th>
                         </tr>
@@ -191,6 +192,7 @@
                                         {{ $producto->categoria }}
                                     </span>
                                 </td>
+                                <td>{{ $producto->trabajador ? $producto->trabajador->nombre_completo : 'Desconocido' }}</td>
                                 <td><i class="far fa-calendar-alt me-1 text-muted"></i>{{ $producto->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
@@ -244,7 +246,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <div class="d-flex flex-column align-items-center bg-light rounded-3 py-5 px-4">
                                         <div class="avatar-lg mb-3">
                                             <div class="avatar-title bg-white text-primary rounded-circle shadow-sm" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">

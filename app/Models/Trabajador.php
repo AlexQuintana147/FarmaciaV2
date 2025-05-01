@@ -48,4 +48,12 @@ class Trabajador extends Authenticatable
     {
         return $this->hasMany(Blog::class);
     }
+
+    /**
+     * Obtener los productos creados por el trabajador.
+     */
+    public function productos()
+    {
+        return $this->hasMany(Producto::class);
+    }
 }
