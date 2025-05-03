@@ -196,7 +196,7 @@
                                             <i class="fas fa-user-md"></i>
                                         </div>
                                         <small class="text-muted">
-                                            {{ $blog->trabajador->nombre }} {{ $blog->trabajador->apellido }}
+                                            {{ $blog->trabajador->nombre_completo }} {{ $blog->trabajador->apellidos }}
                                         </small>
                                     </div>
                                     <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#blogModal{{ $blog->id }}">
@@ -226,7 +226,7 @@
                                         <i class="fas fa-user-md"></i>
                                     </div>
                                     <p class="small text-muted mb-0">
-                                        Por: <span class="fw-bold">{{ $blog->trabajador->nombre }} {{ $blog->trabajador->apellido }}</span> | 
+                                        Por: <span class="fw-bold">{{ $blog->trabajador->nombre_completo }} {{ $blog->trabajador->apellidos }}</span> | 
                                         <i class="far fa-calendar-alt ms-2 me-1"></i> {{ $blog->created_at->format('d/m/Y') }}
                                     </p>
                                 </div>

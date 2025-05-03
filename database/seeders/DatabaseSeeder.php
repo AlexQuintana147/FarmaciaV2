@@ -14,10 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear 5 trabajadores
+        //Crear 5 trabajadores
         $trabajadores = Trabajador::factory(5)->create();
 
-        // Crear un trabajador administrador con credenciales conocidas
         Trabajador::factory()->create([
             'usuario' => 'admin',
             'password' => bcrypt('admin123'),
