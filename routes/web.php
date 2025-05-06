@@ -3,11 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\TrabajadorAuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ChatbotController;
 
 
 Route::get('/', function () {
     return view('home');
 });
+
+Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
 
 Route::get('/nosotros', function () {
     return view('nosotros');

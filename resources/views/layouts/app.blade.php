@@ -392,8 +392,10 @@
     
     @yield('extra_css')
     @stack('scripts')
+    <script src="{{ asset('js/chatbot.js') }}"></script>
 </head>
 <body>
+    
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
             <div class="container">
@@ -540,28 +542,23 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Chatbot Bubble -->
-    <div id="chatbot-bubble" title="¿En qué puedo ayudarte?">
-        <span class="chatbot-icon">
-            <!-- Simple chat icon SVG -->
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 11.5C21 16.1944 16.9706 20 12 20C10.6348 20 9.33804 19.7752 8.17157 19.3667L3 21L4.63329 16.8284C3.62446 15.4297 3 13.7654 3 12C3 7.30558 7.02944 3.5 12 3.5C16.9706 3.5 21 7.30558 21 11.5Z" stroke="#4f8cff" stroke-width="2"/>
-                <circle cx="9" cy="11" r="1" fill="#4f8cff"/>
-                <circle cx="12" cy="11" r="1" fill="#4f8cff"/>
-                <circle cx="15" cy="11" r="1" fill="#4f8cff"/>
-            </svg>
-        </span>
-        ¿En qué puedo ayudarte?
+    <!-- Chatbot Button -->
+    <div id="chatbot-bubble" onclick="document.getElementById('chatbot-chatbox').classList.add('open')">
+        <div class="chatbot-icon">
+            <i class="fas fa-robot"></i>
+        </div>
+        <span>¿Necesitas ayuda?</span>
     </div>
+
     <!-- Chatbot Chatbox -->
     <div id="chatbot-chatbox">
         <div id="chatbot-chatbox-header">
-            Chatbot
+            <span>Asistente Virtual</span>
             <button id="chatbot-chatbox-close" title="Cerrar">&times;</button>
         </div>
         <div id="chatbot-chatbox-body">
             <div class="chatbot-message bot">
-                <div class="chatbot-bubble-text">¡Hola! ¿En qué puedo ayudarte?</div>
+                <div class="chatbot-bubble-text">¡Hola! Soy el asistente virtual de DrodiPharma. ¿En qué puedo ayudarte?</div>
             </div>
         </div>
         <div id="chatbot-chatbox-footer">
@@ -569,56 +566,7 @@
             <button id="chatbot-send-btn">Enviar</button>
         </div>
     </div>
-    <script>
-        const bubble = document.getElementById('chatbot-bubble');
-        const chatbox = document.getElementById('chatbot-chatbox');
-        const closeBtn = document.getElementById('chatbot-chatbox-close');
-        const sendBtn = document.getElementById('chatbot-send-btn');
-        const input = document.getElementById('chatbot-input');
-        const chatBody = document.getElementById('chatbot-chatbox-body');
-
-        function openChatbox() {
-            chatbox.classList.remove('closing');
-            chatbox.style.display = 'flex';
-            // For next tick, add open class (for transition)
-            setTimeout(() => {
-                chatbox.classList.add('open');
-                input.focus();
-            }, 10);
-        }
-        function closeChatbox() {
-            chatbox.classList.remove('open');
-            chatbox.classList.add('closing');
-            setTimeout(() => {
-                chatbox.classList.remove('closing');
-                chatbox.style.display = 'none';
-            }, 220); // Match transition duration
-        }
-        bubble.addEventListener('click', openChatbox);
-        closeBtn.addEventListener('click', closeChatbox);
-        function appendMessage(text, sender) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'chatbot-message ' + sender;
-            const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = 'chatbot-bubble-text';
-            bubbleDiv.textContent = text;
-            msgDiv.appendChild(bubbleDiv);
-            chatBody.appendChild(msgDiv);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-        function sendMessage() {
-            const text = input.value.trim();
-            if (!text) return;
-            appendMessage(text, 'user');
-            input.value = '';
-            setTimeout(() => {
-                appendMessage('en proceso...', 'bot');
-            }, 500);
-        }
-        sendBtn.addEventListener('click', sendMessage);
-        input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') sendMessage();
-        });
-    </script>
+    <!-- Scripts del chatbot -->
+    <script src="{{ asset('js/chatbot.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,70 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbox = document.getElementById('chatbot-chatbox');
+    const chatbotBody = document.getElementById('chatbot-chatbox-body');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotSendBtn = document.getElementById('chatbot-send-btn');
+    const chatbotCloseBtn = document.getElementById('chatbot-chatbox-close');
+
+    // Función para agregar un mensaje al chat
+    function addMessage(message, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chatbot-message ${isUser ? 'user' : 'bot'}`;
+        messageDiv.innerHTML = `<div class="chatbot-bubble-text">${message}</div>`;
+        chatbotBody.appendChild(messageDiv);
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    }
+
+    // Función para enviar mensaje al servidor
+    async function sendMessage(message) {
+        try {
+            const response = await fetch('/chatbot/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                addMessage(data.message);
+            } else {
+                addMessage('Lo siento, ocurrió un error al procesar tu mensaje.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage('Lo siento, ocurrió un error al procesar tu mensaje.');
+        }
+    }
+
+    // Event listener para el botón de enviar
+    chatbotSendBtn.addEventListener('click', function() {
+        const message = chatbotInput.value.trim();
+        if (message) {
+            addMessage(message, true);
+            sendMessage(message);
+            chatbotInput.value = '';
+        }
+    });
+
+    // Event listener para la tecla Enter
+    chatbotInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                sendMessage(message);
+                chatbotInput.value = '';
+            }
+        }
+    });
+
+    // Event listener para cerrar el chatbot
+    chatbotCloseBtn.addEventListener('click', function() {
+        chatbox.classList.add('closing');
+        setTimeout(() => {
+            chatbox.classList.remove('open', 'closing');
+        }, 220);
+    });
+});
