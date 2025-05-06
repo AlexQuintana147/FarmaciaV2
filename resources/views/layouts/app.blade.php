@@ -392,7 +392,6 @@
     
     @yield('extra_css')
     @stack('scripts')
-    <script src="{{ asset('js/chatbot.js') }}"></script>
 </head>
 <body>
     
@@ -544,9 +543,7 @@
 
     <!-- Chatbot Button -->
     <div id="chatbot-bubble" onclick="document.getElementById('chatbot-chatbox').classList.add('open')">
-        <div class="chatbot-icon">
-            <i class="fas fa-robot"></i>
-        </div>
+        <i class="fa-solid fa-comment-dots"></i>
         <span>¿Necesitas ayuda?</span>
     </div>
 
