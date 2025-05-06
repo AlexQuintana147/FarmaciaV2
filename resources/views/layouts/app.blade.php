@@ -325,6 +325,35 @@
             flex-direction: column;
             gap: 10px;
         }
+        .typing-indicator {
+            display: none;
+            padding: 8px 15px;
+            background: #e9f7fb;
+            border-radius: 16px 16px 16px 4px;
+            margin-bottom: 10px;
+            width: fit-content;
+            align-self: flex-start;
+            order: 999;
+        }
+        .typing-indicator.active {
+            display: flex;
+            align-items: center;
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #4f8cff;
+            border-radius: 50%;
+            margin: 0 2px;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+        }
         .chatbot-message {
             display: flex;
             margin-bottom: 2px;
@@ -557,11 +586,47 @@
             <div class="chatbot-message bot">
                 <div class="chatbot-bubble-text">¡Hola! Soy el asistente virtual de DrodiPharma. ¿En qué puedo ayudarte?</div>
             </div>
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
         <div id="chatbot-chatbox-footer">
             <input type="text" id="chatbot-input" placeholder="Escribe tu mensaje..." autocomplete="off" />
             <button id="chatbot-send-btn">Enviar</button>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const typingIndicator = document.querySelector('.typing-indicator');
+                const chatbotInput = document.getElementById('chatbot-input');
+                const chatbotSendBtn = document.getElementById('chatbot-send-btn');
+
+                function showTypingIndicator() {
+                    typingIndicator.classList.add('active');
+                }
+
+                function hideTypingIndicator() {
+                    typingIndicator.classList.remove('active');
+                }
+
+                chatbotSendBtn.addEventListener('click', function() {
+                    if (chatbotInput.value.trim() !== '') {
+                        showTypingIndicator();
+                        // Simular respuesta después de 2 segundos
+                        setTimeout(hideTypingIndicator, 2000);
+                    }
+                });
+
+                chatbotInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+                        showTypingIndicator();
+                        // Simular respuesta después de 2 segundos
+                        setTimeout(hideTypingIndicator, 2000);
+                    }
+                });
+            });
+        </script>
     </div>
     <!-- Scripts del chatbot -->
     <script src="{{ asset('js/chatbot.js') }}"></script>
