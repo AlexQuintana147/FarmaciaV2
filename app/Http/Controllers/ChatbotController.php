@@ -10,16 +10,21 @@ class ChatbotController extends Controller
     protected $apiKey;
     protected $apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
     protected $model = 'deepseek/deepseek-chat:free';
+    protected $catalogPath;
 
     public function __construct()
     {
         $this->apiKey = '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';
+        $this->catalogPath = public_path('catalogo.txt');
     }
 
     public function chat(Request $request)
     {
         try {
             $userMessage = $request->input('message');
+            $catalogContent = file_get_contents($this->catalogPath);
+
+            $systemMessage = "Eres un asistente farmacéutico. Utiliza solo la información del siguiente catálogo para responder preguntas. Si la información solicitada no está en el catálogo, indica que no tienes esa información. Catálogo:\n" . $catalogContent;
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
@@ -28,6 +33,7 @@ class ChatbotController extends Controller
             ])->post($this->apiUrl, [
                 'model' => $this->model,
                 'messages' => [
+                    ['role' => 'system', 'content' => $systemMessage],
                     ['role' => 'user', 'content' => $userMessage]
                 ]
             ]);
