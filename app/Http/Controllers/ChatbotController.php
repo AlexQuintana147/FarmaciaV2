@@ -24,7 +24,7 @@ class ChatbotController extends Controller
             $userMessage = $request->input('message');
             $catalogContent = file_get_contents($this->catalogPath);
 
-            $systemMessage = "Eres un asistente farmacéutico. Utiliza solo la información del siguiente catálogo para responder preguntas. Si la información solicitada no está en el catálogo, indica que no tienes esa información. Catálogo:\n" . $catalogContent;
+            $systemMessage = "Eres un asistente farmacéutico, tu nombre es DrodiBot. Utiliza solo la información del siguiente catálogo para responder preguntas y no respondas lo mismo siempre, intenta tener una personalidad alegre con emojis y no uses respuestas tan largas. Si la información solicitada no está en el catálogo, indica que no tienes esa información. Catálogo:\n" . $catalogContent;
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
