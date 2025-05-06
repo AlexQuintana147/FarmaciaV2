@@ -586,47 +586,11 @@
             <div class="chatbot-message bot">
                 <div class="chatbot-bubble-text">¡Hola! Soy el asistente virtual de DrodiPharma. ¿En qué puedo ayudarte?</div>
             </div>
-            <div class="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </div>
         <div id="chatbot-chatbox-footer">
             <input type="text" id="chatbot-input" placeholder="Escribe tu mensaje..." autocomplete="off" />
             <button id="chatbot-send-btn">Enviar</button>
         </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const typingIndicator = document.querySelector('.typing-indicator');
-                const chatbotInput = document.getElementById('chatbot-input');
-                const chatbotSendBtn = document.getElementById('chatbot-send-btn');
-
-                function showTypingIndicator() {
-                    typingIndicator.classList.add('active');
-                }
-
-                function hideTypingIndicator() {
-                    typingIndicator.classList.remove('active');
-                }
-
-                chatbotSendBtn.addEventListener('click', function() {
-                    if (chatbotInput.value.trim() !== '') {
-                        showTypingIndicator();
-                        // Simular respuesta después de 2 segundos
-                        setTimeout(hideTypingIndicator, 2000);
-                    }
-                });
-
-                chatbotInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
-                        showTypingIndicator();
-                        // Simular respuesta después de 2 segundos
-                        setTimeout(hideTypingIndicator, 2000);
-                    }
-                });
-            });
-        </script>
     </div>
     <!-- Scripts del chatbot -->
     <script src="{{ asset('js/chatbot.js') }}"></script>

@@ -5,6 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatbotSendBtn = document.getElementById('chatbot-send-btn');
     const chatbotCloseBtn = document.getElementById('chatbot-chatbox-close');
 
+    // Función para mostrar el indicador de escritura
+    function showTypingIndicator() {
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'typing-indicator active';
+        typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+        chatbotBody.appendChild(typingIndicator);
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        return typingIndicator;
+    }
+
+    // Función para ocultar el indicador de escritura
+    function hideTypingIndicator(indicator) {
+        if (indicator && indicator.parentNode) {
+            indicator.parentNode.removeChild(indicator);
+        }
+    }
+
     // Función para agregar un mensaje al chat
     function addMessage(message, isUser = false) {
         const messageDiv = document.createElement('div');
@@ -16,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para enviar mensaje al servidor
     async function sendMessage(message) {
+        const typingIndicator = showTypingIndicator();
         try {
             const response = await fetch('/chatbot/chat', {
                 method: 'POST',
@@ -27,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const data = await response.json();
+            hideTypingIndicator(typingIndicator);
             if (data.success) {
                 addMessage(data.message);
             } else {
@@ -34,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error:', error);
+            hideTypingIndicator(typingIndicator);
             addMessage('Lo siento, ocurrió un error al procesar tu mensaje.');
         }
     }
