@@ -14,7 +14,7 @@ class ChatbotController extends Controller
 
     public function __construct()
     {
-        $this->apiKey = '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';
+        $this->apiKey = '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';
         $this->catalogPath = public_path('catalogo.txt');
     }
 
