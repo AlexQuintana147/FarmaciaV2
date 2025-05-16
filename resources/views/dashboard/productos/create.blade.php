@@ -19,6 +19,24 @@
         const autogenerarBtn = document.getElementById('autogenerar-descripcion');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+        // Función para actualizar el estado del botón
+        function actualizarEstadoBoton(estado) {
+            switch(estado) {
+                case 'cargando':
+                    autogenerarBtn.disabled = true;
+                    autogenerarBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+                    break;
+                case 'listo':
+                    autogenerarBtn.disabled = false;
+                    autogenerarBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Autogenerar';
+                    break;
+                case 'error':
+                    autogenerarBtn.disabled = false;
+                    autogenerarBtn.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Reintentar';
+                    break;
+            }
+        }
+
         autogenerarBtn.addEventListener('click', async function() {
             const titulo = tituloInput.value.trim();
             
@@ -27,12 +45,10 @@
                 return;
             }
 
+            // Iniciar carga
+            actualizarEstadoBoton('cargando');
+            
             try {
-                // Mostrar indicador de carga
-                const originalBtnText = autogenerarBtn.innerHTML;
-                autogenerarBtn.disabled = true;
-                autogenerarBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
-
                 const response = await fetch('{{ route("generar.descripcion") }}', {
                     method: 'POST',
                     headers: {
@@ -43,21 +59,44 @@
                     body: JSON.stringify({ message: titulo })
                 });
 
-                const data = await response.json();
-
-                if (data.success) {
-                    descripcionTextarea.value = data.message;
-                    mostrarAlerta('¡Descripción generada con éxito!', 'success');
-                } else {
-                    throw new Error(data.message || 'Error al generar la descripción');
+                let data;
+                try {
+                    data = await response.json();
+                    
+                    // Verificar si la respuesta es exitosa
+                    if (response.ok) {
+                        if (data && data.success) {
+                            // Asegurarse de que el mensaje no esté vacío
+                            if (data.message && data.message.trim() !== '') {
+                                descripcionTextarea.value = data.message;
+                                mostrarAlerta('¡Descripción generada con éxito!', 'success');
+                                return; // Salir temprano si todo está bien
+                            } else {
+                                throw new Error('La descripción generada está vacía');
+                            }
+                        } else {
+                            // Si success es false pero hay un mensaje, mostrarlo
+                            const errorMsg = data.message || 'No se pudo generar la descripción';
+                            throw new Error(errorMsg);
+                        }
+                    } else {
+                        // Si el estado HTTP no es exitoso
+                        const errorMsg = data?.message || `Error del servidor (${response.status})`;
+                        throw new Error(errorMsg);
+                    }
+                } catch (jsonError) {
+                    console.error('Error al procesar la respuesta JSON:', jsonError);
+                    throw new Error('Error al procesar la respuesta del servidor');
                 }
             } catch (error) {
                 console.error('Error:', error);
                 mostrarAlerta(error.message || 'Ocurrió un error al generar la descripción', 'error');
+                actualizarEstadoBoton('error');
             } finally {
-                // Restaurar el botón
-                autogenerarBtn.disabled = false;
-                autogenerarBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Autogenerar';
+                // Asegurarse de que el botón no quede atascado
+                if (autogenerarBtn.disabled) {
+                    actualizarEstadoBoton('listo');
+                }
             }
         });
 
@@ -191,94 +230,4 @@
     </div>
 </div>
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Vista previa de imagen
-    const imagenInput = document.getElementById('imagen');
-    if (imagenInput) {
-        imagenInput.addEventListener('change', function(e) {
-            const previewImage = document.getElementById('preview-image');
-            const previewPlaceholder = document.getElementById('preview-placeholder');
-            if (e.target.files.length > 0) {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    if (previewImage) previewImage.src = e.target.result;
-                    if (previewImage) previewImage.style.display = 'block';
-                    if (previewPlaceholder) previewPlaceholder.style.display = 'none';
-                }
-                reader.readAsDataURL(file);
-            } else {
-                if (previewImage) previewImage.style.display = 'none';
-                if (previewPlaceholder) previewPlaceholder.style.display = 'block';
-            }
-        });
-    }
-
-    // --- AUTOGENERAR DESCRIPCIÓN ---
-    const tituloInput = document.getElementById('titulo');
-    const autogenerarBtn = document.getElementById('autogenerar-descripcion');
-    const descripcionTextarea = document.getElementById('descripcion');
-
-    function verificarTitulo() {
-        if (!tituloInput || !autogenerarBtn) return;
-        const val = tituloInput.value.trim();
-        if (val.length >= 3) {
-            autogenerarBtn.removeAttribute('disabled');
-        } else {
-            autogenerarBtn.setAttribute('disabled', 'disabled');
-        }
-    }
-
-    if (tituloInput && autogenerarBtn) {
-        verificarTitulo();
-        tituloInput.addEventListener('input', verificarTitulo);
-        tituloInput.addEventListener('change', verificarTitulo);
-
-        autogenerarBtn.addEventListener('click', function() {
-            if (!tituloInput || !descripcionTextarea) return;
-            const titulo = tituloInput.value.trim();
-            if (titulo.length < 3) return;
-            autogenerarBtn.setAttribute('disabled', 'disabled');
-            let segundos = 50;
-            const originalHTML = autogenerarBtn.innerHTML;
-            autogenerarBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Generando... <span id='contador-autogenerar'>${segundos}s</span>`;
-            const contadorSpan = document.getElementById('contador-autogenerar');
-            let intervalo = setInterval(() => {
-                segundos--;
-                if (contadorSpan) contadorSpan.textContent = `${segundos}s`;
-                if (segundos <= 0) {
-                    clearInterval(intervalo);
-                }
-            }, 1000);
-            fetch('/productos/autogenerar-descripcion', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ titulo })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.descripcion) {
-                    descripcionTextarea.value = data.descripcion;
-                } else {
-                    alert(data.error || 'No se pudo generar la descripción.');
-                }
-            })
-            .catch(() => {
-                alert('Error al generar la descripción.');
-            })
-            .finally(() => {
-                clearInterval(intervalo);
-                autogenerarBtn.removeAttribute('disabled');
-                autogenerarBtn.innerHTML = originalHTML;
-            });
-        });
-    }
-});
-</script>
-@endpush
 @endsection

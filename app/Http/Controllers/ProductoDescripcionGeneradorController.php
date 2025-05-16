@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ProductoDescripcionGeneradorController extends Controller
 {
@@ -18,15 +19,26 @@ class ProductoDescripcionGeneradorController extends Controller
         $this->catalogPath = public_path('catalogo.txt');
     }
 
-    public function generar(Request $request){
-
+    public function generar(Request $request) {
         try {
-            $userMessage = $request->input('message');
+            $request->validate([
+                'message' => 'required|string|max:255'
+            ]);
+
+            $userMessage = trim($request->input('message'));
+            
+            if (!file_exists($this->catalogPath)) {
+                throw new \Exception('No se encontró el archivo de catálogo');
+            }
+
             $catalogContent = file_get_contents($this->catalogPath);
+            if ($catalogContent === false) {
+                throw new \Exception('No se pudo leer el archivo de catálogo');
+            }
 
-            $systemMessage = "Solo tienes que dar la descripción del producto que se te indicará del siguiente catalogo, en caso no haya tal producto médico, indica que no lo tienes en el catálodo. Catálogo:\n" . $catalogContent;
+            $systemMessage = "Proporciona una descripción clara y concisa del siguiente producto médico basándote en el catálogo. Si el producto no está en el catálogo, indícalo.\n\nCatálogo:\n" . $catalogContent;
 
-            $response = Http::withHeaders([
+            $response = Http::timeout(30)->withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'HTTP-Referer' => config('app.url'),
                 'Content-Type' => 'application/json',
@@ -38,22 +50,40 @@ class ProductoDescripcionGeneradorController extends Controller
                 ]
             ]);
 
-            if ($response->successful()) {
-                $result = $response->json();
-                return response()->json([
-                    'success' => true,
-                    'message' => $result['choices'][0]['message']['content'] ?? 'Lo siento, no pude procesar tu mensaje.'
-                ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error al procesar la solicitud.'
-                ], 500);
+            $responseData = $response->json();
+
+            if (!isset($responseData['choices'][0]['message']['content'])) {
+                throw new \Exception('La respuesta de la API no tiene el formato esperado');
             }
-        } catch (\Exception $e) {
+
+            $content = trim($responseData['choices'][0]['message']['content']);
+            
+            // Limpiar y formatear la respuesta
+            $content = strip_tags($content);
+            $content = str_replace(["\"", "\n"], ['"', ' '], $content);
+            $content = preg_replace('/\s+/', ' ', $content);
+            
+            // Asegurarse de devolver una respuesta JSON válida
+            return response()->json([
+                'success' => true,
+                'message' => $content
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error del servidor: ' . $e->getMessage()
+                'message' => 'Datos de entrada inválidos: ' . $e->getMessage()
+            ], 400);
+            
+        } catch (\Exception $e) {
+            Log::error('Error en ProductoDescripcionGeneradorController: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al generar la descripción: ' . $e->getMessage()
             ], 500);
         }
     }

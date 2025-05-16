@@ -60,7 +60,9 @@ Route::middleware(['auth:trabajador'])->group(function () {
     Route::delete('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
     
     // Generador de descripción de productos
-    Route::post('/generar-descripcion', [App\Http\Controllers\ProductoDescripcionGeneradorController::class, 'generar'])->name('generar.descripcion');
+    Route::post('/generar-descripcion', [App\Http\Controllers\ProductoDescripcionGeneradorController::class, 'generar'])
+        ->name('generar.descripcion')
+        ->middleware('auth:trabajador');
     
     //Trabajadores-Dash
     Route::get('/dashboard/trabajadores', [App\Http\Controllers\TrabajadorController::class, 'index'])->name('dashboard.trabajadores');
