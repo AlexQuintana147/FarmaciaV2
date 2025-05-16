@@ -58,8 +58,9 @@ Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard/productos/{producto}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');
     Route::put('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
-    // Endpoint scraping dedicado
-    Route::post('/productos/autogenerar-descripcion', [App\Http\Controllers\ScrapingController::class, 'autogenerarDescripcion'])->name('productos.autogenerarDescripcion');
+    
+    // Generador de descripción de productos
+    Route::post('/generar-descripcion', [App\Http\Controllers\ProductoDescripcionGeneradorController::class, 'generar'])->name('generar.descripcion');
     
     //Trabajadores-Dash
     Route::get('/dashboard/trabajadores', [App\Http\Controllers\TrabajadorController::class, 'index'])->name('dashboard.trabajadores');

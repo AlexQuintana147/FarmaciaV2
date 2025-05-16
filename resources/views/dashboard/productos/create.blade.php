@@ -1,6 +1,97 @@
 @extends('layouts.app')
 
+@push('styles')
+<style>
+    .spinner-border {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+    }
+</style>
+@endpush
+
 @section('content')
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tituloInput = document.getElementById('titulo');
+        const descripcionTextarea = document.getElementById('descripcion');
+        const autogenerarBtn = document.getElementById('autogenerar-descripcion');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        autogenerarBtn.addEventListener('click', async function() {
+            const titulo = tituloInput.value.trim();
+            
+            if (!titulo) {
+                mostrarAlerta('Por favor ingrese un título para el producto', 'warning');
+                return;
+            }
+
+            try {
+                // Mostrar indicador de carga
+                const originalBtnText = autogenerarBtn.innerHTML;
+                autogenerarBtn.disabled = true;
+                autogenerarBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+
+                const response = await fetch('{{ route("generar.descripcion") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ message: titulo })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    descripcionTextarea.value = data.message;
+                    mostrarAlerta('¡Descripción generada con éxito!', 'success');
+                } else {
+                    throw new Error(data.message || 'Error al generar la descripción');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarAlerta(error.message || 'Ocurrió un error al generar la descripción', 'error');
+            } finally {
+                // Restaurar el botón
+                autogenerarBtn.disabled = false;
+                autogenerarBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Autogenerar';
+            }
+        });
+
+
+        function mostrarAlerta(mensaje, tipo = 'success') {
+            // Aquí puedes implementar tu propio sistema de notificaciones
+            // Por ahora usaremos alertas nativas
+            if (tipo === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje,
+                    confirmButtonColor: '#3085d6',
+                });
+            } else if (tipo === 'warning') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Advertencia',
+                    text: mensaje,
+                    confirmButtonColor: '#3085d6',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: mensaje,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        }
+    });
+</script>
+@endpush
 <div class="container py-4">
     <div class="bg-gradient-primary-to-secondary p-3 rounded-3 mb-4 shadow-sm">
         <div class="d-flex justify-content-between align-items-center">
@@ -47,7 +138,7 @@
                             <label for="descripcion" class="form-label fw-bold text-primary"><i class="fas fa-align-left me-1"></i> Descripción <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" rows="7" placeholder="Describa las características y beneficios del producto" required>{{ old('descripcion') }}</textarea>
-                                <button type="button" class="btn btn-outline-primary" id="autogenerar-descripcion" tabindex="-1" disabled>
+                                <button type="button" class="btn btn-outline-primary" id="autogenerar-descripcion">
                                     <i class="fas fa-magic me-1"></i>Autogenerar
                                 </button>
                             </div>
