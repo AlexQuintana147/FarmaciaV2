@@ -69,6 +69,70 @@
             z-index: 0;
             animation: float 6s ease-in-out infinite;
         }
+        
+        /* Estilos para el botón de métricas del chatbot */
+        .btn-chatbot-metrics {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            padding: 12px 25px;
+            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        .btn-chatbot-metrics:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(37, 117, 252, 0.4);
+            color: white;
+        }
+        
+        .btn-chatbot-metrics:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(37, 117, 252, 0.3);
+        }
+        
+        .btn-chatbot-metrics i.fa-arrow-right {
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-chatbot-metrics:hover i.fa-arrow-right {
+            transform: translateX(5px);
+        }
+        
+        .btn-chatbot-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 50px;
+            z-index: -1;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            70% {
+                transform: scale(1.05);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.1);
+                opacity: 0;
+            }
+        }
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
@@ -93,10 +157,12 @@
                 </div>
             </div>
         </div>
-        <!-- Botón de métricas del chatbot -->
-        <div class="text-end mb-4">
-            <a href="{{ route('chatbot.metrics') }}" class="btn btn-primary">
+        <!-- Botón de métricas del chatbot mejorado -->
+        <div class="text-end mb-4 mt-3">
+            <a href="{{ route('chatbot.metrics') }}" class="btn btn-chatbot-metrics">
                 <i class="fas fa-robot me-2"></i>Ver Métricas del Chatbot
+                <i class="fas fa-arrow-right ms-2"></i>
+                <span class="btn-chatbot-pulse"></span>
             </a>
         </div>
     </div>
