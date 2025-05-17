@@ -31,6 +31,25 @@ document.addEventListener('DOMContentLoaded', function() {
         chatbotBody.scrollTop = chatbotBody.scrollHeight;
     }
 
+    // Función para registrar la conversación en la base de datos
+    async function logConversation(pregunta, respuesta) {
+        try {
+            await fetch('/chatbot/logs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    pregunta: pregunta,
+                    respuesta: respuesta
+                })
+            });
+        } catch (error) {
+            console.error('Error al registrar la conversación:', error);
+        }
+    }
+
     // Función para enviar mensaje al servidor
     async function sendMessage(message) {
         const typingIndicator = showTypingIndicator();
@@ -46,10 +65,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const data = await response.json();
             hideTypingIndicator(typingIndicator);
+            
             if (data.success) {
                 addMessage(data.message);
+                // Registrar la conversación exitosa
+                await logConversation(message, data.message);
             } else {
-                addMessage('Lo siento, ocurrió un error al procesar tu mensaje.');
+                const errorMessage = data.message || 'Lo siento, ocurrió un error al procesar tu mensaje.';
+                addMessage(errorMessage);
             }
         } catch (error) {
             console.error('Error:', error);

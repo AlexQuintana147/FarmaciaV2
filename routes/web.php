@@ -4,13 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\TrabajadorAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\ChatbotLogController;
 
 
 Route::get('/', function () {
     return view('home');
 });
 
+// Chatbot Routes
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
+Route::post('/chatbot/logs', [ChatbotLogController::class, 'store'])->name('chatbot.logs.store');
+Route::get('/chatbot/historial', [ChatbotLogController::class, 'historial'])->name('chatbot.historial');
 
 Route::get('/nosotros', function () {
     return view('nosotros');
