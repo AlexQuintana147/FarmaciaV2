@@ -36,7 +36,8 @@
         .login-illustration {
             background: linear-gradient(135deg, var(--primary-color) 0%, #1a4a8d 100%);
             color: white;
-            padding: 3rem 2rem;
+            padding: 3rem 2rem 3rem 0;
+            margin-left: -15px;
             display: flex;
             flex-direction: column;
             justify-content: center;
