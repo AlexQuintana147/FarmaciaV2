@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container py-4">
+    
     <!-- Estilos específicos para el dashboard médico -->
     <style>
         .dashboard-header {
@@ -91,6 +92,12 @@
                     <i class="fas fa-calendar-alt me-2"></i> {{ now()->format('d M, Y') }}
                 </div>
             </div>
+        </div>
+        <!-- Botón de métricas del chatbot -->
+        <div class="text-end mb-4">
+            <a href="{{ route('chatbot.metrics') }}" class="btn btn-primary">
+                <i class="fas fa-robot me-2"></i>Ver Métricas del Chatbot
+            </a>
         </div>
     </div>
     

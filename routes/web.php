@@ -45,6 +45,9 @@ Route::post('/logout', [TrabajadorAuthController::class, 'logout'])->name('logou
 Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
+    // Chatbot Metrics
+    Route::get('/dashboard/chatbot-metrics', [ChatbotLogController::class, 'metrics'])->name('chatbot.metrics');
+    
     //Blogs
     Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');
     Route::get('/dashboard/blogs/create', [App\Http\Controllers\BlogController::class, 'create'])->name('blogs.create');

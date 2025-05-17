@@ -66,4 +66,35 @@ class ChatbotLogController extends Controller
             'data' => $historial
         ]);
     }
+
+    /**
+     * Muestra las métricas del chatbot
+     *
+     * @return \Illuminate\View\View
+     */
+    public function metrics()
+    {
+        // Obtener estadísticas generales
+        $totalInteracciones = ChatbotLog::count();
+        $interaccionesHoy = ChatbotLog::whereDate('created_at', today())->count();
+        $interaccionesPorUsuario = ChatbotLog::selectRaw('trabajador_id, COUNT(*) as total')
+            ->groupBy('trabajador_id')
+            ->with('trabajador')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        // Obtener las preguntas más frecuentes
+        $preguntasFrecuentes = ChatbotLog::selectRaw('pregunta, COUNT(*) as total')
+            ->groupBy('pregunta')
+            ->orderBy('total', 'desc')
+            ->limit(10)
+            ->get();
+
+        return view('dashboard.chatbot-metrics', [
+            'totalInteracciones' => $totalInteracciones,
+            'interaccionesHoy' => $interaccionesHoy,
+            'interaccionesPorUsuario' => $interaccionesPorUsuario,
+            'preguntasFrecuentes' => $preguntasFrecuentes
+        ]);
+    }
 }
