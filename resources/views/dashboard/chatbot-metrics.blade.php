@@ -30,14 +30,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-4">
-            <div class="card bg-warning text-white h-100 shadow-sm hover-card">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Tiempo Promedio</h5>
-                    <h2 class="display-4 mb-0">{{ round($tiempoPromedioRespuesta, 2) }}s</h2>
-                </div>
-            </div>
-        </div>
 
         <!-- Tabla de logs -->
         <div class="col-12">
@@ -51,25 +43,28 @@
                 <div class="card-body p-0">
                     @if(isset($chatbotLogs) && count($chatbotLogs) > 0)
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0 align-middle">
+                        <div class="d-flex justify-content-between align-items-center px-4 py-3 bg-light border-bottom">
+                            <h6 class="mb-0 text-muted">
+                                <i class="fas fa-list me-2"></i>
+                                Mostrando {{ $chatbotLogs->firstItem() }} - {{ $chatbotLogs->lastItem() }} de {{ $chatbotLogs->total() }} registros
+                            </h6>
+                        </div>
+                        <table class="table table-hover mb-0 align-middle border-0">
                             <thead class="bg-light">
                                 <tr>
-                                    <th class="px-4 py-3">ID</th>
-                                    <th class="px-4 py-3">Trabajador</th>
+                                    <th class="px-4 py-3">Usuario</th>
                                     <th class="px-4 py-3">Pregunta</th>
                                     <th class="px-4 py-3">Respuesta</th>
                                     <th class="px-4 py-3">Fecha de Creación</th>
-                                    <th class="px-4 py-3">Última Actualización</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($chatbotLogs as $log)
                                 <tr>
-                                    <td class="px-4">{{ $log->id }}</td>
                                     <td class="px-4">
                                         <span class="badge bg-light text-dark">
                                             <i class="fas fa-user me-1"></i>
-                                            {{ $log->trabajador ? $log->trabajador->nombre : 'Usuario Anónimo' }}
+                                            {{ $log->trabajador ? $log->trabajador->nombre : 'Usuario Cliente' }}
                                         </span>
                                     </td>
                                     <td class="px-4">
@@ -116,21 +111,20 @@
                                             {{ $log->created_at->format('d/m/Y H:i:s') }}
                                         </span>
                                     </td>
-                                    <td class="px-4">
-                                        <span class="text-muted">
-                                            <i class="far fa-clock me-1"></i>
-                                            {{ $log->updated_at->format('d/m/Y H:i:s') }}
-                                        </span>
-                                    </td>
+                                    
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    <div class="px-4 py-3 bg-light border-top">
+                        {{ $chatbotLogs->links('pagination::bootstrap-5') }}
+                    </div>
                     @else
                     <div class="text-center py-5">
-                        <i class="fas fa-robot fa-4x text-muted mb-3"></i>
+                        <i class="fas fa-robot fa-4x text-muted mb-3 opacity-50"></i>
                         <p class="h5 text-muted">No hay registros de interacciones con el chatbot</p>
+                        <p class="text-muted">Los registros aparecerán aquí cuando haya interacciones</p>
                     </div>
                     @endif
                 </div>
@@ -142,6 +136,7 @@
 <style>
     .hover-card {
         transition: transform 0.2s ease-in-out;
+        border: none;
     }
     
     .hover-card:hover {
@@ -150,6 +145,15 @@
 
     .table td {
         vertical-align: middle;
+        border: none;
+    }
+
+    .table tr {
+        border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+
+    .table tr:hover {
+        background-color: rgba(0,0,0,.02);
     }
     
     .modal-body {
@@ -164,6 +168,27 @@
     .badge {
         font-size: 0.9rem;
         padding: 0.5rem 0.75rem;
+        border: 1px solid rgba(0,0,0,.1);
+    }
+
+    .pagination {
+        margin-bottom: 0;
+    }
+
+    .page-link {
+        border: none;
+        padding: 0.5rem 1rem;
+        margin: 0 0.2rem;
+        border-radius: 0.5rem;
+    }
+
+    .page-item.active .page-link {
+        background-color: var(--bs-primary);
+        border: none;
+    }
+
+    .page-item:not(.active) .page-link:hover {
+        background-color: rgba(0,0,0,.05);
     }
 </style>
 @endsection
