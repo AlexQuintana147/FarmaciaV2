@@ -410,11 +410,6 @@
         }
     </style>
 
-    <!-- Styles / Scripts -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
-    
     <!-- Font Awesome y Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -592,6 +587,55 @@
             <button id="chatbot-send-btn">Enviar</button>
         </div>
     </div>
+
+    
+
+    <style>
+        .metrics-dashboard {
+            background-color: #f8f9fa;
+        }
+        .metrics-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .metric-card {
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+        }
+        .metric-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        .table th {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .table td {
+            font-size: 0.9rem;
+        }
+    </style>
     <!-- Scripts del chatbot -->
     <script src="{{ asset('js/chatbot.js') }}"></script>
 </body>

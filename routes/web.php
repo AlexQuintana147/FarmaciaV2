@@ -8,7 +8,8 @@ use App\Http\Controllers\ChatbotLogController;
 
 
 Route::get('/', function () {
-    return view('home');
+    $blogs = App\Models\Blog::latest()->get();
+    return view('home', compact('blogs'));
 });
 
 // Chatbot Routes
@@ -46,7 +47,7 @@ Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Chatbot Metrics
-    Route::get('/dashboard/chatbot-metrics', [ChatbotLogController::class, 'metrics'])->name('chatbot.metrics');
+    Route::get('/dashboard/chatbot-metrics', [ChatbotController::class, 'metrics'])->name('chatbot.metrics');
     
     //Blogs
     Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');

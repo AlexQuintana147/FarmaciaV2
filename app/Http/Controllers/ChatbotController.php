@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\ChatbotLog;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ChatbotController extends Controller
 {
@@ -16,6 +19,65 @@ class ChatbotController extends Controller
     {
         $this->apiKey = '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';
         $this->catalogPath = public_path('catalogo.txt');
+    }
+
+    public function metrics()
+    {
+        // Métricas básicas
+        $totalInteracciones = ChatbotLog::count();
+        $interaccionesHoy = ChatbotLog::whereDate('created_at', Carbon::today())->count();
+        $preguntasUnicas = ChatbotLog::distinct('pregunta')->count('pregunta');
+
+        // Preguntas frecuentes con tendencia
+        $preguntasFrecuentes = ChatbotLog::select(
+            'pregunta',
+            DB::raw('count(*) as total'),
+            DB::raw('count(case when created_at >= ? then 1 end) as recientes')
+        )
+            ->addBinding(Carbon::now()->subDays(7), 'select')
+            ->groupBy('pregunta')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get()
+            ->map(function($item) {
+                $tendencia = $item->total > 0 ? ($item->recientes / $item->total) * 100 : 0;
+                return [
+                    'pregunta' => $item->pregunta,
+                    'total' => $item->total,
+                    'tendencia' => round($tendencia)
+                ];
+            });
+
+        // Interacciones por usuario con última actividad
+        $interaccionesPorUsuario = ChatbotLog::select(
+            'trabajador_id',
+            DB::raw('count(*) as total'),
+            DB::raw('MAX(created_at) as ultima_actividad')
+        )
+            ->groupBy('trabajador_id')
+            ->orderByDesc('total')
+            ->get()
+            ->map(function($item) {
+                return [
+                    'trabajador_id' => $item->trabajador_id,
+                    'total' => $item->total,
+                    'ultima_actividad' => Carbon::parse($item->ultima_actividad)->diffForHumans()
+                ];
+            });
+
+        // Estadísticas adicionales
+        $tiempoPromedioRespuesta = ChatbotLog::select(
+            DB::raw('AVG(EXTRACT(EPOCH FROM (updated_at - created_at))) as promedio')
+        )->first()->promedio ?? 0;
+
+        return view('dashboard.chatbot-metrics', compact(
+            'totalInteracciones',
+            'interaccionesHoy',
+            'preguntasUnicas',
+            'preguntasFrecuentes',
+            'interaccionesPorUsuario',
+            'tiempoPromedioRespuesta'
+        ));
     }
 
     public function chat(Request $request)

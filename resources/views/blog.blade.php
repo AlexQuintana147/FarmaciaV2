@@ -21,7 +21,11 @@
                 </div>
             </div>
             <div class="col-lg-6 text-center">
-                <img src="https://placehold.co/600x400/e8f4fd/4a89dc?text=Blog+DrodiPharma" class="img-fluid rounded shadow" alt="Blog DrodiPharma">
+                @if($blogs->isNotEmpty())
+                    <img src="{{ asset('imagesBlog/' . $blogs->first()->imagen) }}" class="img-fluid rounded shadow" alt="{{ $blogs->first()->titulo }}">
+                @else
+                    <img src="{{ asset('images/NoImage.png') }}" class="img-fluid rounded shadow" alt="Blog DrodiPharma">
+                @endif
             </div>
         </div>
     </div>

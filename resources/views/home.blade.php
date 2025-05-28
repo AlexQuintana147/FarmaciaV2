@@ -466,7 +466,11 @@
                 <a href="{{ url('/blog') }}" class="btn btn-primary btn-lg shadow-sm"><i class="fas fa-book-medical me-2"></i>Visitar Blog</a>
             </div>
             <div class="col-md-6 text-center">
-                <img src="https://placehold.co/600x300/6c757d/white?text=Blog+DrodiPharma" class="img-fluid rounded blog-img" alt="Blog DrodiPharma">
+                @if(count($blogs) > 0)
+                    <img src="{{ asset($blogs[0]['imagen']) }}" class="img-fluid rounded blog-img" alt="{{ $blogs[0]['titulo'] }}">
+                @else
+                    <img src="{{ asset('images/NoImage.png') }}" class="img-fluid rounded blog-img" alt="Blog DrodiPharma">
+                @endif
             </div>
         </div>
     </div>
