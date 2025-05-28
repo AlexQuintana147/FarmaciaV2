@@ -28,6 +28,11 @@ class ChatbotController extends Controller
         $interaccionesHoy = ChatbotLog::whereDate('created_at', Carbon::today())->count();
         $preguntasUnicas = ChatbotLog::distinct('pregunta')->count('pregunta');
 
+        // Obtener todos los registros del chatbot ordenados por fecha
+        $chatbotLogs = ChatbotLog::with('trabajador')
+            ->orderByDesc('created_at')
+            ->get();
+
         // Preguntas frecuentes con tendencia
         $preguntasFrecuentes = ChatbotLog::select(
             'pregunta',
@@ -76,7 +81,8 @@ class ChatbotController extends Controller
             'preguntasUnicas',
             'preguntasFrecuentes',
             'interaccionesPorUsuario',
-            'tiempoPromedioRespuesta'
+            'tiempoPromedioRespuesta',
+            'chatbotLogs'
         ));
     }
 
