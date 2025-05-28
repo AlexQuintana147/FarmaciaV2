@@ -44,6 +44,9 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <div class="form-text"><i class="fas fa-info-circle"></i> El contenido debe ser informativo y relevante para los lectores.</div>
+                            <button type="button" class="btn btn-outline-primary mt-3" id="medirContenido">
+                                <i class="fas fa-robot me-2"></i>Medir contenido con IA
+                            </button>
                         </div>
                     </div>
                     
