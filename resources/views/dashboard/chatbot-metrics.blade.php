@@ -8,6 +8,102 @@
 @section('title', 'Métricas del Chatbot')
 
 @section('content')
+<style>
+    /* Efecto de escala al pasar el ratón */
+    .hover-scale {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-scale:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    }
+    
+    /* Colores personalizados */
+    .bg-gradient-purple {
+        background: linear-gradient(45deg, #6f42c1, #9c27b0);
+    }
+    .text-purple {
+        color: #6f42c1 !important;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #4361ee, #3a0ca3);
+    }
+    .bg-gradient-info {
+        background: linear-gradient(45deg, #0096c7, #00b4d8);
+    }
+    .bg-gradient-success {
+        background: linear-gradient(45deg, #2e7d32, #4caf50);
+    }
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #f8961e, #f9c74f);
+    }
+    
+    /* Mejoras en las tarjetas */
+    .card {
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .card-subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+    }
+    
+    .display-4 {
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+    
+    /* Mejoras en la tabla */
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    /* Mejoras en los badges */
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+    }
+    
+    /* Mejoras en la paginación */
+    .pagination .page-link {
+        border: none;
+        margin: 0 3px;
+        border-radius: 50% !important;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #495057;
+        font-weight: 500;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #4361ee;
+        color: white;
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        opacity: 0.5;
+    }
+</style>
 <div class="container-fluid py-5 bg-light min-vh-100">
     <div class="container">
         <div class="row justify-content-center">
@@ -22,122 +118,165 @@
                 </div>
             </div>
 
-            <!-- Tarjetas de métricas -->
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-primary text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
-                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
-                        <i class="fas fa-comments" style="font-size: 4rem;"></i>
+            <!-- Tarjeta de Total de Interacciones -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-primary text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
+                        <i class="fas fa-comments" style="font-size: 5rem;"></i>
                     </div>
                     <div class="card-body p-4 position-relative">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
-                                <i class="fas fa-comments fa-2x"></i>
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-comments fa-lg"></i>
                             </div>
-                            <div>
-                                <h5 class="card-title fw-bold mb-1">Total</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Interacciones</h6>
+                            <div class="flex-grow-1">
+                                <h5 class="card-title fw-bold mb-1">Total de Interacciones</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Historial completo</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $totalInteracciones ?? 0 }}</h1>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <h1 class="display-4 fw-bold mb-0">{{ number_format($totalInteracciones ?? 0) }}</h1>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-white text-primary p-2">{{ $interaccionesHoy ?? 0 }} hoy</span>
+                            </div>
+                        </div>
+                        <div class="progress mt-3" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+                            <div class="progress-bar bg-white" style="width: 100%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-success text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
-                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
-                        <i class="fas fa-calendar-day" style="font-size: 4rem;"></i>
+            <!-- Tarjeta de Interacciones Hoy -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-info text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
+                        <i class="fas fa-calendar-day" style="font-size: 5rem;"></i>
                     </div>
                     <div class="card-body p-4 position-relative">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
-                                <i class="fas fa-calendar-day fa-2x"></i>
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-calendar-day fa-lg"></i>
                             </div>
-                            <div>
-                                <h5 class="card-title fw-bold mb-1">Hoy</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Interacciones</h6>
+                            <div class="flex-grow-1">
+                                <h5 class="card-title fw-bold mb-1">Interacciones Hoy</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">{{ now()->format('d M, Y') }}</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesHoy ?? 0 }}</h1>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <h1 class="display-4 fw-bold mb-0">{{ $interaccionesHoy ?? 0 }}</h1>
+                            </div>
+                            @php
+                                $porcentajeHoy = $totalInteracciones > 0 ? round(($interaccionesHoy / $totalInteracciones) * 100) : 0;
+                            @endphp
+                            <div class="text-end">
+                                <span class="badge bg-white text-info p-2">{{ $porcentajeHoy }}% del total</span>
+                            </div>
+                        </div>
+                        <div class="progress mt-3" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+                            <div class="progress-bar bg-white" style="width: {{ min($porcentajeHoy, 100) }}%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-info text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
-                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
-                        <i class="fas fa-question-circle" style="font-size: 4rem;"></i>
+            <!-- Tarjeta de Preguntas Únicas -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-purple text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
+                        <i class="fas fa-question-circle" style="font-size: 5rem;"></i>
                     </div>
                     <div class="card-body p-4 position-relative">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
-                                <i class="fas fa-question-circle fa-2x"></i>
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-question-circle fa-lg"></i>
                             </div>
-                            <div>
-                                <h5 class="card-title fw-bold mb-1">Preguntas</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Únicas</h6>
+                            <div class="flex-grow-1">
+                                <h5 class="card-title fw-bold mb-1">Preguntas Únicas</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Diferentes preguntas</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $preguntasUnicas ?? 0 }}</h1>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <h1 class="display-4 fw-bold mb-0">{{ $preguntasUnicas ?? 0 }}</h1>
+                            </div>
+                            @php
+                                $porcentajeUnicas = $totalInteracciones > 0 ? round(($preguntasUnicas / $totalInteracciones) * 100) : 0;
+                            @endphp
+                            <div class="text-end">
+                                <span class="badge bg-white text-purple p-2">{{ $porcentajeUnicas }}% de repetición</span>
+                            </div>
+                        </div>
+                        <div class="progress mt-3" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+                            <div class="progress-bar bg-white" style="width: {{ $porcentajeUnicas }}%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Tarjeta de Usuarios Autenticados -->
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-success text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
-                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
-                        <i class="fas fa-user-shield" style="font-size: 4rem;"></i>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-success text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
+                        <i class="fas fa-user-shield" style="font-size: 5rem;"></i>
                     </div>
                     <div class="card-body p-4 position-relative">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
-                                <i class="fas fa-user-shield fa-2x"></i>
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user-shield fa-lg"></i>
                             </div>
-                            <div>
+                            <div class="flex-grow-1">
                                 <h5 class="card-title fw-bold mb-1">Usuarios Autenticados</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">{{ $porcentajeAutenticados ?? 0 }}% del total</h6>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Personal autorizado</h6>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-end">
                             <div>
-                                <span class="h6 mb-0" style="opacity: 0.8;">Total</span>
-                                <h1 class="display-4 fw-bold mb-0">{{ $interaccionesAutenticadas ?? 0 }}</h1>
+                                <h1 class="display-4 fw-bold mb-0">{{ number_format($interaccionesAutenticadas ?? 0) }}</h1>
                             </div>
                             <div class="text-end">
-                                <span class="h6 mb-0" style="opacity: 0.8;">Hoy</span>
-                                <h3 class="mb-0">{{ ChatbotLog::where('es_autenticado', true)->whereDate('created_at', now())->count() }}</h3>
+                                <span class="badge bg-white text-success p-2">{{ $porcentajeAutenticados ?? 0 }}% del total</span>
                             </div>
+                        </div>
+                        <div class="progress mt-3" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+                            <div class="progress-bar bg-white" style="width: {{ $porcentajeAutenticados ?? 0 }}%"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Tarjeta de Usuarios No Autenticados -->
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-warning text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
-                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
-                        <i class="fas fa-user" style="font-size: 4rem;"></i>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-gradient-warning text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
+                        <i class="fas fa-user" style="font-size: 5rem;"></i>
                     </div>
                     <div class="card-body p-4 position-relative">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
-                                <i class="fas fa-user fa-2x"></i>
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user fa-lg"></i>
                             </div>
-                            <div>
+                            <div class="flex-grow-1">
                                 <h5 class="card-title fw-bold mb-1">Usuarios Invitados</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">{{ 100 - ($porcentajeAutenticados ?? 0) }}% del total</h6>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Acceso público</h6>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-end">
                             <div>
-                                <span class="h6 mb-0" style="opacity: 0.8;">Total</span>
-                                <h1 class="display-4 fw-bold mb-0">{{ $interaccionesNoAutenticadas ?? 0 }}</h1>
+                                <h1 class="display-4 fw-bold mb-0">{{ number_format($interaccionesNoAutenticadas ?? 0) }}</h1>
                             </div>
                             <div class="text-end">
-                                <span class="h6 mb-0" style="opacity: 0.8;">Hoy</span>
-                                <h3 class="mb-0">{{ ChatbotLog::where('es_autenticado', false)->whereDate('created_at', now())->count() }}</h3>
+                                @php
+                                    $porcentajeNoAutenticados = 100 - ($porcentajeAutenticados ?? 0);
+                                @endphp
+                                <span class="badge bg-white text-warning p-2">{{ $porcentajeNoAutenticados }}% del total</span>
                             </div>
+                        </div>
+                        <div class="progress mt-3" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+                            <div class="progress-bar bg-white" style="width: {{ $porcentajeNoAutenticados }}%"></div>
                         </div>
                     </div>
                 </div>
