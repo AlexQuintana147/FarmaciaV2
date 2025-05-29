@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@php
+    use App\Models\ChatbotLog;
+    use Carbon\Carbon;
+@endphp
+
 @section('title', 'Métricas del Chatbot')
 
 @section('content')
@@ -78,8 +83,9 @@
                 </div>
             </div>
 
+            <!-- Tarjeta de Usuarios Autenticados -->
             <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-warning text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+                <div class="card bg-success text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
                         <i class="fas fa-user-shield" style="font-size: 4rem;"></i>
                     </div>
@@ -89,17 +95,27 @@
                                 <i class="fas fa-user-shield fa-2x"></i>
                             </div>
                             <div>
-                                <h5 class="card-title fw-bold mb-1">Usuarios</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Autenticados</h6>
+                                <h5 class="card-title fw-bold mb-1">Usuarios Autenticados</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">{{ $porcentajeAutenticados ?? 0 }}% del total</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesAutenticadas ?? 0 }}</h1>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <span class="h6 mb-0" style="opacity: 0.8;">Total</span>
+                                <h1 class="display-4 fw-bold mb-0">{{ $interaccionesAutenticadas ?? 0 }}</h1>
+                            </div>
+                            <div class="text-end">
+                                <span class="h6 mb-0" style="opacity: 0.8;">Hoy</span>
+                                <h3 class="mb-0">{{ ChatbotLog::where('es_autenticado', true)->whereDate('created_at', now())->count() }}</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Tarjeta de Usuarios No Autenticados -->
             <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card bg-secondary text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+                <div class="card bg-warning text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
                         <i class="fas fa-user" style="font-size: 4rem;"></i>
                     </div>
@@ -109,11 +125,20 @@
                                 <i class="fas fa-user fa-2x"></i>
                             </div>
                             <div>
-                                <h5 class="card-title fw-bold mb-1">Usuarios</h5>
-                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">No autenticados</h6>
+                                <h5 class="card-title fw-bold mb-1">Usuarios Invitados</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">{{ 100 - ($porcentajeAutenticados ?? 0) }}% del total</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesNoAutenticadas ?? 0 }}</h1>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <span class="h6 mb-0" style="opacity: 0.8;">Total</span>
+                                <h1 class="display-4 fw-bold mb-0">{{ $interaccionesNoAutenticadas ?? 0 }}</h1>
+                            </div>
+                            <div class="text-end">
+                                <span class="h6 mb-0" style="opacity: 0.8;">Hoy</span>
+                                <h3 class="mb-0">{{ ChatbotLog::where('es_autenticado', false)->whereDate('created_at', now())->count() }}</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

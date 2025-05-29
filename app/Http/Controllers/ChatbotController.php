@@ -28,6 +28,11 @@ class ChatbotController extends Controller
         $totalInteracciones = ChatbotLog::count();
         $interaccionesHoy = ChatbotLog::whereDate('created_at', Carbon::today())->count();
         $preguntasUnicas = ChatbotLog::distinct('pregunta')->count('pregunta');
+        
+        // Métricas de autenticación
+        $interaccionesAutenticadas = ChatbotLog::where('es_autenticado', true)->count();
+        $interaccionesNoAutenticadas = ChatbotLog::where('es_autenticado', false)->count();
+        $porcentajeAutenticados = $totalInteracciones > 0 ? round(($interaccionesAutenticadas / $totalInteracciones) * 100) : 0;
 
         // Obtener registros del chatbot paginados (10 por página)
         $chatbotLogs = ChatbotLog::with('trabajador')
@@ -83,7 +88,10 @@ class ChatbotController extends Controller
             'preguntasFrecuentes',
             'interaccionesPorUsuario',
             'tiempoPromedioRespuesta',
-            'chatbotLogs'
+            'chatbotLogs',
+            'interaccionesAutenticadas',
+            'interaccionesNoAutenticadas',
+            'porcentajeAutenticados'
         ));
     }
 
