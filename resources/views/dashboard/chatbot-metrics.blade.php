@@ -103,6 +103,40 @@
     .pagination .page-item.disabled .page-link {
         opacity: 0.5;
     }
+    /* Ajustes para las columnas personalizadas */
+    @media (min-width: 1200px) {
+        .col-xl-2_4 {
+            flex: 0 0 auto;
+            width: 20%;
+        }
+    }
+    
+    /* Ajustes para las tarjetas en móviles */
+    @media (max-width: 767.98px) {
+        .card {
+            margin-bottom: 1rem;
+        }
+        .display-4 {
+            font-size: 1.8rem;
+        }
+    }
+    
+    /* Asegurar que las tarjetas tengan la misma altura */
+    .card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-body > div:last-child {
+        margin-top: auto;
+    }
 </style>
 <div class="container-fluid py-5 bg-light min-vh-100">
     <div class="container">
@@ -118,8 +152,11 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de Total de Interacciones -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <!-- Fila de Tarjetas -->
+            <div class="col-12">
+                <div class="row g-3">
+                    <!-- Tarjeta de Total de Interacciones -->
+                    <div class="col-xl-2_4 col-lg-4 col-md-6 mb-4">
                 <div class="card bg-gradient-primary text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
                         <i class="fas fa-comments" style="font-size: 5rem;"></i>
@@ -149,8 +186,8 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de Interacciones Hoy -->
-            <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- Tarjeta de Interacciones Hoy -->
+                    <div class="col-xl-2_4 col-lg-4 col-md-6 mb-4">
                 <div class="card bg-gradient-info text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
                         <i class="fas fa-calendar-day" style="font-size: 5rem;"></i>
@@ -183,8 +220,8 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de Preguntas Únicas -->
-            <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- Tarjeta de Preguntas Únicas -->
+                    <div class="col-xl-2_4 col-lg-4 col-md-6 mb-4">
                 <div class="card bg-gradient-purple text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
                         <i class="fas fa-question-circle" style="font-size: 5rem;"></i>
@@ -217,8 +254,8 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de Usuarios Autenticados -->
-            <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- Tarjeta de Usuarios Autenticados -->
+                    <div class="col-xl-2_4 col-lg-4 col-md-6 mb-4">
                 <div class="card bg-gradient-success text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
                         <i class="fas fa-user-shield" style="font-size: 5rem;"></i>
@@ -248,8 +285,8 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de Usuarios No Autenticados -->
-            <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- Tarjeta de Usuarios No Autenticados -->
+                    <div class="col-xl-2_4 col-lg-4 col-md-6 mb-4">
                 <div class="card bg-gradient-warning text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
                         <i class="fas fa-user" style="font-size: 5rem;"></i>
@@ -284,7 +321,7 @@
 
             <!-- Tabla de logs -->
             <div class="col-12 mt-4">
-                <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
+                <div class="card shadow-sm rounded-4 border-0 overflow-hidden">
                     <div class="card-header bg-white py-4 border-0">
                         <div class="row align-items-center">
                             <div class="col">
