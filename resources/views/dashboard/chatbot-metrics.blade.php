@@ -33,7 +33,7 @@
                                 <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Interacciones</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $totalInteracciones }}</h1>
+                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $totalInteracciones ?? 0 }}</h1>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                                 <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Interacciones</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesHoy }}</h1>
+                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesHoy ?? 0 }}</h1>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,47 @@
                                 <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Únicas</h6>
                             </div>
                         </div>
-                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $preguntasUnicas }}</h1>
+                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $preguntasUnicas ?? 0 }}</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card bg-warning text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
+                        <i class="fas fa-user-shield" style="font-size: 4rem;"></i>
+                    </div>
+                    <div class="card-body p-4 position-relative">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
+                                <i class="fas fa-user-shield fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title fw-bold mb-1">Usuarios</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">Autenticados</h6>
+                            </div>
+                        </div>
+                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesAutenticadas ?? 0 }}</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card bg-secondary text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+                    <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.2;">
+                        <i class="fas fa-user" style="font-size: 4rem;"></i>
+                    </div>
+                    <div class="card-body p-4 position-relative">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
+                                <i class="fas fa-user fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title fw-bold mb-1">Usuarios</h5>
+                                <h6 class="card-subtitle mb-0" style="opacity: 0.8;">No autenticados</h6>
+                            </div>
+                        </div>
+                        <h1 class="display-3 fw-bold mb-0 text-end">{{ $interaccionesNoAutenticadas ?? 0 }}</h1>
                     </div>
                 </div>
             </div>
@@ -111,7 +151,7 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th class="px-4 py-4 fw-bold text-dark border-0">
-                                            <i class="fas fa-user me-2 text-primary"></i>Usuario
+                                            <i class="fas fa-user me-2 text-primary"></i>Usuario / Tipo
                                         </th>
                                         <th class="px-4 py-4 fw-bold text-dark border-0">
                                             <i class="fas fa-question me-2 text-success"></i>Pregunta
@@ -129,15 +169,23 @@
                                     <tr class="border-bottom border-light">
                                         <td class="px-4 py-3">
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
-                                                    <i class="fas fa-user text-primary"></i>
+                                                <div class="bg-{{ $log->es_autenticado ? 'primary' : 'secondary' }} bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="fas fa-user-{{ $log->es_autenticado ? 'shield' : 'alt' }} text-{{ $log->es_autenticado ? 'primary' : 'secondary' }}"></i>
                                                 </div>
                                                 <div>
                                                     <span class="fw-semibold text-dark d-block">
-                                                        {{ $log->trabajador ? $log->trabajador->nombre : 'Usuario Cliente' }}
+                                                        @if($log->trabajador)
+                                                            {{ $log->trabajador->nombre }}
+                                                        @else
+                                                            {{ $log->es_autenticado ? 'Usuario' : 'Visitante' }}
+                                                        @endif
                                                     </span>
-                                                    <small class="text-muted">
-                                                        {{ $log->trabajador ? 'Trabajador' : 'Cliente' }}
+                                                    <small class="text-{{ $log->es_autenticado ? 'primary' : 'secondary' }} fw-bold">
+                                                        @if($log->trabajador)
+                                                            Trabajador
+                                                        @else
+                                                            {{ $log->es_autenticado ? 'Usuario Autenticado' : 'No Autenticado' }}
+                                                        @endif
                                                     </small>
                                                 </div>
                                             </div>

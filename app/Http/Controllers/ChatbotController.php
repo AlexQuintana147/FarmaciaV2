@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\ChatbotLog;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ChatbotController extends Controller
 {
@@ -108,9 +109,30 @@ class ChatbotController extends Controller
 
             if ($response->successful()) {
                 $result = $response->json();
+                $respuesta = $result['choices'][0]['message']['content'] ?? 'Lo siento, no pude procesar tu mensaje.';
+                
+                // Registrar la interacción en la base de datos
+                $trabajador = null;
+                $trabajadorId = null;
+                $esAutenticado = false;
+                
+                // Verificar si hay un trabajador autenticado
+                if (auth()->guard('trabajador')->check()) {
+                    $trabajador = auth('trabajador')->user();
+                    $trabajadorId = $trabajador->id;
+                    $esAutenticado = true;
+                }
+                
+                ChatbotLog::create([
+                    'trabajador_id' => $trabajadorId,
+                    'pregunta' => $userMessage,
+                    'respuesta' => $respuesta,
+                    'es_autenticado' => $esAutenticado
+                ]);
+                
                 return response()->json([
                     'success' => true,
-                    'message' => $result['choices'][0]['message']['content'] ?? 'Lo siento, no pude procesar tu mensaje.'
+                    'message' => $respuesta
                 ]);
             } else {
                 return response()->json([

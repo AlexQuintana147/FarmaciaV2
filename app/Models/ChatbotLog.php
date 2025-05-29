@@ -14,7 +14,8 @@ class ChatbotLog extends Model
     protected $fillable = [
         'trabajador_id',
         'pregunta',
-        'respuesta'
+        'respuesta',
+        'es_autenticado'
     ];
 
     /**

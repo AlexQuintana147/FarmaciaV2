@@ -12,7 +12,7 @@ Route::get('/', function () {
     return view('home', compact('blogs'));
 });
 
-// Chatbot Routes
+// Chatbot Routes - Accesible para todos
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
 Route::post('/chatbot/logs', [ChatbotLogController::class, 'store'])->name('chatbot.logs.store');
 Route::get('/chatbot/historial', [ChatbotLogController::class, 'historial'])->name('chatbot.historial');

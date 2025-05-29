@@ -27,6 +27,7 @@ class ChatbotLogController extends Controller
             'trabajador_id' => $trabajadorId,
             'pregunta' => $request->pregunta,
             'respuesta' => $request->respuesta,
+            'es_autenticado' => Auth::check(),
         ]);
 
         return response()->json([
@@ -77,24 +78,24 @@ class ChatbotLogController extends Controller
         // Obtener estadísticas generales
         $totalInteracciones = ChatbotLog::count();
         $interaccionesHoy = ChatbotLog::whereDate('created_at', today())->count();
-        $interaccionesPorUsuario = ChatbotLog::selectRaw('trabajador_id, COUNT(*) as total')
-            ->groupBy('trabajador_id')
-            ->with('trabajador')
-            ->orderBy('total', 'desc')
-            ->get();
-
-        // Obtener las preguntas más frecuentes
-        $preguntasFrecuentes = ChatbotLog::selectRaw('pregunta, COUNT(*) as total')
-            ->groupBy('pregunta')
-            ->orderBy('total', 'desc')
-            ->limit(10)
-            ->get();
+        $preguntasUnicas = ChatbotLog::distinct('pregunta')->count();
+        
+        // Obtener interacciones por tipo de usuario
+        $interaccionesAutenticadas = ChatbotLog::where('es_autenticado', true)->count();
+        $interaccionesNoAutenticadas = $totalInteracciones - $interaccionesAutenticadas;
+        
+        // Obtener los logs para la tabla
+        $chatbotLogs = ChatbotLog::with('trabajador')
+            ->latest()
+            ->paginate(10);
 
         return view('dashboard.chatbot-metrics', [
             'totalInteracciones' => $totalInteracciones,
             'interaccionesHoy' => $interaccionesHoy,
-            'interaccionesPorUsuario' => $interaccionesPorUsuario,
-            'preguntasFrecuentes' => $preguntasFrecuentes
+            'preguntasUnicas' => $preguntasUnicas,
+            'interaccionesAutenticadas' => $interaccionesAutenticadas,
+            'interaccionesNoAutenticadas' => $interaccionesNoAutenticadas,
+            'chatbotLogs' => $chatbotLogs
         ]);
     }
 }
