@@ -62,9 +62,20 @@ class ChatbotMetricsExport implements
 
     public function map($log): array
     {
+        // Verificar si el trabajador está cargado y tiene nombre
+        $nombreUsuario = 'Invitado';
+        if ($log->es_autenticado && $log->trabajador) {
+            // Usar nombre_completo del modelo Trabajador
+            $nombreUsuario = $log->trabajador->nombre_completo ?? 'Trabajador';
+            // Agregar apellidos si existen
+            if (isset($log->trabajador->apellidos)) {
+                $nombreUsuario .= ' ' . $log->trabajador->apellidos;
+            }
+        }
+
         return [
             $log->id,
-            $log->trabajador ? $log->trabajador->name : 'Invitado',
+            $nombreUsuario,
             $log->es_autenticado ? 'Autenticado' : 'Invitado',
             $log->pregunta,
             $log->respuesta,
