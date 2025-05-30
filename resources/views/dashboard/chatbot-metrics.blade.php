@@ -346,6 +346,11 @@
                                     <i class="fas fa-list-ul me-2"></i>
                                     Mostrando {{ $chatbotLogs->firstItem() }} - {{ $chatbotLogs->lastItem() }} de {{ $chatbotLogs->total() }} registros
                                 </h6>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('chatbot.metrics.export', request()->query()) }}" class="btn btn-success btn-sm d-flex align-items-center">
+                                        <i class="fas fa-file-excel me-2"></i> Exportar a Excel
+                                    </a>
+                                </div>
                             </div>
                             
                             <table class="table table-hover mb-0 align-middle">

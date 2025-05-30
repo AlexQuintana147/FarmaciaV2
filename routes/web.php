@@ -48,6 +48,7 @@ Route::middleware(['auth:trabajador'])->group(function () {
     
     // Chatbot Metrics
     Route::get('/dashboard/chatbot-metrics', [ChatbotController::class, 'metrics'])->name('chatbot.metrics');
+    Route::get('/dashboard/chatbot-metrics/export', [App\Http\Controllers\ChatbotExportController::class, 'export'])->name('chatbot.metrics.export');
     
     //Blogs
     Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');
