@@ -152,11 +152,48 @@ class BlogMedidaController extends Controller
     /**
      * Get CSS class based on score
      */
-    protected function getScoreClass($score)
+    public function getScoreClass($score)
     {
-        if ($score >= 80) return 'success';
-        if ($score >= 50) return 'warning';
+        if ($score >= 70) return 'success';
+        if ($score >= 40) return 'warning';
         return 'danger';
+    }
+    
+    /**
+     * Display blog metrics
+     */
+    public function metrics()
+    {
+        // Get distribution of ratings
+        $distribution = [0, 0, 0, 0, 0]; // 0-19, 20-39, 40-59, 60-79, 80-100
+        $valoraciones = BlogMedida::pluck('valoracion');
+        
+        foreach ($valoraciones as $valoracion) {
+            if ($valoracion < 20) $distribution[0]++;
+            elseif ($valoracion < 40) $distribution[1]++;
+            elseif ($valoracion < 60) $distribution[2]++;
+            elseif ($valoracion < 80) $distribution[3]++;
+            else $distribution[4]++;
+        }
+        
+        $metrics = [
+            'total_mediciones' => BlogMedida::count(),
+            'promedio_valoracion' => round(BlogMedida::avg('valoracion') ?? 0, 1),
+            'mejor_valoracion' => BlogMedida::max('valoracion') ?? 0,
+            'peor_valoracion' => BlogMedida::min('valoracion') ?? 0,
+            'distribucion_valoraciones' => $distribution,
+            'mediciones_por_trabajador' => BlogMedida::with('trabajador')
+                ->selectRaw('trabajador_id, COUNT(*) as total')
+                ->groupBy('trabajador_id')
+                ->orderBy('total', 'desc')
+                ->get(),
+            'mediciones_recientes' => BlogMedida::with('trabajador')
+                ->latest()
+                ->take(10)
+                ->get()
+        ];
+        
+        return view('dashboard.blog-metrics', compact('metrics'));
     }
     
     protected function getRecommendation($score)

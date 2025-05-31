@@ -157,10 +157,14 @@
                 </div>
             </div>
         </div>
-        <!-- Botón de métricas del chatbot mejorado -->
-        <div class="text-end mb-4 mt-3">
+        <!-- Botones de métricas -->
+        <div class="d-flex justify-content-end gap-3 mb-4 mt-3">
+            <a href="{{ route('blog.metrics') }}" class="btn btn-blog-metrics" style="background: linear-gradient(135deg, #6c5ce7, #a55eea);">
+                <i class="fas fa-chart-line me-2"></i>Métricas de Blogs
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
             <a href="{{ route('chatbot.metrics') }}" class="btn btn-chatbot-metrics">
-                <i class="fas fa-robot me-2"></i>Ver Métricas del Chatbot
+                <i class="fas fa-robot me-2"></i>Métricas del Chatbot
                 <i class="fas fa-arrow-right ms-2"></i>
                 <span class="btn-chatbot-pulse"></span>
             </a>

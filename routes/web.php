@@ -50,6 +50,9 @@ Route::middleware(['auth:trabajador'])->group(function () {
     Route::get('/dashboard/chatbot-metrics', [ChatbotController::class, 'metrics'])->name('chatbot.metrics');
     Route::get('/dashboard/chatbot-metrics/export', [App\Http\Controllers\ChatbotExportController::class, 'export'])->name('chatbot.metrics.export');
     
+    // Blog Metrics
+    Route::get('/dashboard/blog-metrics', [App\Http\Controllers\BlogMedidaController::class, 'metrics'])->name('blog.metrics');
+    
     //Blogs
     Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');
     Route::post('/dashboard/blogs/medir', [App\Http\Controllers\BlogMedidaController::class, 'evaluateContent'])->name('blogs.medir');
