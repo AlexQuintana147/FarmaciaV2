@@ -21,12 +21,10 @@ class BlogMedida extends Model
      */
     protected $fillable = [
         'trabajador_id',
-        'id_blog',
         'titulo',
         'contenido',
         'valoracion',
-        'puntuacion_calidad',
-        'descripcion'
+        'recomendacion'
     ];
 
     /**
@@ -36,7 +34,6 @@ class BlogMedida extends Model
      */
     protected $casts = [
         'valoracion' => 'integer',
-        'puntuacion_calidad' => 'integer',
     ];
 
     /**

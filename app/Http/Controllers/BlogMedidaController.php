@@ -73,12 +73,23 @@ class BlogMedidaController extends Controller
                 
                 // Simple recommendation based on score
                 $recommendation = $this->getRecommendation($score);
+                $scoreClass = $this->getScoreClass($score);
+                
+                // Save to barra_de_blogs table
+                $blogMedida = new BlogMedida();
+                $blogMedida->trabajador_id = auth('trabajador')->id();
+                $blogMedida->titulo = $validated['titulo'];
+                $blogMedida->contenido = $validated['contenido'];
+                $blogMedida->valoracion = $score;
+                $blogMedida->recomendacion = $recommendation;
+                $blogMedida->save();
                 
                 return response()->json([
                     'success' => true,
                     'puntuacion' => $score,
                     'message' => $recommendation,
-                    'class' => $this->getScoreClass($score)
+                    'class' => $scoreClass,
+                    'fecha' => now()->format('d/m/Y H:i:s')
                 ]);
             }
             
