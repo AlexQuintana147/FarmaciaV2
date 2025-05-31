@@ -347,22 +347,44 @@
                 return esValido;
             }
             
-            // Función para mostrar alertas
+            // Función para mostrar notificaciones con Toastr
             function mostrarAlerta(mensaje, tipo = 'success') {
                 console.log(`[${tipo}] ${mensaje}`);
-                // Usar SweetAlert2 si está disponible
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: tipo,
-                        title: tipo === 'error' ? 'Error' : (tipo === 'warning' ? 'Advertencia' : '¡Éxito!'),
-                        text: mensaje,
-                        confirmButtonColor: '#3085d6',
-                        timer: tipo === 'success' ? 2000 : null,
-                        showConfirmButton: tipo !== 'success'
-                    });
-                } else {
-                    // Fallback a alert estándar
+                
+                // Verificar si Toastr está disponible
+                if (typeof toastr === 'undefined') {
+                    console.warn('Toastr no está cargado, usando alerta nativa');
                     alert(`${tipo.toUpperCase()}: ${mensaje}`);
+                    return;
+                }
+                
+                // Configuración de Toastr
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: 'toast-top-right',
+                    timeOut: 5000,
+                    extendedTimeOut: 1000,
+                    showEasing: 'swing',
+                    hideEasing: 'linear',
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    tapToDismiss: false
+                };
+                
+                // Mostrar notificación según el tipo
+                switch(tipo) {
+                    case 'success':
+                        toastr.success(mensaje, '¡Éxito!');
+                        break;
+                    case 'warning':
+                        toastr.warning(mensaje, 'Advertencia');
+                        break;
+                    case 'error':
+                        toastr.error(mensaje, 'Error');
+                        break;
+                    default:
+                        toastr.info(mensaje, 'Información');
                 }
             }
             
