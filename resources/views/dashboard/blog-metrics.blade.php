@@ -1,5 +1,19 @@
 @extends('layouts.app')
 
+@push('styles')
+<style>
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+    .table-container {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container-fluid py-5">
     <div class="row">
@@ -22,65 +36,65 @@
     </div>
 
     <!-- Cards de resumen -->
-    <div class="row g-4 mb-5">
-        <div class="col-xl-3 col-md-6">
+    <div class="row g-3 mb-4">
+        <div class="col-xxl-3 col-md-6">
             <div class="card border-0 shadow-sm h-100 overflow-hidden position-relative">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-2 fw-medium">Total de Mediciones</p>
+                            <p class="text-muted mb-2 fw-medium small">Total de Mediciones</p>
                             <h2 class="mb-0 fw-bold text-primary display-6">{{ $metrics['total_mediciones'] }}</h2>
                         </div>
                         <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
-                            <i class="fas fa-chart-bar text-primary fs-4"></i>
+                            <i class="fas fa-chart-bar text-primary"></i>
                         </div>
                     </div>
                 </div>
                 <div class="position-absolute bottom-0 start-0 w-100 bg-primary" style="height: 3px;"></div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xxl-3 col-md-6">
             <div class="card border-0 shadow-sm h-100 overflow-hidden position-relative">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-2 fw-medium">Promedio de Valoración</p>
+                            <p class="text-muted mb-2 fw-medium small">Promedio</p>
                             <h2 class="mb-0 fw-bold text-success display-6">{{ $metrics['promedio_valoracion'] }}<small class="text-muted fs-6">/100</small></h2>
                         </div>
                         <div class="bg-success bg-opacity-10 p-3 rounded-circle">
-                            <i class="fas fa-star text-success fs-4"></i>
+                            <i class="fas fa-star text-success"></i>
                         </div>
                     </div>
                 </div>
                 <div class="position-absolute bottom-0 start-0 w-100 bg-success" style="height: 3px;"></div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xxl-3 col-md-6">
             <div class="card border-0 shadow-sm h-100 overflow-hidden position-relative">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-2 fw-medium">Mejor Valoración</p>
+                            <p class="text-muted mb-2 fw-medium small">Mejor</p>
                             <h2 class="mb-0 fw-bold text-success display-6">{{ $metrics['mejor_valoracion'] }}<small class="text-muted fs-6">/100</small></h2>
                         </div>
                         <div class="bg-success bg-opacity-10 p-3 rounded-circle">
-                            <i class="fas fa-trophy text-success fs-4"></i>
+                            <i class="fas fa-trophy text-success"></i>
                         </div>
                     </div>
                 </div>
                 <div class="position-absolute bottom-0 start-0 w-100 bg-success" style="height: 3px;"></div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xxl-3 col-md-6">
             <div class="card border-0 shadow-sm h-100 overflow-hidden position-relative">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-2 fw-medium">Peor Valoración</p>
+                            <p class="text-muted mb-2 fw-medium small">Peor</p>
                             <h2 class="mb-0 fw-bold text-danger display-6">{{ $metrics['peor_valoracion'] }}<small class="text-muted fs-6">/100</small></h2>
                         </div>
                         <div class="bg-danger bg-opacity-10 p-3 rounded-circle">
-                            <i class="fas fa-exclamation-triangle text-danger fs-4"></i>
+                            <i class="fas fa-exclamation-triangle text-danger"></i>
                         </div>
                     </div>
                 </div>
@@ -89,46 +103,42 @@
         </div>
     </div>
 
-    <!-- Gráfico de distribución de valoraciones -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
+    <!-- Sección de gráfico y tabla en fila -->
+    <div class="row g-4">
+        <!-- Gráfico de distribución -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-transparent border-0 py-4">
                     <div class="d-flex align-items-center">
-                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
-                            <i class="fas fa-chart-line text-primary"></i>
+                        <div class="bg-info bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-chart-bar text-info"></i>
                         </div>
                         <div>
                             <h5 class="card-title mb-0 fw-bold text-dark">Distribución de Valoraciones</h5>
-                            <p class="text-muted mb-0 small">Análisis de la distribución por rangos de puntuación</p>
+                            <p class="text-muted mb-0 small">Gráfico de distribución de valoraciones</p>
                         </div>
                     </div>
                 </div>
-                <div class="card-body p-4">
-                    <canvas id="valoracionesChart" height="100"></canvas>
+                <div class="card-body p-0 chart-container">
+                    <canvas id="valoracionesChart"></canvas>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Tabla de mediciones recientes -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
+        <!-- Tabla de mediciones recientes -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-transparent border-0 py-4">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-info bg-opacity-10 p-2 rounded-circle me-3">
-                                <i class="fas fa-list text-info"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title mb-0 fw-bold text-dark">Mediciones Recientes</h5>
-                                <p class="text-muted mb-0 small">Últimas evaluaciones realizadas</p>
-                            </div>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-info bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-list text-info"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-0 fw-bold text-dark">Mediciones Recientes</h5>
+                            <p class="text-muted mb-0 small">Últimas evaluaciones realizadas</p>
                         </div>
                     </div>
                 </div>
-                <div class="card-body p-0">
+                <div class="card-body p-0 table-container">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="bg-light">
@@ -276,6 +286,13 @@
                 }
             }
         });
+    });
+
+    // Ajustar el tamaño del gráfico cuando se redimensione la ventana
+    window.addEventListener('resize', function() {
+        if (window.myChart) {
+            window.myChart.resize();
+        }
     });
 </script>
 @endpush
