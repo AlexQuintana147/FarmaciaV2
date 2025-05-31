@@ -20,7 +20,12 @@
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between mb-4">
                 <div>
-                    <h2 class="mb-1 fw-bold text-dark">Métricas de Calidad de Blogs</h2>
+                    <div class="d-flex align-items-center">
+                        <h2 class="mb-1 fw-bold text-dark">Métricas de Calidad de Blogs</h2>
+                        <a href="{{ route('blog.metrics', ['export' => 1]) }}" class="btn btn-success btn-sm ms-3">
+                            <i class="fas fa-file-excel me-1"></i> Exportar a Excel
+                        </a>
+                    </div>
                     <p class="text-muted mb-0">Análisis y seguimiento del rendimiento de contenido</p>
                 </div>
                 <div class="page-title-right">

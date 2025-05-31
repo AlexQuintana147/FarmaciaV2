@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogMedida;
+use App\Models\Trabajador;
+use App\Exports\BlogMetricsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -176,6 +179,11 @@ class BlogMedidaController extends Controller
             else $distribution[4]++;
         }
         
+        $mediciones_recientes = BlogMedida::with('trabajador')
+            ->latest()
+            ->take(10)
+            ->get();
+            
         $metrics = [
             'total_mediciones' => BlogMedida::count(),
             'promedio_valoracion' => round(BlogMedida::avg('valoracion') ?? 0, 1),
@@ -187,11 +195,15 @@ class BlogMedidaController extends Controller
                 ->groupBy('trabajador_id')
                 ->orderBy('total', 'desc')
                 ->get(),
-            'mediciones_recientes' => BlogMedida::with('trabajador')
-                ->latest()
-                ->take(10)
-                ->get()
+            'mediciones_recientes' => $mediciones_recientes
         ];
+        
+        if (request()->has('export')) {
+            return Excel::download(
+                new BlogMetricsExport($metrics, $mediciones_recientes), 
+                'metricas-blogs-' . now()->format('Y-m-d') . '.xlsx'
+            );
+        }
         
         return view('dashboard.blog-metrics', compact('metrics'));
     }
