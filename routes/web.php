@@ -52,6 +52,7 @@ Route::middleware(['auth:trabajador'])->group(function () {
     
     //Blogs
     Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');
+    Route::post('/dashboard/blogs/medir', [App\Http\Controllers\BlogMedidaController::class, 'evaluateContent'])->name('blogs.medir');
     Route::get('/dashboard/blogs/create', [App\Http\Controllers\BlogController::class, 'create'])->name('blogs.create');
     Route::post('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'store'])->name('blogs.store');
     Route::get('/dashboard/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'show'])->name('blogs.show');

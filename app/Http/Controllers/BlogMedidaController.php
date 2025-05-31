@@ -18,20 +18,6 @@ class BlogMedidaController extends Controller
     {
         $this->middleware('auth');
         $this->apiKey = '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';
-        
-        // Log controller initialization
-        if (Auth::check()) {
-            Log::debug('BlogMedidaController initialized', [
-                'auth_user' => Auth::id(),
-                'is_ajax' => request()->ajax(),
-                'path' => request()->path()
-            ]);
-        } else {
-            Log::debug('BlogMedidaController initialized - No authenticated user', [
-                'is_ajax' => request()->ajax(),
-                'path' => request()->path()
-            ]);
-        }
     }
     
     /**
@@ -39,55 +25,128 @@ class BlogMedidaController extends Controller
      */
     public function evaluateContent(Request $request)
     {
-        // Log the raw input for debugging
-        Log::info('Raw input:', ['input' => $request->getContent()]);
-        
-        Log::info('evaluateContent called', [
-            'request_data' => $request->all(),
-            'is_ajax' => $request->ajax(),
-            'wants_json' => $request->wantsJson(),
-            'content_type' => $request->header('Content-Type'),
-            'headers' => $request->headers->all()
-        ]);
-
         try {
-            // Validate request
+            // Log the incoming request
+            Log::info('evaluateContent request:', [
+                'all' => $request->all(),
+                'headers' => $request->headers->all(),
+                'ajax' => $request->ajax(),
+                'wantsJson' => $request->wantsJson()
+            ]);
+
+            // Validate request with minimum length
             $validated = $request->validate([
-                'titulo' => 'required|string|max:255',
-                'contenido' => 'required|string',
+                'titulo' => 'required|string|min:3|max:255',
+                'contenido' => 'required|string|min:3',
+            ], [
+                'titulo.min' => 'El título debe tener al menos 3 caracteres.',
+                'contenido.min' => 'El contenido debe tener al menos 3 caracteres.'
             ]);
             
-            Log::info('Validation passed', [
-                'titulo_length' => strlen($validated['titulo']), 
-                'contenido_length' => strlen($validated['contenido'])
-            ]);
+            // Log validation passed
+            Log::info('Validation passed', $validated);
             
-            // For testing, return a fixed response first
+            // Prepare the prompt for content analysis
+            $prompt = "Analiza el siguiente título y contenido de blog:\n\n"
+                   . "Título: " . $validated['titulo'] . "\n\n"
+                   . "Contenido: " . $validated['contenido'] . "\n\n"
+                   . "Proporciona un análisis detallado que incluya:\n"
+                   . "1. Un porcentaje de calidad general (0-100)\n"
+                   . "2. Puntos fuertes del contenido\n"
+                   . "3. Áreas de mejora\n"
+                   . "4. Recomendaciones específicas para mejorar el SEO\n"
+                   . "5. Sugerencias para aumentar el engagement\n"
+                   . "Formato la respuesta en JSON con las claves: 'puntuacion', 'fortalezas' (array), 'mejoras' (array), 'recomendaciones_seo' (array), 'sugerencias_engagement' (array)";
+                   
+            // Log the prompt being sent
+            Log::info('Sending prompt to API', ['prompt_length' => strlen($prompt)]);
+            
+            // Make API call to OpenRouter
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'HTTP-Referer' => config('app.url'),
+                'Content-Type' => 'application/json',
+            ])->post($this->apiUrl, [
+                'model' => $this->model,
+                'messages' => [
+                    ['role' => 'system', 'content' => 'Eres un experto en análisis de contenido y SEO. Proporciona un análisis detallado en formato JSON.'],
+                    ['role' => 'user', 'content' => $prompt]
+                ],
+                'temperature' => 0.7,
+                'max_tokens' => 1500
+            ]);
+
+            if ($response->successful()) {
+                $result = $response->json();
+                $analysis = json_decode(trim($result['choices'][0]['message']['content']), true);
+                
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Error al analizar la respuesta de la API');
+                }
+                
+                // Ensure score is between 0 and 100
+                $score = max(0, min(100, (int)($analysis['puntuacion'] ?? 50)));
+                
+                return response()->json([
+                    'success' => true,
+                    'puntuacion' => $score,
+                    'fortalezas' => $analysis['fortalezas'] ?? [],
+                    'mejoras' => $analysis['mejoras'] ?? [],
+                    'recomendaciones_seo' => $analysis['recomendaciones_seo'] ?? [],
+                    'sugerencias_engagement' => $analysis['sugerencias_engagement'] ?? [],
+                    'message' => $this->getScoreMessage($score),
+                    'class' => $this->getScoreClass($score)
+                ]);
+            }
+            
+            throw new \Exception('Error en la respuesta de la API');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'success' => true,
-                'puntuacion' => 85,
-                'message' => 'Prueba exitosa. Conexión establecida correctamente.',
-                'class' => 'text-success'
-            ]);
-            
+                'success' => false,
+                'message' => 'Error de validación: ' . $e->getMessage(),
+                'errors' => $e->errors()
+            ], 422);
             
         } catch (\Exception $e) {
-            Log::error('Error in evaluateContent', [
+            Log::error('Error en BlogMedidaController', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString(),
-                'request_data' => $request->all()
+                'line' => $e->getLine()
             ]);
             
             return response()->json([
                 'success' => false,
-                'message' => 'Error al evaluar el contenido: ' . $e->getMessage(),
-                'debug' => [
-                    'exception' => get_class($e),
-                    'file' => $e->getFile() . ':' . $e->getLine()
-                ]
+                'message' => 'Error al procesar la solicitud. Por favor, intente nuevamente.'
             ], 500);
+        }
+    }
+    
+    /**
+     * Get a message based on similarity score
+     */
+    protected function getSimilarityMessage($score)
+    {
+        if ($score < 30) {
+            return 'Contenido altamente original. ¡Excelente trabajo!';
+        } elseif ($score < 70) {
+            return 'Contenido con cierta similitud a otros. Considera hacerlo más único.';
+        } else {
+            return 'Contenido con alta similitud a otros. Se recomienda revisar y modificar.';
+        }
+    }
+    
+    /**
+     * Get CSS class based on similarity score
+     */
+    protected function getSimilarityClass($score)
+    {
+        if ($score < 30) {
+            return 'text-success';
+        } elseif ($score < 70) {
+            return 'text-warning';
+        } else {
+            return 'text-danger';
         }
     }
     /**

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('head')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('content')
 <div class="container py-4">
     <div class="bg-gradient-primary-to-secondary p-3 rounded-3 mb-4 shadow-sm">
@@ -38,117 +42,20 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="contenido" class="form-label fw-bold text-primary"><i class="fas fa-file-alt me-1"></i> Contenido <span class="text-danger">*</span></label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="contenido" class="form-label fw-bold text-primary mb-0">
+                                    <i class="fas fa-file-alt me-1"></i> Contenido <span class="text-danger">*</span>
+                                </label>
+                                <button type="button" id="medirBlogBtn" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-ruler me-1"></i>Medir Contenido
+                                </button>
+                            </div>
                             <textarea class="form-control @error('contenido') is-invalid @enderror" id="contenido" name="contenido" rows="10" placeholder="Escriba el contenido detallado del blog" required>{{ old('contenido') }}</textarea>
                             @error('contenido')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text mb-4">
+                            <div class="form-text">
                                 <i class="fas fa-info-circle text-primary"></i> El contenido será analizado para evaluar su calidad y relevancia.
-                            </div>
-
-                            <!-- Sección de Análisis de IA -->
-                            <div class="ai-analysis-section">
-                                <!-- Botón de análisis con efecto de elevación -->
-                                <div class="text-center mb-4">
-                                    <button type="button" class="btn btn-primary btn-lg px-5 py-3 shadow-sm" id="medirContenido" 
-                                            style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%); border: none;">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-robot me-2"></i>
-                                            <span class="fw-bold">Analizar Contenido con IA</span>
-                                            <i class="fas fa-arrow-right ms-2"></i>
-                                        </div>
-                                    </button>
-                                </div>
-                                
-                                <!-- Panel de Resultados -->
-                                <div class="analysis-results" style="display: none;">
-                                    <div class="card border-0 shadow-sm">
-                                        <div class="card-body p-4">
-                                            <div class="row align-items-center">
-                                                <!-- Medidor de Calidad -->
-                                                <div class="col-lg-5 text-center mb-4 mb-lg-0">
-                                                    <div class="quality-meter">
-                                                        <div class="gauge-container">
-                                                            <div class="gauge">
-                                                                <div class="gauge-body">
-                                                                    <div class="gauge-fill"></div>
-                                                                    <div class="gauge-cover">
-                                                                        <span class="gauge-value" id="quality-percentage">0</span>%
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="gauge-label mt-3">Calidad del Contenido</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Métricas Detalladas -->
-                                                <div class="col-lg-7">
-                                                    <h5 class="text-primary mb-4">
-                                                        <i class="fas fa-chart-pie me-2"></i>
-                                                        Análisis Detallado
-                                                    </h5>
-                                                    
-                                                    <div class="metrics-grid">
-                                                        <div class="metric-item">
-                                                            <div class="metric-icon" style="background: rgba(78, 115, 223, 0.1);">
-                                                                <i class="fas fa-ruler-combined text-primary"></i>
-                                                            </div>
-                                                            <div class="metric-details">
-                                                                <span class="metric-title">Longitud</span>
-                                                                <span class="metric-value" id="length-metric">-</span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="metric-item">
-                                                            <div class="metric-icon" style="background: rgba(28, 200, 138, 0.1);">
-                                                                <i class="fas fa-search text-success"></i>
-                                                            </div>
-                                                            <div class="metric-details">
-                                                                <span class="metric-title">Relevancia</span>
-                                                                <span class="metric-value" id="relevance-metric">-</span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="metric-item">
-                                                            <div class="metric-icon" style="background: rgba(246, 194, 62, 0.1);">
-                                                                <i class="fas fa-puzzle-piece text-warning"></i>
-                                                            </div>
-                                                            <div class="metric-details">
-                                                                <span class="metric-title">Estructura</span>
-                                                                <span class="metric-value" id="structure-metric">-</span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="metric-item">
-                                                            <div class="metric-icon" style="background: rgba(231, 74, 59, 0.1);">
-                                                                <i class="fas fa-tachometer-alt text-danger"></i>
-                                                            </div>
-                                                            <div class="metric-details">
-                                                                <span class="metric-title">Rendimiento SEO</span>
-                                                                <span class="metric-value" id="seo-metric">-</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="analysis-summary mt-4">
-                                                        <div class="d-flex align-items-center mb-2">
-                                                            <i class="fas fa-lightbulb me-2 text-warning"></i>
-                                                            <h6 class="mb-0">Recomendaciones</h6>
-                                                        </div>
-                                                        <ul class="list-unstyled mb-0" id="recommendations-list">
-                                                            <li class="d-flex align-items-start mb-2">
-                                                                <i class="fas fa-check-circle text-success mt-1 me-2"></i>
-                                                                <span>Escribe al menos 300 palabras para un mejor análisis</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -189,6 +96,39 @@
                     <button type="submit" class="btn btn-primary px-4">
                         <i class="fas fa-save me-2"></i>Guardar Blog
                     </button>
+                </div>
+                
+                <!-- Resultado de la medición -->
+                <div id="medicionResultado" class="mt-4 d-none">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 text-primary"><i class="fas fa-chart-bar me-2"></i>Resultado de la Medición</h6>
+                        </div>
+                        <div class="card-body">
+                            <!-- Progress Bar -->
+                            <div id="progressContainer" class="d-none mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Progreso del análisis</span>
+                                    <span id="progressPercentage">0%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            
+                            <div id="loadingState" class="text-center py-4">
+                                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p class="mt-3 mb-0 fw-medium">Analizando contenido del blog...</p>
+                                <p class="text-muted small mt-2">Esto puede tomar unos segundos</p>
+                            </div>
+                            
+                            <div id="resultadoContenido" class="d-none">
+                                <!-- Aquí se mostrarán los resultados -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -379,8 +319,187 @@
 
 @push('scripts')
 <script>
-    // Image preview functionality
-    document.getElementById('imagen').addEventListener('change', function(e) {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elementos del DOM
+        const medirBlogBtn = document.getElementById('medirBlogBtn');
+        const tituloInput = document.getElementById('titulo');
+        const contenidoInput = document.getElementById('contenido');
+        const resultadoContenido = document.getElementById('resultadoContenido');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+        
+        if (!medirBlogBtn || !tituloInput || !contenidoInput || !resultadoContenido) {
+            console.error('No se encontraron todos los elementos necesarios');
+            return;
+        }
+        
+        // Función para verificar si el botón debe estar habilitado
+        function actualizarEstadoBoton() {
+            const tituloValido = tituloInput.value.trim().length >= 4;
+            const contenidoValido = contenidoInput.value.trim().length >= 4;
+            const esValido = tituloValido && contenidoValido;
+            
+            // Actualizar estado y apariencia del botón
+            medirBlogBtn.disabled = !esValido;
+            medirBlogBtn.classList.toggle('btn-outline-primary', esValido);
+            medirBlogBtn.classList.toggle('btn-outline-secondary', !esValido);
+            medirBlogBtn.style.cursor = esValido ? 'pointer' : 'not-allowed';
+            
+            return esValido;
+        }
+        
+        // Función para mostrar alertas
+        function mostrarAlerta(mensaje, tipo = 'success') {
+            console.log(`[${tipo}] ${mensaje}`);
+            // Usar SweetAlert2 si está disponible
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: tipo,
+                    title: tipo === 'error' ? 'Error' : (tipo === 'warning' ? 'Advertencia' : '¡Éxito!'),
+                    text: mensaje,
+                    confirmButtonColor: '#3085d6',
+                    timer: tipo === 'success' ? 2000 : null,
+                    showConfirmButton: tipo !== 'success'
+                });
+            } else {
+                // Fallback a alert estándar
+                alert(`${tipo.toUpperCase()}: ${mensaje}`);
+            }
+        }
+        
+        // Event Listeners
+        tituloInput.addEventListener('input', actualizarEstadoBoton);
+        contenidoInput.addEventListener('input', actualizarEstadoBoton);
+        
+        // Estado inicial
+        medirBlogBtn.disabled = true; // Deshabilitar por defecto
+        actualizarEstadoBoton();
+
+        // Función para actualizar el estado del botón durante operaciones
+        function actualizarEstadoCarga(estado) {
+            console.log('Actualizando estado del botón a:', estado);
+            switch(estado) {
+                case 'cargando':
+                    medirBlogBtn.disabled = true;
+                    medirBlogBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Analizando...';
+                    medirBlogBtn.classList.add('disabled');
+                    break;
+                case 'listo':
+                    actualizarEstadoBoton(); // Vuelve a verificar el estado de validación
+                    medirBlogBtn.innerHTML = '<i class="fas fa-ruler me-1"></i>Medir Contenido';
+                    break;
+                case 'error':
+                    medirBlogBtn.disabled = false;
+                    medirBlogBtn.innerHTML = '<i class="fas fa-redo me-1"></i>Reintentar';
+                    medirBlogBtn.classList.remove('disabled');
+                    break;
+            }
+            console.log('Estado del botón actualizado');
+        }
+
+        // Manejador del botón Medir Contenido
+        medirBlogBtn.addEventListener('click', async function() {
+            console.log('=== Inicio del evento click ===');
+            const titulo = tituloInput.value.trim();
+            const contenido = contenidoInput.value.trim();
+            
+            console.log('Validando campos:', { titulo, contenido });
+            
+            if (titulo.length < 4 || contenido.length < 4) {
+                const errorMsg = 'El título y el contenido deben tener al menos 4 caracteres';
+                console.error(errorMsg);
+                mostrarAlerta(errorMsg, 'warning');
+                return;
+            }
+            
+            console.log('Iniciando medición de contenido...');
+
+            // Iniciar carga
+            actualizarEstadoBoton('cargando');
+            
+            // Ocultar resultados anteriores
+            resultadoContenido.classList.add('d-none');
+            
+            try {
+                const url = '{{ route("blogs.medir") }}';
+                console.log('Enviando solicitud a:', url);
+                
+                // Crear FormData para enviar los datos
+                const formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('titulo', titulo);
+                formData.append('contenido', contenido);
+                
+                console.log('Datos del formulario:', {
+                    titulo: titulo.substring(0, 50) + (titulo.length > 50 ? '...' : ''),
+                    contenido_length: contenido.length
+                });
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    credentials: 'same-origin',
+                    body: formData
+                });
+
+                console.log('Respuesta HTTP recibida. Estado:', response.status);
+                
+                let data;
+                try {
+                    data = await response.json();
+                    console.log('Datos de respuesta:', data);
+                } catch (e) {
+                    console.error('Error al analizar la respuesta JSON:', e);
+                    throw new Error('La respuesta del servidor no es un JSON válido');
+                }
+
+                if (response.ok) {
+                    // Actualizar la interfaz con los resultados
+                    resultadoContenido.innerHTML = `
+                        <div class="alert ${data.class || 'alert-success'}">
+                            <h5 class="alert-heading">${data.message || 'Análisis completado'}</h5>
+                            ${data.puntuacion ? `
+                                <div class="mt-3">
+                                    <h2 class="display-4 text-center">${data.puntuacion}%</h2>
+                                    <p class="text-center mb-0">de similitud con otros contenidos</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    resultadoContenido.classList.remove('d-none');
+                    
+                    // Mostrar alerta de éxito
+                    mostrarAlerta(data.message, data.success ? 'success' : 'error');
+                } else {
+                    throw new Error(data.message || 'Error en la solicitud');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarAlerta(error.message || 'Ocurrió un error al analizar el contenido', 'error');
+                
+                // Mostrar mensaje de error en el contenedor
+                resultadoContenido.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">Error</h5>
+                        <p class="mb-0">${error.message || 'Error al procesar la solicitud'}</p>
+                    </div>
+                `;
+                resultadoContenido.classList.remove('d-none');
+                
+                actualizarEstadoBoton('error');
+            } finally {
+                // Asegurarse de que el botón no quede atascado
+                if (medirBlogBtn.disabled) {
+                    actualizarEstadoBoton('listo');
+                }
+            }
+        });
+
+        // Image preview functionality
+        document.getElementById('imagen').addEventListener('change', function(e) {
         const preview = document.getElementById('preview');
         const noPreview = document.getElementById('no-preview');
         
@@ -399,6 +518,7 @@
             noPreview.style.display = 'flex';
         }
     });
+});
 
     // AI Analysis Functionality
     document.addEventListener('DOMContentLoaded', function() {
