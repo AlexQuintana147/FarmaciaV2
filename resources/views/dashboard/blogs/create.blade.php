@@ -320,205 +320,355 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Elementos del DOM
-        const medirBlogBtn = document.getElementById('medirBlogBtn');
-        const tituloInput = document.getElementById('titulo');
-        const contenidoInput = document.getElementById('contenido');
-        const resultadoContenido = document.getElementById('resultadoContenido');
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-        
-        if (!medirBlogBtn || !tituloInput || !contenidoInput || !resultadoContenido) {
-            console.error('No se encontraron todos los elementos necesarios');
-            return;
-        }
-        
-        // Función para verificar si el botón debe estar habilitado
-        function actualizarEstadoBoton() {
-            const tituloValido = tituloInput.value.trim().length >= 4;
-            const contenidoValido = contenidoInput.value.trim().length >= 4;
-            const esValido = tituloValido && contenidoValido;
+            // Elementos del DOM
+            const medirBlogBtn = document.getElementById('medirBlogBtn');
+            const tituloInput = document.getElementById('titulo');
+            const contenidoInput = document.getElementById('contenido');
+            const resultadoContenido = document.getElementById('resultadoContenido');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
             
-            // Actualizar estado y apariencia del botón
-            medirBlogBtn.disabled = !esValido;
-            medirBlogBtn.classList.toggle('btn-outline-primary', esValido);
-            medirBlogBtn.classList.toggle('btn-outline-secondary', !esValido);
-            medirBlogBtn.style.cursor = esValido ? 'pointer' : 'not-allowed';
-            
-            return esValido;
-        }
-        
-        // Función para mostrar alertas
-        function mostrarAlerta(mensaje, tipo = 'success') {
-            console.log(`[${tipo}] ${mensaje}`);
-            // Usar SweetAlert2 si está disponible
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    icon: tipo,
-                    title: tipo === 'error' ? 'Error' : (tipo === 'warning' ? 'Advertencia' : '¡Éxito!'),
-                    text: mensaje,
-                    confirmButtonColor: '#3085d6',
-                    timer: tipo === 'success' ? 2000 : null,
-                    showConfirmButton: tipo !== 'success'
-                });
-            } else {
-                // Fallback a alert estándar
-                alert(`${tipo.toUpperCase()}: ${mensaje}`);
-            }
-        }
-        
-        // Event Listeners
-        tituloInput.addEventListener('input', actualizarEstadoBoton);
-        contenidoInput.addEventListener('input', actualizarEstadoBoton);
-        
-        // Estado inicial
-        medirBlogBtn.disabled = true; // Deshabilitar por defecto
-        actualizarEstadoBoton();
-
-        // Función para actualizar el estado del botón durante operaciones
-        function actualizarEstadoCarga(estado) {
-            console.log('Actualizando estado del botón a:', estado);
-            switch(estado) {
-                case 'cargando':
-                    medirBlogBtn.disabled = true;
-                    medirBlogBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Analizando...';
-                    medirBlogBtn.classList.add('disabled');
-                    break;
-                case 'listo':
-                    actualizarEstadoBoton(); // Vuelve a verificar el estado de validación
-                    medirBlogBtn.innerHTML = '<i class="fas fa-ruler me-1"></i>Medir Contenido';
-                    break;
-                case 'error':
-                    medirBlogBtn.disabled = false;
-                    medirBlogBtn.innerHTML = '<i class="fas fa-redo me-1"></i>Reintentar';
-                    medirBlogBtn.classList.remove('disabled');
-                    break;
-            }
-            console.log('Estado del botón actualizado');
-        }
-
-        // Manejador del botón Medir Contenido
-        medirBlogBtn.addEventListener('click', async function() {
-            console.log('=== Inicio del evento click ===');
-            const titulo = tituloInput.value.trim();
-            const contenido = contenidoInput.value.trim();
-            
-            console.log('Validando campos:', { titulo, contenido });
-            
-            if (titulo.length < 4 || contenido.length < 4) {
-                const errorMsg = 'El título y el contenido deben tener al menos 4 caracteres';
-                console.error(errorMsg);
-                mostrarAlerta(errorMsg, 'warning');
+            if (!medirBlogBtn || !tituloInput || !contenidoInput || !resultadoContenido) {
+                console.error('No se encontraron todos los elementos necesarios');
                 return;
             }
             
-            console.log('Iniciando medición de contenido...');
-
-            // Iniciar carga
-            actualizarEstadoBoton('cargando');
+            // Función para verificar si el botón debe estar habilitado
+            function actualizarEstadoBoton() {
+                const tituloValido = tituloInput.value.trim().length >= 4;
+                const contenidoValido = contenidoInput.value.trim().length >= 4;
+                const esValido = tituloValido && contenidoValido;
+                
+                // Actualizar estado y apariencia del botón
+                medirBlogBtn.disabled = !esValido;
+                medirBlogBtn.classList.toggle('btn-outline-primary', esValido);
+                medirBlogBtn.classList.toggle('btn-outline-secondary', !esValido);
+                medirBlogBtn.style.cursor = esValido ? 'pointer' : 'not-allowed';
+                
+                return esValido;
+            }
             
-            // Ocultar resultados anteriores
-            resultadoContenido.classList.add('d-none');
+            // Función para mostrar alertas
+            function mostrarAlerta(mensaje, tipo = 'success') {
+                console.log(`[${tipo}] ${mensaje}`);
+                // Usar SweetAlert2 si está disponible
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: tipo,
+                        title: tipo === 'error' ? 'Error' : (tipo === 'warning' ? 'Advertencia' : '¡Éxito!'),
+                        text: mensaje,
+                        confirmButtonColor: '#3085d6',
+                        timer: tipo === 'success' ? 2000 : null,
+                        showConfirmButton: tipo !== 'success'
+                    });
+                } else {
+                    // Fallback a alert estándar
+                    alert(`${tipo.toUpperCase()}: ${mensaje}`);
+                }
+            }
             
-            try {
-                const url = '{{ route("blogs.medir") }}';
-                console.log('Enviando solicitud a:', url);
-                
-                // Crear FormData para enviar los datos
-                const formData = new FormData();
-                formData.append('_token', '{{ csrf_token() }}');
-                formData.append('titulo', titulo);
-                formData.append('contenido', contenido);
-                
-                console.log('Datos del formulario:', {
-                    titulo: titulo.substring(0, 50) + (titulo.length > 50 ? '...' : ''),
-                    contenido_length: contenido.length
-                });
-                
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    credentials: 'same-origin',
-                    body: formData
-                });
+            // Event Listeners
+            tituloInput.addEventListener('input', actualizarEstadoBoton);
+            contenidoInput.addEventListener('input', actualizarEstadoBoton);
+            
+            // Estado inicial
+            medirBlogBtn.disabled = true; // Deshabilitar por defecto
+            actualizarEstadoBoton();
 
-                console.log('Respuesta HTTP recibida. Estado:', response.status);
-                
-                let data;
-                try {
-                    data = await response.json();
-                    console.log('Datos de respuesta:', data);
-                } catch (e) {
-                    console.error('Error al analizar la respuesta JSON:', e);
-                    throw new Error('La respuesta del servidor no es un JSON válido');
+            // Función para actualizar el estado del botón durante operaciones
+            function actualizarEstadoCarga(estado) {
+                console.log('Actualizando estado del botón a:', estado);
+                switch(estado) {
+                    case 'cargando':
+                        medirBlogBtn.disabled = true;
+                        medirBlogBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Analizando...';
+                        medirBlogBtn.classList.add('disabled');
+                        break;
+                    case 'listo':
+                        actualizarEstadoBoton(); // Vuelve a verificar el estado de validación
+                        medirBlogBtn.innerHTML = '<i class="fas fa-ruler me-1"></i>Medir Contenido';
+                        break;
+                    case 'error':
+                        medirBlogBtn.disabled = false;
+                        medirBlogBtn.innerHTML = '<i class="fas fa-redo me-1"></i>Reintentar';
+                        medirBlogBtn.classList.remove('disabled');
+                        break;
+                }
+                console.log('Estado del botón actualizado');
+            }
+
+            // Función para actualizar el estado del botón
+            function actualizarEstadoBoton(estado) {
+                switch(estado) {
+                    case 'cargando':
+                        medirBlogBtn.disabled = true;
+                        medirBlogBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Analizando...';
+                        break;
+                    case 'error':
+                        medirBlogBtn.disabled = false;
+                        medirBlogBtn.innerHTML = '<i class="fas fa-redo me-1"></i> Reintentar';
+                        break;
+                    default: // 'listo'
+                        medirBlogBtn.disabled = false;
+                        medirBlogBtn.innerHTML = '<i class="fas fa-search me-1"></i> Medir Contenido';
+                }
+            }
+
+            // Manejador del botón Medir Contenido
+            medirBlogBtn.addEventListener('click', async function() {
+                // Si el botón ya está deshabilitado, no hacer nada
+                if (medirBlogBtn.disabled) {
+                    console.log('El botón ya está en proceso, espere...');
+                    return;
                 }
 
-                if (response.ok) {
+                console.log('=== Inicio del evento click ===');
+                const titulo = tituloInput.value.trim();
+                const contenido = contenidoInput.value.trim();
+                
+                console.log('Validando campos:', { titulo, contenido });
+                
+                if (titulo.length < 4 || contenido.length < 4) {
+                    const errorMsg = 'El título y el contenido deben tener al menos 4 caracteres';
+                    console.error(errorMsg);
+                    mostrarAlerta(errorMsg, 'warning');
+                    return;
+                }
+                
+                console.log('Iniciando medición de contenido...');
+
+                // Iniciar carga
+                actualizarEstadoBoton('cargando');
+                
+                // Mostrar el contenedor de resultados y el estado de carga
+                const medicionResultado = document.getElementById('medicionResultado');
+                const loadingState = document.getElementById('loadingState');
+                const resultadoContenido = document.getElementById('resultadoContenido');
+                
+                // Mostrar el contenedor principal
+                medicionResultado.classList.remove('d-none');
+                // Mostrar estado de carga
+                loadingState.classList.remove('d-none');
+                // Ocultar resultados anteriores
+                resultadoContenido.classList.add('d-none');
+                
+                // Desplazarse al área de resultados
+                setTimeout(() => {
+                    medicionResultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+                
+                try {
+                    const url = '{{ route("blogs.medir") }}';
+                    console.log('Enviando solicitud a:', url);
+                    
+                    // Crear FormData para enviar los datos
+                    const formData = new FormData();
+                    formData.append('_token', '{{ csrf_token() }}');
+                    formData.append('titulo', titulo);
+                    formData.append('contenido', contenido);
+                    
+                    console.log('Datos del formulario:', {
+                        titulo: titulo.substring(0, 50) + (titulo.length > 50 ? '...' : ''),
+                        contenido_length: contenido.length
+                    });
+                    
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        credentials: 'same-origin',
+                        body: formData
+                    });
+
+                    console.log('Respuesta HTTP recibida. Estado:', response.status);
+                    
+                    let data;
+                    try {
+                        data = await response.json();
+                        console.log('Datos de respuesta:', data);
+                    } catch (e) {
+                        console.error('Error al analizar la respuesta JSON:', e);
+                        throw new Error('La respuesta del servidor no es un JSON válido');
+                    }
+
+                    if (response.ok) {
+                    // Ocultar el estado de carga
+                    document.getElementById('loadingState').classList.add('d-none');
+                    document.getElementById('progressContainer').classList.add('d-none');
+                    
+                    // Mostrar el contenedor de resultados
+                    const resultadoContenido = document.getElementById('resultadoContenido');
+                    const medicionResultado = document.getElementById('medicionResultado');
+                    
+                    // Determinar la clase de alerta según el puntaje
+                    let alertClass = 'alert-success';
+                    if (data.puntuacion < 50) {
+                        alertClass = 'alert-danger';
+                    } else if (data.puntuacion < 80) {
+                        alertClass = 'alert-warning';
+                    }
+                    
                     // Actualizar la interfaz con los resultados
                     resultadoContenido.innerHTML = `
-                        <div class="alert ${data.class || 'alert-success'}">
-                            <h5 class="alert-heading">${data.message || 'Análisis completado'}</h5>
-                            ${data.puntuacion ? `
-                                <div class="mt-3">
-                                    <h2 class="display-4 text-center">${data.puntuacion}%</h2>
-                                    <p class="text-center mb-0">de similitud con otros contenidos</p>
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0 text-primary">
+                                    <i class="fas fa-chart-pie me-2"></i>Resultado del Análisis
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert ${alertClass} mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas ${alertClass === 'alert-success' ? 'fa-check-circle' : alertClass === 'alert-warning' ? 'fa-exclamation-triangle' : 'fa-times-circle'} me-3"></i>
+                                        <div>
+                                            <h5 class="alert-heading">${data.message || 'Análisis completado'}</h5>
+                                            ${data.recomendacion ? `<p class="mb-0">${data.recomendacion}</p>` : ''}
+                                        </div>
+                                    </div>
                                 </div>
-                            ` : ''}
+                                
+                                <div class="text-center py-4">
+                                    <div class="position-relative d-inline-block mb-3">
+                                        <div class="position-relative" style="width: 180px; height: 180px;">
+                                            <svg class="progress-ring" width="180" height="180">
+                                                <circle class="progress-ring-circle" 
+                                                    stroke="#e9ecef" 
+                                                    stroke-width="10" 
+                                                    fill="transparent" 
+                                                    r="80" 
+                                                    cx="90" 
+                                                    cy="90" />
+                                                <circle class="progress-ring-circle" 
+                                                    stroke="${alertClass === 'alert-success' ? '#28a745' : alertClass === 'alert-warning' ? '#ffc107' : '#dc3545'}" 
+                                                    stroke-width="10" 
+                                                    stroke-linecap="round"
+                                                    fill="transparent" 
+                                                    r="80" 
+                                                    cx="90" 
+                                                    cy="90"
+                                                    style="stroke-dasharray: 502.65; stroke-dashoffset: ${502.65 - (data.puntuacion / 100 * 502.65)};" />
+                                            </svg>
+                                            <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                                <h1 class="display-4 fw-bold mb-0">${data.puntuacion}%</h1>
+                                                <small class="text-muted">Puntuación</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <h5>Detalles del Análisis</h5>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card h-100 border-0 shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <div class="bg-${alertClass === 'alert-success' ? 'success' : alertClass === 'alert-warning' ? 'warning' : 'danger'}-subtle rounded-circle p-3 d-inline-flex align-items-center justify-content-center mb-3">
+                                                            <i class="fas ${alertClass === 'alert-success' ? 'fa-check' : alertClass === 'alert-warning' ? 'fa-exclamation' : 'fa-times'} text-${alertClass === 'alert-success' ? 'success' : alertClass === 'alert-warning' ? 'warning' : 'danger'} fa-2x"></i>
+                                                        </div>
+                                                        <h6 class="mb-1">Calificación</h6>
+                                                        <p class="mb-0 text-${alertClass === 'alert-success' ? 'success' : alertClass === 'alert-warning' ? 'warning' : 'danger'} fw-bold">
+                                                            ${data.puntuacion < 50 ? 'Baja' : data.puntuacion < 80 ? 'Media' : 'Alta'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card h-100 border-0 shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <div class="bg-light rounded-circle p-3 d-inline-flex align-items-center justify-content-center mb-3">
+                                                            <i class="fas fa-info-circle text-primary fa-2x"></i>
+                                                        </div>
+                                                        <h6 class="mb-1">Recomendación</h6>
+                                                        <p class="mb-0 small">
+                                                            ${data.puntuacion < 50 ? 'Se recomienda revisar y mejorar el contenido' : data.puntuacion < 80 ? 'El contenido es aceptable, pero puede mejorarse' : '¡Excelente contenido!'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     `;
+                    
+                    // Mostrar los resultados
                     resultadoContenido.classList.remove('d-none');
+                    medicionResultado.classList.remove('d-none');
+                    
+                    // Desplazarse suavemente a los resultados
+                    setTimeout(() => {
+                        medicionResultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
                     
                     // Mostrar alerta de éxito
-                    mostrarAlerta(data.message, data.success ? 'success' : 'error');
+                    mostrarAlerta('Análisis completado correctamente', 'success');
+                    
                 } else {
                     throw new Error(data.message || 'Error en la solicitud');
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                mostrarAlerta(error.message || 'Ocurrió un error al analizar el contenido', 'error');
-                
-                // Mostrar mensaje de error en el contenedor
-                resultadoContenido.innerHTML = `
-                    <div class="alert alert-danger">
-                        <h5 class="alert-heading">Error</h5>
-                        <p class="mb-0">${error.message || 'Error al procesar la solicitud'}</p>
-                    </div>
-                `;
-                resultadoContenido.classList.remove('d-none');
-                
-                actualizarEstadoBoton('error');
-            } finally {
-                // Asegurarse de que el botón no quede atascado
-                if (medirBlogBtn.disabled) {
-                    actualizarEstadoBoton('listo');
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // Ocultar estado de carga
+                    document.getElementById('loadingState').classList.add('d-none');
+                    
+                    // Mostrar mensaje de error en el contenedor
+                    const errorMessage = error.message || 'Ocurrió un error al analizar el contenido';
+                    const resultadoContenido = document.getElementById('resultadoContenido');
+                    
+                    resultadoContenido.innerHTML = `
+                        <div class="alert alert-danger">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle me-3"></i>
+                                <div>
+                                    <h5 class="alert-heading">Error en el análisis</h5>
+                                    <p class="mb-0">${errorMessage}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button class="btn btn-outline-primary" onclick="document.getElementById('medirBlogBtn').click()">
+                                <i class="fas fa-redo me-2"></i>Intentar de nuevo
+                            </button>
+                        </div>
+                    `;
+                    
+                    resultadoContenido.classList.remove('d-none');
+                    actualizarEstadoBoton('error');
+                    
+                    // Mostrar alerta de error
+                    mostrarAlerta(errorMessage, 'error');
+                } finally {
+                    // Asegurarse de que el botón no quede atascado
+                    if (medirBlogBtn.disabled) {
+                        actualizarEstadoBoton('listo');
+                    }
                 }
+            });
+
+            // Image preview functionality
+            document.getElementById('imagen').addEventListener('change', function(e) {
+            const preview = document.getElementById('preview');
+            const noPreview = document.getElementById('no-preview');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.setAttribute('src', e.target.result);
+                    preview.style.display = 'block';
+                    noPreview.style.display = 'none';
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                preview.style.display = 'none';
+                noPreview.style.display = 'flex';
             }
         });
-
-        // Image preview functionality
-        document.getElementById('imagen').addEventListener('change', function(e) {
-        const preview = document.getElementById('preview');
-        const noPreview = document.getElementById('no-preview');
-        
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                preview.setAttribute('src', e.target.result);
-                preview.style.display = 'block';
-                noPreview.style.display = 'none';
-            }
-            
-            reader.readAsDataURL(this.files[0]);
-        } else {
-            preview.style.display = 'none';
-            noPreview.style.display = 'flex';
-        }
     });
-});
 
     // AI Analysis Functionality
     document.addEventListener('DOMContentLoaded', function() {
