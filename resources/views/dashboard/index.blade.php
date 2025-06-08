@@ -70,49 +70,16 @@
             animation: float 6s ease-in-out infinite;
         }
         
-        /* Estilos para el botón de métricas del chatbot */
-        .btn-chatbot-metrics {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            padding: 12px 25px;
-            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
-            transition: all 0.4s ease;
-            display: inline-flex;
-            align-items: center;
-            z-index: 1;
-        }
+        /* Estilos eliminados ya que ahora usamos clases de Bootstrap */
         
-        .btn-chatbot-metrics:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(37, 117, 252, 0.4);
-            color: white;
-        }
-        
-        .btn-chatbot-metrics:active {
-            transform: translateY(1px);
-            box-shadow: 0 3px 10px rgba(37, 117, 252, 0.3);
-        }
-        
-        .btn-chatbot-metrics i.fa-arrow-right {
-            transition: transform 0.3s ease;
-        }
-        
-        .btn-chatbot-metrics:hover i.fa-arrow-right {
-            transform: translateX(5px);
-        }
-        
+        /* Estilos para la animación de pulso */
         .btn-chatbot-pulse {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
             border-radius: 50px;
             z-index: -1;
             opacity: 0.8;
@@ -132,6 +99,24 @@
                 transform: scale(1.1);
                 opacity: 0;
             }
+        }
+        
+        /* Estilos para el hover de los botones de métricas */
+        .btn.rounded-pill[href*="metrics"] i.fa-arrow-right {
+            transition: transform 0.3s ease;
+        }
+        
+        .btn.rounded-pill[href*="metrics"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        .btn.rounded-pill[href*="metrics"]:hover i.fa-arrow-right {
+            transform: translateX(5px);
+        }
+        
+        .btn.rounded-pill[href*="metrics"]:active {
+            transform: translateY(1px);
         }
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -159,14 +144,18 @@
         </div>
         <!-- Botones de métricas -->
         <div class="d-flex justify-content-end gap-3 mb-4 mt-3">
-            <a href="{{ route('blog.metrics') }}" class="btn btn-blog-metrics" style="background: linear-gradient(135deg, #6c5ce7, #a55eea);">
+            <a href="{{ route('blog.metrics') }}" class="btn rounded-pill text-white px-4 py-2 d-inline-flex align-items-center" style="background: linear-gradient(135deg, #6c5ce7, #a55eea); box-shadow: 0 4px 15px rgba(106, 92, 231, 0.3);">
                 <i class="fas fa-chart-line me-2"></i>Métricas de Blogs
                 <i class="fas fa-arrow-right ms-2"></i>
             </a>
-            <a href="{{ route('chatbot.metrics') }}" class="btn btn-chatbot-metrics">
+            <a href="{{ route('chatbot.metrics') }}" class="btn rounded-pill text-white px-4 py-2 d-inline-flex align-items-center position-relative" style="background: linear-gradient(135deg, #2575fc, #6a11cb); box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);">
                 <i class="fas fa-robot me-2"></i>Métricas del Chatbot
                 <i class="fas fa-arrow-right ms-2"></i>
                 <span class="btn-chatbot-pulse"></span>
+            </a>
+            <a href="#" class="btn rounded-pill text-white px-4 py-2 d-inline-flex align-items-center position-relative" style="background: linear-gradient(135deg, #4a89dc, #37bc9b); box-shadow: 0 4px 15px rgba(74, 137, 220, 0.3);">
+                <i class="fas fa-capsules me-2"></i>Métricas de Productos
+                <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>
     </div>
