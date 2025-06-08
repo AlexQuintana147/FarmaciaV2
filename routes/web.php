@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\TrabajadorAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ChatbotLogController;
+use App\Http\Controllers\AutogeneradorLogController;
 
 
 Route::get('/', function () {
@@ -52,6 +53,10 @@ Route::middleware(['auth:trabajador'])->group(function () {
     
     // Blog Metrics
     Route::get('/dashboard/blog-metrics', [App\Http\Controllers\BlogMedidaController::class, 'metrics'])->name('blog.metrics');
+    
+    // Autogenerador Logs
+    Route::get('/dashboard/autogenerador-logs', [AutogeneradorLogController::class, 'index'])->name('autogenerador.logs');
+    Route::get('/dashboard/autogenerador-logs/{log}', [AutogeneradorLogController::class, 'show'])->name('autogenerador.logs.show');
     
     //Blogs
     Route::get('/dashboard/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('dashboard.blogs');

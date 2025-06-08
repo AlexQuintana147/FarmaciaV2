@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Models\AutogeneradorLog;
 
 class ProductoDescripcionGeneradorController extends Controller
 {
@@ -62,6 +63,15 @@ class ProductoDescripcionGeneradorController extends Controller
             $content = strip_tags($content);
             $content = str_replace(["\"", "\n"], ['"', ' '], $content);
             $content = preg_replace('/\s+/', ' ', $content);
+            
+            // Guardar el registro de autogeneración si el usuario está autenticado
+            if (auth()->guard('trabajador')->check()) {
+                AutogeneradorLog::create([
+                    'trabajador_id' => auth()->guard('trabajador')->id(),
+                    'titulo' => $userMessage,
+                    'descripcion' => $content
+                ]);
+            }
             
             // Asegurarse de devolver una respuesta JSON válida
             return response()->json([

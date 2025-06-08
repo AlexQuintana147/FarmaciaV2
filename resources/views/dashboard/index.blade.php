@@ -153,8 +153,8 @@
                 <i class="fas fa-arrow-right ms-2"></i>
                 <span class="btn-chatbot-pulse"></span>
             </a>
-            <a href="#" class="btn rounded-pill text-white px-4 py-2 d-inline-flex align-items-center position-relative" style="background: linear-gradient(135deg, #4a89dc, #37bc9b); box-shadow: 0 4px 15px rgba(74, 137, 220, 0.3);">
-                <i class="fas fa-capsules me-2"></i>Métricas de Productos
+            <a href="{{ route('autogenerador.logs') }}" class="btn rounded-pill text-white px-4 py-2 d-inline-flex align-items-center position-relative" style="background: linear-gradient(135deg, #ff9f43, #ff6b6b); box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3);">
+                <i class="fas fa-magic me-2"></i>Métricas de Productos
                 <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>
