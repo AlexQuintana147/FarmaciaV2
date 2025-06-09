@@ -635,6 +635,26 @@
         .table td {
             font-size: 0.9rem;
         }
+
+        .chatbot-bubble-text {
+            white-space: pre-wrap; /* Mantiene los saltos de línea */
+        }
+
+        .chatbot-bubble-text strong {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin: 0 2px;
+        }
+
+        .chatbot-bubble-text br {
+            display: block;
+            content: "";
+            margin-top: 5px;
+        }
     </style>
     <!-- Scripts del chatbot -->
     <script src="{{ asset('js/chatbot.js') }}"></script>

@@ -26,7 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function addMessage(message, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `chatbot-message ${isUser ? 'user' : 'bot'}`;
-        messageDiv.innerHTML = `<div class="chatbot-bubble-text">${message}</div>`;
+        
+        // Procesar el mensaje para convertir Markdown a HTML
+        const formattedMessage = formatBotMessage(message);
+        
+        messageDiv.innerHTML = `<div class="chatbot-bubble-text">${formattedMessage}</div>`;
         chatbotBody.appendChild(messageDiv);
         chatbotBody.scrollTop = chatbotBody.scrollHeight;
     }
@@ -58,6 +62,21 @@ document.addEventListener('DOMContentLoaded', function() {
             hideTypingIndicator(typingIndicator);
             addMessage('Lo siento, ocurrió un error al procesar tu mensaje.');
         }
+    }
+
+    // Función para formatear el mensaje del bot
+    function formatBotMessage(message) {
+        // Convertir **texto** a <strong>texto</strong>
+        let formatted = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Convertir números seguidos de punto y espacio a lista ordenada
+        formatted = formatted.replace(/(\d+)\.\s/g, '<br>$1. ');
+        
+        // Convertir emojis y otros caracteres especiales
+        formatted = formatted.replace(/👋|✨|🦠|🌼|💪|🤧|🍄|💊|😊/g, 
+            match => `<span class="emoji">${match}</span>`);
+        
+        return formatted;
     }
 
     // Event listener para el botón de enviar
