@@ -22,9 +22,9 @@
             </div>
             <div class="col-lg-6 text-center">
                 @if($blogs->isNotEmpty())
-                    <img src="{{ asset('imagesBlog/' . $blogs->first()->imagen) }}" class="img-fluid rounded shadow" alt="{{ $blogs->first()->titulo }}">
+                    <img src="{{ asset($blogs[0]['imagen']) }}" class="img-fluid rounded blog-img" alt="{{ $blogs[0]['titulo'] }}" style="max-height: 300px; width: auto; max-width: 100%;">
                 @else
-                    <img src="{{ asset('images/NoImage.png') }}" class="img-fluid rounded shadow" alt="Blog DrodiPharma">
+                    <img src="{{ asset('images/NoImage.png') }}" class="img-fluid rounded shadow" alt="Blog DrodiPharma" style="max-height: 300px; width: auto; max-width: 100%;">
                 @endif
             </div>
         </div>
