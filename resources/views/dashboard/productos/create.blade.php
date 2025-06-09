@@ -7,6 +7,15 @@
         height: 1rem;
         margin-right: 0.5rem;
     }
+
+    #descripcion {
+        white-space: pre-wrap;
+        font-family: inherit; /* Mejor que Courier New para texto normal */
+        line-height: 1.6;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
 </style>
 @endpush
 
@@ -45,7 +54,6 @@
                 return;
             }
 
-            // Iniciar carga
             actualizarEstadoBoton('cargando');
             
             try {
@@ -59,46 +67,39 @@
                     body: JSON.stringify({ message: titulo })
                 });
 
-                let data;
-                try {
-                    data = await response.json();
-                    
-                    // Verificar si la respuesta es exitosa
-                    if (response.ok) {
-                        if (data && data.success) {
-                            // Asegurarse de que el mensaje no esté vacío
-                            if (data.message && data.message.trim() !== '') {
-                                descripcionTextarea.value = data.message;
-                                mostrarAlerta('¡Descripción generada con éxito!', 'success');
-                                return; // Salir temprano si todo está bien
-                            } else {
-                                throw new Error('La descripción generada está vacía');
-                            }
-                        } else {
-                            // Si success es false pero hay un mensaje, mostrarlo
-                            const errorMsg = data.message || 'No se pudo generar la descripción';
-                            throw new Error(errorMsg);
-                        }
+                const data = await response.json();
+                
+                if (response.ok && data && data.success) {
+                    if (data.message && data.message.trim() !== '') {
+                        // Aplicar formato aquí
+                        const formattedDescription = formatProductDescription(data.message);
+                        descripcionTextarea.value = formattedDescription;
+                        mostrarAlerta('¡Descripción generada con éxito!', 'success');
                     } else {
-                        // Si el estado HTTP no es exitoso
-                        const errorMsg = data?.message || `Error del servidor (${response.status})`;
-                        throw new Error(errorMsg);
+                        throw new Error('La descripción generada está vacía');
                     }
-                } catch (jsonError) {
-                    console.error('Error al procesar la respuesta JSON:', jsonError);
-                    throw new Error('Error al procesar la respuesta del servidor');
+                } else {
+                    throw new Error(data.message || 'No se pudo generar la descripción');
                 }
             } catch (error) {
                 console.error('Error:', error);
                 mostrarAlerta(error.message || 'Ocurrió un error al generar la descripción', 'error');
                 actualizarEstadoBoton('error');
             } finally {
-                // Asegurarse de que el botón no quede atascado
                 if (autogenerarBtn.disabled) {
                     actualizarEstadoBoton('listo');
                 }
             }
         });
+
+        function formatProductDescription(description) {
+            // Versión que mantiene estructura pero mejora formato
+            return description
+                .replace(/\*\*(.*?)\*\*/g, '$1') // Mantiene el texto en negrita pero sin **
+                .replace(/(\n|^)\s*/g, '$1')     // Elimina espacios iniciales
+                .replace(/\n{3,}/g, '\n\n')       // Máximo 2 saltos de línea seguidos
+                .trim();
+        }
 
 
         function mostrarAlerta(mensaje, tipo = 'success') {
