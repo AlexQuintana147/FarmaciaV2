@@ -32,7 +32,7 @@
                             <tr>
                                 <td>{{ $log->id }}</td>
                                 <td>{{ Str::limit($log->titulo, 50) }}</td>
-                                <td>{{ $log->trabajador->nombre }}</td>
+                                <td>{{ $log->trabajador?->usuario ?? 'N/A' }}</td>
                                 <td>{{ $log->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
                                     <a href="{{ route('autogenerador.logs.show', $log) }}" class="btn btn-sm btn-primary">
