@@ -72,6 +72,7 @@ Route::middleware(['auth:trabajador'])->group(function () {
     
     //Productos
     Route::get('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('dashboard.productos');
+    Route::get('/dashboard/productos/export', [App\Http\Controllers\ProductoExportController::class, 'export'])->name('productos.export');
     Route::get('/dashboard/productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
     Route::post('/dashboard/productos', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
     Route::get('/dashboard/productos/{producto}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');

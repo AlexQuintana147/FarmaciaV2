@@ -99,9 +99,14 @@
                 <p class="mb-0 opacity-75">Administra el catálogo de productos farmacéuticos de DrodiPharma.</p>
             </div>
             <div class="col-md-4 text-md-end">
-                <a href="{{ route('productos.create') }}" class="btn btn-light text-primary fw-bold rounded-pill">
-                    <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
-                </a>
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('productos.export', request()->query()) }}" class="btn btn-success fw-bold rounded-pill">
+                        <i class="fas fa-file-excel me-2"></i>Exportar a Excel
+                    </a>
+                    <a href="{{ route('productos.create') }}" class="btn btn-light text-primary fw-bold rounded-pill">
+                        <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
+                    </a>
+                </div>
             </div>
         </div>
     </div>
