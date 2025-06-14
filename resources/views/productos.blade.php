@@ -4,28 +4,94 @@
 
 @section('content')
 <!-- Hero Section con fondo médico -->
-<div class="hero-section mb-5">
-    <!-- Elementos decorativos médicos flotantes -->
-    <div class="floating-icon" style="top: 15%; left: 10%;"><i class="fas fa-pills"></i></div>
-    <div class="floating-icon" style="top: 25%; right: 15%;"><i class="fas fa-capsules"></i></div>
-    <div class="floating-icon" style="bottom: 20%; left: 20%;"><i class="fas fa-prescription"></i></div>
-    <div class="floating-icon" style="bottom: 30%; right: 10%;"><i class="fas fa-tablets"></i></div>
+<div class="hero-section mb-5" style="background: linear-gradient(135deg, #e8f5fe 0%, #f0f9ff 100%);">
+    <!-- Elementos decorativos médicos flotantes con animación -->
+    <div class="floating-icon" style="top: 15%; left: 10%; animation: float 6s ease-in-out infinite;"><i class="fas fa-pills text-primary"></i></div>
+    <div class="floating-icon" style="top: 25%; right: 15%; animation: float 8s ease-in-out infinite;"><i class="fas fa-capsules text-success"></i></div>
+    <div class="floating-icon" style="bottom: 20%; left: 20%; animation: float 7s ease-in-out infinite;"><i class="fas fa-prescription text-info"></i></div>
+    <div class="floating-icon" style="bottom: 30%; right: 10%; animation: float 9s ease-in-out infinite;"><i class="fas fa-tablets text-warning"></i></div>
     
     <div class="container py-5">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <h1 class="display-5 fw-bold text-primary mb-3">Nuestros Productos</h1>
+                <div class="bg-white p-4 rounded-lg shadow-sm border-start border-5 border-primary">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-shopping-basket text-primary fa-2x"></i>
+                        </div>
+                        <h1 class="display-5 fw-bold text-primary mb-0">Nuestros Productos</h1>
+                    </div>
                     <div class="divider mb-4" style="width: 70px; height: 3px; background-color: var(--medical-green);"></div>
                     <p class="lead">Descubre nuestra amplia gama de productos farmacéuticos de la más alta calidad para el cuidado de tu salud y bienestar.</p>
+                    <div class="mt-4">
+                        <a href="#productos-container" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+                            <i class="fas fa-search me-2"></i>Explorar productos
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 text-center">
-                <img src="https://placehold.co/600x400/e8f4fd/4a89dc?text=Productos+Farmacéuticos" class="img-fluid rounded shadow" alt="Productos Farmacéuticos">
+                @php
+                    $imagenUltimoProducto = $ultimoProducto && $ultimoProducto->imagen ? asset($ultimoProducto->imagen) : asset('images/NoImage.png');
+                    $tituloUltimoProducto = $ultimoProducto ? $ultimoProducto->titulo : 'Productos Farmacéuticos';
+                    $categoriaUltimoProducto = $ultimoProducto ? $ultimoProducto->categoria : '';
+                    
+                    $categoryIcon = 'fas fa-pills';
+                    if($categoriaUltimoProducto == 'Cuidado Personal') {
+                        $categoryIcon = 'fas fa-pump-soap';
+                    } elseif($categoriaUltimoProducto == 'Vitaminas') {
+                        $categoryIcon = 'fas fa-apple-alt';
+                    } elseif($categoriaUltimoProducto == 'Bebés') {
+                        $categoryIcon = 'fas fa-baby';
+                    }
+                @endphp
+                <div class="position-relative rounded-lg shadow overflow-hidden" style="transform: rotate(2deg);">
+                    <!-- Etiqueta de nuevo producto -->
+                    <div class="position-absolute top-0 start-0 bg-danger text-white py-1 px-3 m-3 rounded-pill z-index-1 shadow-sm">
+                        <i class="fas fa-bolt me-1"></i> Nuevo
+                    </div>
+                    
+                    <!-- Imagen del producto -->
+                    <img src="{{ $imagenUltimoProducto }}" class="img-fluid" alt="{{ $tituloUltimoProducto }}" style="width: 100%; height: 400px; object-fit: cover;">
+                    
+                    <!-- Información del producto -->
+                    @if($ultimoProducto)
+                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-white bg-opacity-90 border-top border-primary border-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h5 class="mb-1 fw-bold text-primary">{{ $tituloUltimoProducto }}</h5>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-primary rounded-pill px-3 py-2 me-2">
+                                            <i class="{{ $categoryIcon }} me-1"></i> {{ $categoriaUltimoProducto }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <a href="#productoModal{{ $ultimoProducto->id }}" data-bs-toggle="modal" class="btn btn-sm btn-outline-primary rounded-circle">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Estilos para la animación flotante -->
+<style>
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+    .floating-icon {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 0.5;
+        z-index: 1;
+    }
+</style>
 
 <div class="container py-3">
 

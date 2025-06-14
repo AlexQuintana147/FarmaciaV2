@@ -28,7 +28,8 @@ Route::get('/farmacovigilancia', function () {
 
 Route::get('/productos', function () {
     $productos = App\Models\Producto::all();
-    return view('productos', compact('productos'));
+    $ultimoProducto = App\Models\Producto::latest()->first();
+    return view('productos', compact('productos', 'ultimoProducto'));
 });
 
 Route::get('/blog', function () {
