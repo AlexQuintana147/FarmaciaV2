@@ -128,6 +128,11 @@
                         </div>
                     </form>
                 </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ route('blogs.export', request()->query()) }}" class="btn btn-success rounded-pill">
+                        <i class="fas fa-file-excel me-2"></i>Exportar a Excel
+                    </a>
+                </div>
             </div>
         </div>
         <div class="card-body p-0">
