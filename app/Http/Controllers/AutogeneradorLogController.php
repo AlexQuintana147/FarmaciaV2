@@ -14,7 +14,7 @@ class AutogeneradorLogController extends Controller
     {
         $logs = AutogeneradorLog::with('trabajador')
                                ->latest()
-                               ->get();
+                               ->paginate(10);
         
         return view('dashboard.autogenerador.index', compact('logs'));
     }
