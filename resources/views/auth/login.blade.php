@@ -304,10 +304,6 @@
                         </div>
                         
                         <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label for="password" class="form-label small text-uppercase fw-bold text-muted">Contraseña</label>
-                                <a href="#" class="forgot-password small">¿Olvidaste tu contraseña?</a>
-                            </div>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
                                 <input type="password" class="form-control ps-3" id="password" name="password" placeholder="••••••••" required>

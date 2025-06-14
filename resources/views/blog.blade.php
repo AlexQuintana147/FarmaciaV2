@@ -3,9 +3,7 @@
 @section('title', 'Blog')
 
 @section('content')
-<!-- Hero Section con fondo médico -->
 <div class="hero-section mb-5">
-    <!-- Elementos decorativos médicos flotantes -->
     <div class="floating-icon" style="top: 15%; left: 10%;"><i class="fas fa-book-medical"></i></div>
     <div class="floating-icon" style="top: 25%; right: 15%;"><i class="fas fa-heartbeat"></i></div>
     <div class="floating-icon" style="bottom: 20%; left: 20%;"><i class="fas fa-notes-medical"></i></div>
@@ -213,7 +211,6 @@
                 </div>
             </div>
 
-            <!-- Modal para el contenido completo del blog con estilo médico -->
             <div class="modal fade" id="blogModal{{ $blog->id }}" tabindex="-1" aria-labelledby="blogModalLabel{{ $blog->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content border-0 shadow">

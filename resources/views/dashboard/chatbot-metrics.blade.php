@@ -141,7 +141,6 @@
 <div class="container-fluid py-5 bg-light min-vh-100">
     <div class="container">
         <div class="row justify-content-center">
-            <!-- Título de la sección -->
             <div class="col-12 text-center mb-5">
                 <div class="bg-white p-4 rounded-4 shadow-sm border-0 d-inline-block">
                     <h2 class="text-primary fw-bold mb-2">
@@ -152,10 +151,8 @@
                 </div>
             </div>
 
-            <!-- Fila de Tarjetas -->
             <div class="col-12">
                 <div class="row g-3">
-                    <!-- Tarjeta de Total de Interacciones -->
                     <div class="col-xl-2_4 col-lg-4 col-md-6 mb-4">
                 <div class="card bg-gradient-primary text-white h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative hover-scale">
                     <div class="position-absolute top-0 end-0 p-3" style="opacity: 0.1;">
