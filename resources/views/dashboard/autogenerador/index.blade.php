@@ -29,7 +29,10 @@
                             <h5 class="mb-0 text-primary fw-bold"><i class="fas fa-history me-2"></i>Historial de Descripciones</h5>
                             <p class="text-muted small mb-0 mt-1">Lista completa de todas las descripciones generadas automáticamente</p>
                         </div>
-                        <div>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('autogenerador.logs.export', request()->query()) }}" class="btn btn-success">
+                                <i class="fas fa-file-excel me-2"></i>Exportar a Excel
+                            </a>
                             <a href="{{ route('productos.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus me-2"></i>Nuevo Producto
                             </a>

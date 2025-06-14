@@ -58,6 +58,7 @@ Route::middleware(['auth:trabajador'])->group(function () {
     
     // Autogenerador Logs
     Route::get('/dashboard/autogenerador-logs', [AutogeneradorLogController::class, 'index'])->name('autogenerador.logs');
+    Route::get('/dashboard/autogenerador-logs/export', [App\Http\Controllers\AutogeneradorExportController::class, 'export'])->name('autogenerador.logs.export');
     Route::get('/dashboard/autogenerador-logs/{log}', [AutogeneradorLogController::class, 'show'])->name('autogenerador.logs.show');
     
     //Blogs
