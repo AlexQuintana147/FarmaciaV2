@@ -34,7 +34,8 @@ Route::get('/productos', function () {
 
 Route::get('/blog', function () {
     $blogs = App\Models\Blog::with('trabajador')->latest()->get();
-    return view('blog', compact('blogs'));
+    $ultimoBlog = App\Models\Blog::with('trabajador')->latest()->first();
+    return view('blog', compact('blogs', 'ultimoBlog'));
 });
 
 //Trabajadores

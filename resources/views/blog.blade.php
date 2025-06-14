@@ -3,33 +3,88 @@
 @section('title', 'Blog')
 
 @section('content')
-<div class="hero-section mb-5">
-    <div class="floating-icon" style="top: 15%; left: 10%;"><i class="fas fa-book-medical"></i></div>
-    <div class="floating-icon" style="top: 25%; right: 15%;"><i class="fas fa-heartbeat"></i></div>
-    <div class="floating-icon" style="bottom: 20%; left: 20%;"><i class="fas fa-notes-medical"></i></div>
-    <div class="floating-icon" style="bottom: 30%; right: 10%;"><i class="fas fa-stethoscope"></i></div>
+<!-- Hero Section con fondo médico -->
+<div class="hero-section mb-5" style="background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);">
+    <!-- Elementos decorativos médicos flotantes con animación -->
+    <div class="floating-icon" style="top: 15%; left: 10%; animation: float 6s ease-in-out infinite;"><i class="fas fa-book-medical text-primary"></i></div>
+    <div class="floating-icon" style="top: 25%; right: 15%; animation: float 8s ease-in-out infinite;"><i class="fas fa-heartbeat text-danger"></i></div>
+    <div class="floating-icon" style="bottom: 20%; left: 20%; animation: float 7s ease-in-out infinite;"><i class="fas fa-notes-medical text-success"></i></div>
+    <div class="floating-icon" style="bottom: 30%; right: 10%; animation: float 9s ease-in-out infinite;"><i class="fas fa-stethoscope text-info"></i></div>
     
     <div class="container py-5">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <h1 class="display-5 fw-bold text-primary mb-3">Blog de Salud</h1>
+                <div class="bg-white p-4 rounded-lg shadow-sm border-start border-5 border-primary">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-newspaper text-primary fa-2x"></i>
+                        </div>
+                        <h1 class="display-5 fw-bold text-primary mb-0">Blog de Salud</h1>
+                    </div>
                     <div class="divider mb-4" style="width: 70px; height: 3px; background-color: var(--medical-green);"></div>
                     <p class="lead">Artículos y consejos de salud escritos por nuestros profesionales farmacéuticos para ayudarte a cuidar tu bienestar.</p>
+                    <div class="mt-4">
+                        <a href="#blogs-container" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+                            <i class="fas fa-search me-2"></i>Explorar artículos
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 text-center">
-                @if($blogs->isNotEmpty())
-                    <img src="{{ asset($blogs[0]['imagen']) }}" class="img-fluid rounded blog-img" alt="{{ $blogs[0]['titulo'] }}" style="max-height: 300px; width: auto; max-width: 100%;">
-                @else
-                    <img src="{{ asset('images/NoImage.png') }}" class="img-fluid rounded shadow" alt="Blog DrodiPharma" style="max-height: 300px; width: auto; max-width: 100%;">
-                @endif
+                @php
+                    $imagenUltimoBlog = $ultimoBlog && $ultimoBlog->imagen ? asset($ultimoBlog->imagen) : asset('images/NoImage.png');
+                    $tituloUltimoBlog = $ultimoBlog ? $ultimoBlog->titulo : 'Blog de Salud';
+                    $subtituloUltimoBlog = $ultimoBlog ? $ultimoBlog->subtitulo : '';
+                @endphp
+                <div class="position-relative rounded-lg shadow overflow-hidden" style="transform: rotate(-2deg);">
+                    <!-- Etiqueta de nuevo artículo -->
+                    <div class="position-absolute top-0 start-0 bg-primary text-white py-1 px-3 m-3 rounded-pill z-index-1 shadow-sm">
+                        <i class="fas fa-star me-1"></i> Destacado
+                    </div>
+                    
+                    <!-- Imagen del blog -->
+                    <img src="{{ $imagenUltimoBlog }}" class="img-fluid" alt="{{ $tituloUltimoBlog }}" style="width: 100%; height: 400px; object-fit: cover;">
+                    
+                    <!-- Información del blog -->
+                    @if($ultimoBlog)
+                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-white bg-opacity-90 border-top border-primary border-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h5 class="mb-1 fw-bold text-primary">{{ $tituloUltimoBlog }}</h5>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-primary rounded-pill px-3 py-2 me-2">
+                                            <i class="fas fa-user-md me-1"></i> {{ $ultimoBlog->trabajador->nombre_completo }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <a href="#blogModal{{ $ultimoBlog->id }}" data-bs-toggle="modal" class="btn btn-sm btn-outline-primary rounded-circle">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container py-3">
+<!-- Estilos para la animación flotante -->
+<style>
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+    .floating-icon {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 0.5;
+        z-index: 1;
+    }
+</style>
+
+<div id="blogs-container" class="container py-3">
     <div class="row mb-5">
         <div class="col-12">
             <div class="bg-white p-3 rounded-lg shadow-sm mb-4">
