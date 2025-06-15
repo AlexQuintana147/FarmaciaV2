@@ -384,15 +384,34 @@
     </div>
 </div>
 
-<!-- Sección de Colaboradores -->
-<div class="colaboradores-section py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Nuestro Equipo</span>
-            <h2 class="fw-bold text-primary mb-3">Colaboradores</h2>
-            <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
+<!-- Sección de Entrega Rápida -->
+<div class="fast-delivery-section py-5" style="background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);">
+    <div class="container py-4">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="fast-delivery-content p-4 rounded-lg shadow-lg hover-lift">
+                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill mb-3 animate-pulse">¡ENTREGA RÁPIDA!</span>
+                    <h2 class="fw-bold text-primary mb-3">En DRODIPHARMA, sabemos que tu tiempo es ORO...</h2>
+                    <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background: linear-gradient(90deg, #dc3545, #ff6b81);"></div>
+                    <p class="lead mb-4 fw-bold text-danger" style="font-size: 1.5rem;">Por eso tu pedido llega HOY MISMO</p>
+                    <div class="delivery-icon mb-3">
+                        <i class="fas fa-shipping-fast text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        
+    </div>
+</div>
+
+<div class="colaboradores-section py-5">
+    <div class="container py-4">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">Nuestro Equipo</span>
+                <h2 class="fw-bold text-primary mb-3">Colaboradores</h2>
+                <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background-color: #0d6efd;"></div>
+            </div>
+        </div>
         <div class="colaboradores-carousel">
             <div class="colaboradores-track">
                 @for($i = 1; $i <= 16; $i++)
