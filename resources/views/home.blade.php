@@ -26,6 +26,7 @@
         border-radius: 15px;
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        height: 100%;
     }
 
     .offer-card:hover {
@@ -41,6 +42,51 @@
 
     .offer-card:hover .card-img-top {
         transform: scale(1.05);
+    }
+    
+    /* Estilos para el nuevo carrusel de ofertas */
+    .ofertas-carousel {
+        position: relative;
+        overflow: hidden;
+        padding: 20px 0;
+    }
+
+    .ofertas-track {
+        display: flex;
+        animation: scrollOfertas 30s linear infinite;
+    }
+
+    .oferta-item {
+        flex: 0 0 300px;
+        padding: 0 15px;
+        perspective: 1000px;
+    }
+
+    .oferta-imagen-container {
+        height: 200px;
+        overflow: hidden;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .oferta-imagen {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s;
+    }
+
+    .offer-card:hover .oferta-imagen {
+        transform: scale(1.05);
+    }
+
+    @keyframes scrollOfertas {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-300px * @php echo count($ofertasDelMes) @endphp)); /* Ancho de una serie completa */
+        }
     }
 
     .carousel-control-prev,
@@ -411,49 +457,45 @@
             </div>
             
             <div class="col-12">
-                <div class="offers-carousel">
-                    <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            @foreach($ofertasDelMes as $index => $oferta)
-                                <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}" aria-current="{{ $index == 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"></button>
-                            @endforeach
-                        </div>
-                        <div class="carousel-inner">
-                            @foreach($ofertasDelMes as $index => $oferta)
-                                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-8">
-                                            <div class="offer-card">
-                                                <div class="card border-0 shadow-lg">
-                                                    <div class="row g-0">
-                                                        <div class="col-md-6">
-                                                            <img src="{{ asset($oferta->imagen) }}" class="img-fluid rounded-start" alt="{{ $oferta->titulo }}" style="height: 100%; object-fit: cover;">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="card-body p-4 d-flex flex-column justify-content-center h-100">
-                                                                <h5 class="card-title fw-bold text-primary mb-3">{{ $oferta->titulo }}</h5>
-                                                                <p class="card-text text-muted mb-3"><i class="fas fa-calendar-alt me-2"></i>{{ $oferta->created_at->format('d/m/Y') }}</p>
-                                                                <div class="mt-auto">
-                                                                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill">¡OFERTA ESPECIAL!</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                <div class="ofertas-carousel">
+                    <div class="ofertas-track">
+                        @foreach($ofertasDelMes as $oferta)
+                            <div class="oferta-item">
+                                <div class="offer-card">
+                                    <div class="card border-0 shadow-lg h-100">
+                                        <div class="oferta-imagen-container">
+                                            <img src="{{ asset($oferta->imagen) }}" class="oferta-imagen" alt="{{ $oferta->titulo }}">
+                                        </div>
+                                        <div class="card-body p-3 d-flex flex-column">
+                                            <h5 class="card-title fw-bold text-primary mb-2">{{ $oferta->titulo }}</h5>
+                                            <p class="card-text text-muted mb-2"><i class="fas fa-calendar-alt me-2"></i>{{ $oferta->created_at->format('d/m/Y') }}</p>
+                                            <div class="mt-auto">
+                                                <span class="badge bg-danger text-white px-3 py-2 rounded-pill">¡OFERTA ESPECIAL!</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Anterior</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Siguiente</span>
-                        </button>
+                            </div>
+                        @endforeach
+                        <!-- Duplicamos las ofertas para crear un efecto de carrusel infinito -->
+                        @foreach($ofertasDelMes as $oferta)
+                            <div class="oferta-item">
+                                <div class="offer-card">
+                                    <div class="card border-0 shadow-lg h-100">
+                                        <div class="oferta-imagen-container">
+                                            <img src="{{ asset($oferta->imagen) }}" class="oferta-imagen" alt="{{ $oferta->titulo }}">
+                                        </div>
+                                        <div class="card-body p-3 d-flex flex-column">
+                                            <h5 class="card-title fw-bold text-primary mb-2">{{ $oferta->titulo }}</h5>
+                                            <p class="card-text text-muted mb-2"><i class="fas fa-calendar-alt me-2"></i>{{ $oferta->created_at->format('d/m/Y') }}</p>
+                                            <div class="mt-auto">
+                                                <span class="badge bg-danger text-white px-3 py-2 rounded-pill">¡OFERTA ESPECIAL!</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
