@@ -87,6 +87,15 @@ Route::middleware(['auth:trabajador'])->group(function () {
         ->name('generar.descripcion')
         ->middleware('auth:trabajador');
     
+    //Ofertas
+    Route::get('/dashboard/ofertas', [App\Http\Controllers\Dashboard\OfertaController::class, 'index'])->name('dashboard.ofertas');
+    Route::get('/dashboard/ofertas/create', [App\Http\Controllers\Dashboard\OfertaController::class, 'create'])->name('ofertas.create');
+    Route::post('/dashboard/ofertas', [App\Http\Controllers\Dashboard\OfertaController::class, 'store'])->name('ofertas.store');
+    Route::get('/dashboard/ofertas/{oferta}', [App\Http\Controllers\Dashboard\OfertaController::class, 'show'])->name('ofertas.show');
+    Route::get('/dashboard/ofertas/{oferta}/edit', [App\Http\Controllers\Dashboard\OfertaController::class, 'edit'])->name('ofertas.edit');
+    Route::put('/dashboard/ofertas/{oferta}', [App\Http\Controllers\Dashboard\OfertaController::class, 'update'])->name('ofertas.update');
+    Route::delete('/dashboard/ofertas/{oferta}', [App\Http\Controllers\Dashboard\OfertaController::class, 'destroy'])->name('ofertas.destroy');
+    
     //Trabajadores-Dash
     Route::get('/dashboard/trabajadores', [App\Http\Controllers\TrabajadorController::class, 'index'])->name('dashboard.trabajadores');
     Route::get('/dashboard/trabajadores/create', [App\Http\Controllers\TrabajadorController::class, 'create'])->name('trabajadores.create');

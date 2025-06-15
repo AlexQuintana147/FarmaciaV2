@@ -163,7 +163,7 @@
     <!-- Tarjetas de estadísticas mejoradas -->
     <h4 class="dashboard-section-title">Resumen General</h4>
     <div class="row mb-4">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="card stats-card h-100" style="background: linear-gradient(135deg, #4a89dc, #37bc9b);">
                 <div class="card-body text-white">
                     <div class="d-flex justify-content-between align-items-center">
@@ -184,7 +184,7 @@
             </div>
         </div>
         
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="card stats-card h-100" style="background: linear-gradient(135deg, #37bc9b, #48cfad);">
                 <div class="card-body text-white">
                     <div class="d-flex justify-content-between align-items-center">
@@ -205,7 +205,28 @@
             </div>
         </div>
         
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
+            <div class="card stats-card h-100" style="background: linear-gradient(135deg, #ff6b6b, #ff8e53);">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title fw-bold">Ofertas</h5>
+                            <h2 class="display-5 fw-bold mb-0">{{ $stats['ofertas'] ?? 0 }}</h2>
+                            <p class="mb-0 mt-2 opacity-75"><i class="fas fa-tags me-1"></i> Promociones activas</p>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-percentage fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="{{ route('dashboard.ofertas') }}" class="text-white">Ver detalles</a>
+                    <i class="fas fa-angle-right"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-3">
             <div class="card stats-card h-100" style="background: linear-gradient(135deg, #5d9cec, #967adc);">
                 <div class="card-body text-white">
                     <div class="d-flex justify-content-between align-items-center">

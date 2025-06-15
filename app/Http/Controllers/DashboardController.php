@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Producto;
 use App\Models\Trabajador;
+use App\Models\Oferta;
 
 class DashboardController extends Controller
 {
@@ -18,6 +19,7 @@ class DashboardController extends Controller
             'blogs' => Blog::count(),
             'productos' => Producto::count(),
             'trabajadores' => Trabajador::count(),
+            'ofertas' => Oferta::count(),
         ];
         
         $recentBlogs = Blog::with('trabajador')->latest()->take(5)->get();
