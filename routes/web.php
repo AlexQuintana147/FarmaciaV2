@@ -8,10 +8,7 @@ use App\Http\Controllers\ChatbotLogController;
 use App\Http\Controllers\AutogeneradorLogController;
 
 
-Route::get('/', function () {
-    $blogs = App\Models\Blog::latest()->get();
-    return view('home', compact('blogs'));
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Chatbot Routes - Accesible para todos
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');

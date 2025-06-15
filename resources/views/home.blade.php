@@ -384,10 +384,10 @@
     </div>
 </div>
 
-<!-- Sección de Entrega Rápida -->
+<!-- Sección de Entrega Rápida y Ofertas del Mes -->
 <div class="fast-delivery-section py-5" style="background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);">
     <div class="container py-4">
-        <div class="row align-items-center justify-content-center">
+        <div class="row align-items-center justify-content-center mb-5">
             <div class="col-md-8 text-center">
                 <div class="fast-delivery-content p-4 rounded-lg shadow-lg hover-lift">
                     <span class="badge bg-danger text-white px-3 py-2 rounded-pill mb-3 animate-pulse">¡ENTREGA RÁPIDA!</span>
@@ -400,6 +400,65 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Ofertas del Mes Actual -->
+        @if(isset($ofertasDelMes) && count($ofertasDelMes) > 0)
+        <div class="row justify-content-center">
+            <div class="col-12 text-center mb-4">
+                <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-3">OFERTAS ESPECIALES</span>
+                <h2 class="fw-bold text-primary mb-3">Ofertas del Mes</h2>
+                <div class="divider mx-auto mb-4" style="width: 70px; height: 3px; background: linear-gradient(90deg, #0d6efd, #0099ff);"></div>
+            </div>
+            
+            <div class="col-12">
+                <div class="offers-carousel">
+                    <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @foreach($ofertasDelMes as $index => $oferta)
+                                <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}" aria-current="{{ $index == 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                            @endforeach
+                        </div>
+                        <div class="carousel-inner">
+                            @foreach($ofertasDelMes as $index => $oferta)
+                                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-8">
+                                            <div class="offer-card">
+                                                <div class="card border-0 shadow-lg">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-6">
+                                                            <img src="{{ asset($oferta->imagen) }}" class="img-fluid rounded-start" alt="{{ $oferta->titulo }}" style="height: 100%; object-fit: cover;">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="card-body p-4 d-flex flex-column justify-content-center h-100">
+                                                                <h5 class="card-title fw-bold text-primary mb-3">{{ $oferta->titulo }}</h5>
+                                                                <p class="card-text text-muted mb-3"><i class="fas fa-calendar-alt me-2"></i>{{ $oferta->created_at->format('d/m/Y') }}</p>
+                                                                <div class="mt-auto">
+                                                                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill">¡OFERTA ESPECIAL!</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
