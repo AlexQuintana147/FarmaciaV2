@@ -53,7 +53,7 @@
                                             <i class="fas fa-image fa-3x text-danger opacity-50"></i>
                                             <p class="mt-2 text-muted">Vista previa de imagen</p>
                                         </div>
-                                        <img id="preview-image" src="{{ $oferta->imagen ? asset('storage/' . $oferta->imagen) : '#' }}" alt="Vista previa" class="img-fluid rounded shadow-sm" style="max-height: 180px; max-width: 100%; {{ $oferta->imagen ? 'display: block;' : 'display: none;' }}">
+                                        <img id="preview-image" src="{{ $oferta->imagen ? asset($oferta->imagen) : '#' }}" alt="Vista previa" class="img-fluid rounded shadow-sm" style="max-height: 180px; max-width: 100%; {{ $oferta->imagen ? 'display: block;' : 'display: none;' }}">
                                     </div>
                                 </div>
                             </div>

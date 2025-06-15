@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-body p-4 text-center">
                     @if($oferta->imagen)
-                        <img src="{{ asset('storage/' . $oferta->imagen) }}" alt="{{ $oferta->titulo }}" class="img-fluid rounded shadow-sm" style="max-height: 300px;">
+                        <img src="{{ asset($oferta->imagen) }}" alt="{{ $oferta->titulo }}" class="img-fluid rounded shadow-sm" style="max-height: 300px;">
                     @else
                         <div class="p-5 bg-light rounded">
                             <i class="fas fa-image fa-4x text-muted opacity-50"></i>
